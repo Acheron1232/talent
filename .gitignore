@@ -1,0 +1,46 @@
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+auth-server/src/main/resources/application.yaml
+auth-server/src/main/resources/application-dev.yaml
+auth-server/src/main/resources/application-prod.yaml
+pizza-server/src/main/resources/container-61d6e-firebase-adminsdk-fbsvc-304c7c9f8d.json
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+auth-server/src/main/resources/static/img.png
+auth-server/.env
+### Mac OS ###
+.DS_Store

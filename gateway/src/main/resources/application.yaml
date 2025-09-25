@@ -1,0 +1,92 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins:
+                  - "http://localhost:5173"
+                  - "http://localhost:3000"
+                allowedOriginPatterns:
+                  - "*"
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowedHeaders:
+                  - "*"
+                exposedHeaders:
+                  - "Set-Cookie"
+                  - "X-XSRF-TOKEN"
+                  - "Authorization"
+                allowCredentials: true
+
+
+          routes:
+            - id: book-service
+              uri: http://localhost:8081
+              predicates:
+                - Path=/books/**
+              filters:
+                - RewritePath=/books/(?<segment>.*), /${segment}
+
+            - id: user-service
+              uri: http://localhost:8082
+              predicates:
+                - Path=/user/**
+              filters:
+                - RewritePath=/user/(?<segment>.*), /${segment}
+
+#            - id: auth-service
+#              uri: http://127.0.0.1:9000
+#              predicates:
+#                - Path=/auth/**
+#              filters:
+#                - RewritePath=/auth/(?<segment>.*), /${segment}
+
+            - id: pizza-service
+              uri: http://localhost:8083
+              predicates:
+                - Path=/pizzeria/**
+              filters:
+                - RewritePath=/pizzeria/(?<segment>.*), /${segment}
+            - id: order-service
+              uri: http://localhost:8084
+              predicates:
+                - Path=/order/**
+              filters:
+                - RewritePath=/order/(?<segment>.*), /${segment}
+            - id: table-service
+              uri: http://localhost:8085
+              predicates:
+                - Path=/table/**
+              filters:
+                - RewritePath=/table/(?<segment>.*), /${segment}
+            - id: kitchen-service
+              uri: http://localhost:8086
+              predicates:
+                - Path=/kitchen/**
+              filters:
+                - RewritePath=/kitchen/(?<segment>.*), /${segment}
+#            - id: book-service
+#              uri: http://localhost:8081
+#              predicates:
+#                - Path=/books/**
+#              filters:
+#                - TokenRelay
+management:
+  endpoints:
+
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+logging:
+  level:
+    org.springframework.web.filter.CorsFilter: DEBUG

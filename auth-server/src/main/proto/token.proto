@@ -1,0 +1,21 @@
+syntax = "proto3";
+package token;
+option java_multiple_files = true;
+option java_package = "com.acheron.token";
+option java_outer_classname = "TokenServiceProto";
+
+import "google/protobuf/empty.proto";
+
+service TokenServiceGrpc {
+  rpc resetPassword(Email) returns (google.protobuf.Empty);
+  rpc reset(Token) returns (Token);
+}
+
+message Email {
+  string email = 1;
+}
+
+message Token {
+  string token = 1;
+}
+

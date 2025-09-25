@@ -1,0 +1,127 @@
+package org.acheron.authserver.service;
+
+import com.google.protobuf.StringValue;
+import org.acheron.authserver.*;
+import com.google.protobuf.Empty;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
+import org.acheron.authserver.dto.UserCreateDto;
+import org.acheron.user.*;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserGrpcClient {
+
+
+    public void saveUser(UserCreateDto user, String accessToken) {
+        ManagedChannel channel = ManagedChannelBuilder
+                .forAddress("localhost", 9091)
+                .usePlaintext()
+                .build();
+
+        UserServiceGrpcGrpc.UserServiceGrpcBlockingStub stub =
+                UserServiceGrpcGrpc.newBlockingStub(channel);
+
+        Metadata headers = new Metadata();
+        Metadata.Key<String> authKey = Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(authKey, "Bearer " + accessToken);
+
+        stub = stub.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(headers));
+
+        try {
+            UserRequest request = UserRequest.newBuilder()
+                    .setUsername(user.getUsername())
+                    .setEmail(user.getEmail())
+                    .setDisplayName("asd")
+                    .setImage("asd")
+                    .setIsEmailVerified(user.isEmailVerified())
+                    .setRole(user.getRole())
+                    .setAuthMethod(user.getAuthMethod())
+                    .setPassword(StringValue.newBuilder().setValue(user.getPassword()!=null? user.getPassword() : "")
+                            .build())
+                    .build();
+
+            Empty response = stub.saveUser(request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            channel.shutdown();
+        }
+    }
+
+    public UserDto findUserByUsername(String username, String accessToken) {
+        ManagedChannel channel = ManagedChannelBuilder
+                .forAddress("localhost", 9091)
+                .usePlaintext()
+                .build();
+
+        UserServiceGrpcGrpc.UserServiceGrpcBlockingStub stub =
+                UserServiceGrpcGrpc.newBlockingStub(channel);
+
+        Metadata headers = new Metadata();
+        Metadata.Key<String> authKey = Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(authKey, "Bearer " + accessToken);
+
+        stub = stub.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(headers));
+        try {
+            return stub.findUserByUsername(Username.newBuilder().setUsername(username).build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            channel.shutdown();
+        }
+        return null; //TODO
+    }
+
+    public UserDto findUserByEmail(String email, String accessToken) {
+        ManagedChannel channel = ManagedChannelBuilder
+                .forAddress("localhost", 9091)
+                .usePlaintext()
+                .build();
+
+        UserServiceGrpcGrpc.UserServiceGrpcBlockingStub stub =
+                UserServiceGrpcGrpc.newBlockingStub(channel);
+
+        Metadata headers = new Metadata();
+        Metadata.Key<String> authKey = Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(authKey, "Bearer " + accessToken);
+
+        stub = stub.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(headers));
+        try {
+            return stub.findUserByEmail(Email.newBuilder().setEmail(email).build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            channel.shutdown();
+        }
+        return null; //TODO
+    }
+
+    public boolean existsByEmail(String email, String accessToken) {
+        ManagedChannel channel = ManagedChannelBuilder
+                .forAddress("localhost", 9091)
+                .usePlaintext()
+                .build();
+
+        UserServiceGrpcGrpc.UserServiceGrpcBlockingStub stub =
+                UserServiceGrpcGrpc.newBlockingStub(channel);
+
+        Metadata headers = new Metadata();
+        Metadata.Key<String> authKey = Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER);
+        headers.put(authKey, "Bearer " + accessToken);
+
+        stub = stub.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(headers));
+        try {
+            return stub.existsByEmail(Email.newBuilder().setEmail(email).build()).getIsExisting();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            channel.shutdown();
+        }
+        return false; //TODO
+    }
+
+}

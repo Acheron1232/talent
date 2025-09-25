@@ -1,0 +1,28 @@
+spring:
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5437/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+  mail:
+    host: smtp-relay.brevo.com
+    port: 587
+    username: aryemfedorov@gmail.com
+    password: 0LCYqR1IE4c76mBW
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  port: 8087

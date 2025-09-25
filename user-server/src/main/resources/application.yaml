@@ -1,0 +1,30 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9000
+#          issuer-uri: http://localhost:8080/auth
+  grpc:
+    server:
+      port: 9091
+
+server:
+  port: 8082
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.grpc: DEBUG
