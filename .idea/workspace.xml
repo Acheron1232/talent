@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/src/main/java/org/acheron/ideservice/IdeServiceApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/src/main/java/org/acheron/ideservice/api/MainApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/src/main/java/org/acheron/ideservice/service/ApiService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/src/main/resources/application.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ide-service/src/test/java/org/acheron/ideservice/IdeServiceApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-generator-service/src/main/java/com/acheron/projectgeneratorservice/api/GeneratorApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-generator-service/src/main/java/com/acheron/projectgeneratorservice/config/AppConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-generator-service/src/main/java/com/acheron/projectgeneratorservice/header/AiSender.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-generator-service/src/main/resources/templates/sad.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prometheus.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-    </list>
+    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -230,7 +213,7 @@
       <workItem from="1758828313324" duration="4612000" />
       <workItem from="1758833744934" duration="310000" />
       <workItem from="1758834223807" duration="1284000" />
-      <workItem from="1758898471372" duration="1165000" />
+      <workItem from="1758898471372" duration="2836000" />
     </task>
     <servers />
   </component>

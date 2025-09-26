@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: resource-server
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9000
+#          jwk-set-uri: http://127.0.0.1:9000/.well-known/jwks.json
+
+logging:
+  level:
+    org.springframework.security: debug
+    org.springframework.security.oauth2.server.resource: debug
+    org.springframework.security.oauth2: debug
+    org.springframework.security.web.access: debug
+server:
+  port: 8081

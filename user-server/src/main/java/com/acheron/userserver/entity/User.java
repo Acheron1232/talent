@@ -31,9 +31,6 @@ public class User   {
     @Enumerated(EnumType.STRING)
     private AuthMethod authMethod;
 
-
-
-
     @Enumerated(EnumType.STRING)
     private Role role;
     private String password;
