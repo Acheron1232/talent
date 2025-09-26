@@ -5,9 +5,10 @@
     <file type="web" url="file://$PROJECT_DIR$/auth-server" />
     <file type="web" url="file://$PROJECT_DIR$/gateway" />
     <file type="web" url="file://$PROJECT_DIR$/mail-server" />
+    <file type="web" url="file://$PROJECT_DIR$/project-generator-service" />
     <file type="web" url="file://$PROJECT_DIR$/user-server" />
   </component>
-  <component name="ProjectRootManager" version="2" default="true">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="graalvm-jdk-25" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="" />
+    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/src/main/java/org/acheron/ideservice/IdeServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/src/main/java/org/acheron/ideservice/api/MainApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/src/main/java/org/acheron/ideservice/service/ApiService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ide-service/src/test/java/org/acheron/ideservice/IdeServiceApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-generator-service/src/main/java/com/acheron/projectgeneratorservice/api/GeneratorApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-generator-service/src/main/java/com/acheron/projectgeneratorservice/config/AppConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-generator-service/src/main/java/com/acheron/projectgeneratorservice/header/AiSender.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-generator-service/src/main/resources/templates/sad.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prometheus.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,7 +34,13 @@
     <projectState path="$PROJECT_DIR$/gateway">
       <ProjectState />
     </projectState>
+    <projectState path="$PROJECT_DIR$/ide-service">
+      <ProjectState />
+    </projectState>
     <projectState path="$PROJECT_DIR$/mail-server">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/project-generator-service">
       <ProjectState />
     </projectState>
     <projectState path="$PROJECT_DIR$/user-server">
@@ -36,25 +59,95 @@
       </state>
     </system>
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build auth-server.executor": "Run",
-    "Gradle.Build gateway.executor": "Run",
-    "Gradle.Build mail-server.executor": "Run",
-    "Gradle.Build user-server.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "Spring Boot.AuthServerApplication.executor": "Run",
-    "Spring Boot.GatewayApplication.executor": "Run",
-    "Spring Boot.MailServerApplication.executor": "Run",
-    "Spring Boot.UserServerApplication.executor": "Run"
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="SimpleSourceFile" />
+        <option value="Class" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Acheron1232&quot;
   }
-}]]></component>
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Acheron1232/talent.git&quot;,
+    &quot;accountId&quot;: &quot;65335df4-96be-4506-b46f-083f7ef27625&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="33C3TZuzmAJArWn7yq0Y413QG5X" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showScratchesAndConsoles" value="false" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Gradle.Build auth-server.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build gateway.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build mail-server.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build project-generator-service.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build user-server.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.sad.html.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AuthServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.MailServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ProjectGeneratorServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UserServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/acheron/IdeaProjects/talent&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/project-generator-service/src/main/java/com/acheron/projectgeneratorservice/service" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
@@ -66,6 +159,7 @@
               <entry key="AuthServerApplication" value="STOPPED" />
               <entry key="GatewayApplication" value="STOPPED" />
               <entry key="MailServerApplication" value="STOPPED" />
+              <entry key="ProjectGeneratorServiceApplication" value="STOPPED" />
               <entry key="UserServerApplication" value="STOPPED" />
             </map>
           </value>
@@ -88,9 +182,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="IdeServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ide-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.acheron.ideservice.IdeServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MailServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="mail-server.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.acheron.mailserver.MailServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProjectGeneratorServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="project-generator-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.acheron.projectgeneratorservice.ProjectGeneratorServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -103,7 +211,48 @@
       </method>
     </configuration>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="" />
+      <created>1758807234765</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1758807234765</updated>
+      <workItem from="1758807235835" duration="4317000" />
+      <workItem from="1758828313324" duration="4612000" />
+      <workItem from="1758833744934" duration="310000" />
+      <workItem from="1758834223807" duration="1284000" />
+      <workItem from="1758898471372" duration="1165000" />
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework.security:spring-security-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:org.apache.kafka:kafka_2.13" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:io.projectreactor:reactor-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.cloud:spring-cloud-context" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate.validator:hibernate-validator" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:io.grpc:grpc-api" />
+    <option featureType="dependencySupport" implementationName="java:org.thymeleaf:thymeleaf" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-messaging" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
   </component>
 </project>

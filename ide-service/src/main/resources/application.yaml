@@ -1,0 +1,5 @@
+x-rapidapi-key: ${X-RAPIDAPI-KEY}
+x-rapidapi-host: ${X-RAPIDAPI-HOST}
+spring:
+  config:
+    import: file:ide-service/.env[.properties]

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSE Stream Example</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+        #output { white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; background: #fff; }
+    </style>
+</head>
+<body>
+<h1>AI Server Response Stream</h1>
+<div id="output"></div>
+
+<script>
+    const output = document.getElementById('output');
+    const eventSource = new EventSource('http://localhost:8080'); // your SSE endpoint
+
+    eventSource.onmessage = function(event) {
+        output.textContent += event.data; // event.data already has "\n"
+    };
+
+    eventSource.onerror = function(err) {
+        console.error('SSE error:', err);
+        eventSource.close();
+    };
+</script>
+</body>
+</html>

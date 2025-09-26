@@ -38,6 +38,8 @@ bin/
 /nbdist/
 /.nb-gradle/
 
+ide-service/src/main/resources/application.yaml
+ide-service/.env
 ### VS Code ###
 .vscode/
 auth-server/src/main/resources/static/img.png
