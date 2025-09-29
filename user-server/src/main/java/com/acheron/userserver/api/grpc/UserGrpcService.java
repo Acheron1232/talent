@@ -25,6 +25,7 @@ public class UserGrpcService extends UserServiceGrpcGrpc.UserServiceGrpcImplBase
             Optional<User> user = userService.findByUsername(request.getUsername());
             User user1 = user.orElseThrow(() -> new RuntimeException("User not found"));
             responseObserver.onNext(UserDto.newBuilder()
+                    .setId(user1.getId())
                     .setUsername(user1.getUsername())
                     .setPassword(StringValue.newBuilder().setValue(user1.getPassword()!=null?user1.getPassword():"").build())
                     .setEmail(user1.getEmail())
