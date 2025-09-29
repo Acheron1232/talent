@@ -1,4 +1,4 @@
-package com.acheron.userserver.api;
+package com.acheron.userserver.api.grpc;
 
 import com.acheron.user.*;
 import com.acheron.userserver.dto.UserCreateDto;
@@ -22,7 +22,7 @@ public class UserGrpcService extends UserServiceGrpcGrpc.UserServiceGrpcImplBase
     @Override
     public void findUserByUsername(Username request, StreamObserver<UserDto> responseObserver) {
         try {
-            Optional<User> user = userService.findByName(request.getUsername());
+            Optional<User> user = userService.findByUsername(request.getUsername());
             User user1 = user.orElseThrow(() -> new RuntimeException("User not found"));
             responseObserver.onNext(UserDto.newBuilder()
                     .setUsername(user1.getUsername())
