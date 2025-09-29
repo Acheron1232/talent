@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/userinfo")
     public UserDto getCurrentUser(@AuthenticationPrincipal Jwt jwt){
-        User user = userService.findByName((String) jwt.getClaims().get("name")).orElseThrow(() -> new UsernameNotFoundException((String) jwt.getClaims().get("username")));
+        User user = userService.findByUsername((String) jwt.getClaims().get("name")).orElseThrow(() -> new UsernameNotFoundException((String) jwt.getClaims().get("username")));
         return new UserDto(user.getId(),user.getUsername(),user.getEmail(),user.getRole());
     }
     @PatchMapping("/userinfo")
@@ -37,14 +37,14 @@ public class UserController {
         return null;
     }
 
-//    @PostMapping("/confirmEmail")
-//    public ResponseEntity<String> confirmEmail(@AuthenticationPrincipal Jwt jwt) {
-//        return authHandler.confirmEmail((String) jwt.getClaims().get("name"));
-//    }
-//    @GetMapping("/confirm")
-//    public ResponseEntity<String> confirm(@RequestParam("token") String token) {
-//        return authHandler.confirm(token);
-//    }
+    @PostMapping("/confirmEmail")
+    public ResponseEntity<String> confirmEmail(@AuthenticationPrincipal Jwt jwt) {
+        return authHandler.confirmEmail((String) jwt.getClaims().get("name"));
+    }
+    @GetMapping("/confirm")
+    public ResponseEntity<String> confirm(@RequestParam("token") String token) {
+        return authHandler.confirm(token);
+    }
 
     @PostMapping("/resetPassword")
     public ResponseEntity<String> resetPassword(@RequestBody EmailDto email) {

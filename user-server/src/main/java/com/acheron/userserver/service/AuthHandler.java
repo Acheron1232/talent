@@ -29,37 +29,42 @@ public class AuthHandler {
     @Value("${server.port}") //TODO
     private int port;
 
-//    public ResponseEntity<String> confirmEmail(String username) throws IOException {
-//        User user = userService.findByName(username);
-//        if (user.getIsEmailVerified()){
-//            return ResponseEntity.ok("Email verified");
-//        }
-//        Token token = tokenService.generateConfirmationToken(user);
-//        String html = new ClassPathResource("static/confirmation.html").getContentAsString(StandardCharsets.UTF_8).replaceFirst("urll",serverDomain+"/confirm?token="+token.getToken());
-//        emailService.sendEmail(user.getEmail(), html,"Confirm email");
-//        return ResponseEntity.ok("Email sent successfully");
-//    }
-//
-//    public ResponseEntity<String> confirm(String token) {
-//        tokenService.getToken(token).ifPresentOrElse(
-//                (confirmationToken)->{
-//                    if (!confirmationToken.getTokenType().equals(Token.TokenType.CONFIRM)){
-//                        throw new BadCredentialsException("Token is not confirm");
-//                    }
-//                    if(confirmationToken.getExpiredAt().isAfter(LocalDateTime.now())){
-//                        User user = confirmationToken.getUser();
-//                        user.setIsEmailVerified(true);
-//                        userService.update(user);
-//                        tokenService.delete(confirmationToken);
-//                    }else {
-//                        throw new BadCredentialsException("Token expired");
-//                    }
-//                },()->{
-//                    throw new BadCredentialsException("Invalid token");
-//                }
-//        );
-//        return ResponseEntity.ok("Email confirmed");
-//    }
+    public ResponseEntity<String> confirmEmail(String username) {
+        User user = userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User doesn't exist"));
+        if (user.getIsEmailVerified()){
+            return ResponseEntity.ok("Email verified");
+        }
+        try{
+
+            Token token = tokenService.generateToken(user, Token.TokenType.RESET);
+            String html = new ClassPathResource("static/confirmation.html").getContentAsString(StandardCharsets.UTF_8).replaceFirst("urll","http://localhost:8080/user/confirm?token="+token.getToken());
+            emailService.sendEmail(new EmailService.MailDto(user.getEmail(),"Email confirmation",html));
+        }catch (IOException e){
+            log.error(e.getMessage(),e);
+        }
+        return ResponseEntity.ok("Email sent successfully");
+    }
+
+    public ResponseEntity<String> confirm(String token) {
+        tokenService.getToken(token).ifPresentOrElse(
+                (confirmationToken)->{
+                    if (!confirmationToken.getTokenType().equals(Token.TokenType.CONFIRM)){
+                        throw new BadCredentialsException("Token is not confirm");
+                    }
+                    if(confirmationToken.getExpiredAt().isAfter(LocalDateTime.now())){
+                        User user = confirmationToken.getUser();
+                        user.setIsEmailVerified(true);
+                        userService.update(user);
+                        tokenService.delete(confirmationToken);
+                    }else {
+                        throw new BadCredentialsException("Token expired");
+                    }
+                },()->{
+                    throw new BadCredentialsException("Invalid token");
+                }
+        );
+        return ResponseEntity.ok("Email confirmed");
+    }
 
     public ResponseEntity<String> resetPassword(String email) {
         try {
@@ -69,7 +74,7 @@ public class AuthHandler {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email does not register");
             }
             User user = userService.findByEmail(email).orElseThrow();
-            Token token = tokenService.generateResetToken(user);
+            Token token = tokenService.generateToken(user, Token.TokenType.RESET);
             String html = new ClassPathResource("static/reset_password.html").getContentAsString(StandardCharsets.UTF_8).replaceFirst("urll","http://127.0.0.1:"+"9000" +"/reset_password_token?token="+token.getToken());
             emailService.sendEmail(new EmailService.MailDto(user.getEmail(),"Reset password",html));
             return ResponseEntity.ok("Reset password sent successfully");

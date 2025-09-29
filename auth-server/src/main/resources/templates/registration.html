@@ -2,138 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dota 2 Registration</title>
-    <link rel="icon" href="/favicon.ico" type="image/ico">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
-
-        body {
-            margin: 0;
-            font-family: 'UnifrakturCook', cursive;
-            background: url('https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/backgrounds/featured.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #f0e6d2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            backdrop-filter: brightness(0.4);
-        }
-
-        .register-box {
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 40px;
-            border: 2px solid #bfa755;
-            border-radius: 10px;
-            box-shadow: 0 0 20px #b00;
-            max-width: 400px;
-            width: 90%;
-        }
-
-        .register-box h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #e3c77a;
-            font-size: 32px;
-        }
-
-        .register-box input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            background: #1e1e1e;
-            color: #f0e6d2;
-            border-bottom: 2px solid #bfa755;
-            font-size: 16px;
-        }
-
-        .register-box button {
-            width: 100%;
-            padding: 12px;
-            background: #a41d12;
-            border: none;
-            color: #f0e6d2;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-
-        .register-box button:hover {
-            background: #d22f1e;
-        }
-
-        .message {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 14px;
-            color: #c0b283;
-        }
-    </style>
+    <title>Registration</title>
+    <link rel="stylesheet" href="/front/style.css">
 </head>
 <body>
-<div class="register-box">
-    <h2>Dota 2 Registration</h2>
-    <form id="registrationForm">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Your username" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="••••••" required>
-        </div>
-        <button type="submit">Register</button>
-        <div class="message" id="message"></div>
+<div class="auth-box">
+    <h2>Registration</h2>
+    <form action="/registration" method="post">
+        <label>
+            <input type="text" name="username" class="auth-input" placeholder="Username" required>
+        </label>
+        <label>
+            <input type="email" name="email" class="auth-input" placeholder="example@gmail.com" required>
+        </label>
+        <label>
+            <input type="password" name="password" class="auth-input" placeholder="••••••" required>
+        </label>
+        <button type="submit" class="auth-button">Register</button>
+        <div class="message"></div>
     </form>
-    <a href="/oauth2/authorization/google" role="link" class="google-sign-in">
-        Login with Google
-    </a>
-    <br>
-    <a href="/oauth2/authorization/github" role="link" class="github-sign-in">
-        Login with Github
-    </a>
-    <br>
-    <a href="/login">Login</a>
-    <br>
-    <a href="/reset_password">Reset password</a>
+    <div class="auth-links">
+        <a href="/oauth2/authorization/google" class="oauth-btn google-btn">
+            <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google">
+            Login with Google
+        </a>
+        <a href="/oauth2/authorization/github" class="oauth-btn github-btn">
+            <img src="https://www.svgrepo.com/show/512317/github-142.svg" alt="GitHub">
+            Login with GitHub
+        </a>
+        <a href="/login">Back to Login</a>
+    </div>
 </div>
-
-<script>
-    const form = document.getElementById('registrationForm');
-    const message = document.getElementById('message');
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-        const params = new URLSearchParams(formData);
-
-        try {
-            const response = await fetch('/registration', {
-                method: 'POST',
-                body: params
-            });
-
-            if (response.ok) {
-                message.textContent = "Registration successful!";
-                message.style.color = "#a5d6a7";
-                form.reset();
-            } else {
-                message.textContent = "Registration failed. Try again.";
-                message.style.color = "#e57373";
-            }
-        } catch (error) {
-            message.textContent = "Error connecting to server.";
-            message.style.color = "#e57373";
-        }
-    });
-</script>
+<script src="/front/script.js"></script>
 </body>
 </html>

@@ -18,19 +18,19 @@ import java.util.UUID;
 public class TokenService {
     private final TokenRepository tokenRepository;
 
-    public Token generateConfirmationToken(User user) {
-        Token token = new Token(null, UUID.randomUUID().toString(), user, LocalDateTime.now().plusHours(24), Token.TokenStatus.ACTIVE, Token.TokenType.CONFIRM);
-        log.info("Generating confirmation token for {}", user.getUsername());
-        return tokenRepository.save(token);
-    }
+//    public Token generateConfirmationToken(User user) {
+//        Token token = new Token(null, UUID.randomUUID().toString(), user, LocalDateTime.now().plusHours(24), Token.TokenStatus.ACTIVE, Token.TokenType.CONFIRM);
+//        log.info("Generating confirmation token for {}", user.getUsername());
+//        return tokenRepository.save(token);
+//    }
 
     public Optional<Token> getToken(String token) {
         return tokenRepository.findByToken(token);
     }
 
-    public Token generateResetToken(User user) {
-        Token token = new Token(null, UUID.randomUUID().toString(), user, LocalDateTime.now().plusHours(24), Token.TokenStatus.ACTIVE, Token.TokenType.RESET);
-        log.info("Generating reset token for {}", user.getUsername());
+    public Token generateToken(User user, Token.TokenType tokenType) {
+        Token token = new Token(null, UUID.randomUUID().toString(), user, LocalDateTime.now().plusHours(24), Token.TokenStatus.ACTIVE, tokenType);
+        log.info("Generating {} token for {}", tokenType.name().toLowerCase(), user.getUsername());
         return tokenRepository.save(token);
     }
 

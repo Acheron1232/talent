@@ -126,7 +126,8 @@ public class SecurityConfig {
                                 "/reset_password",
                                 "/reset_password_token",
                                 "/img.png"
-                                , "/favicon.ico"
+                                , "/favicon.ico",
+                                "/front/**"
                         )
                         .permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated());
