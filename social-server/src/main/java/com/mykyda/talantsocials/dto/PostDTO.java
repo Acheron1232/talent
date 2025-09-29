@@ -27,6 +27,8 @@ public class PostDTO {
 
     private Timestamp createdAt;
 
+    private Integer likesAmount;
+
     public static PostDTO of(Post post) {
         return PostDTO.builder()
                 .id(post.getId())
@@ -35,6 +37,7 @@ public class PostDTO {
                 .textContent(post.getTextContent())
                 .originalPost(post.getReposted() ? PostDTO.original(post.getOriginalPost()) : null)
                 .createdAt(post.getCreatedAt())
+                .likesAmount(post.getLikesAmount())
                 .build();
     }
 

@@ -8,6 +8,7 @@ import com.mykyda.talantsocials.dto.CommentDTO;
 import com.mykyda.talantsocials.dto.create.CommentCreationDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
+import com.mykyda.talantsocials.exception.ForbiddenAccessException;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,11 @@ public class CommentService {
 
     private final EntityManager entityManager;
 
+    private final ProfileService profileService;
+
     @Transactional
-    public void createComment(CommentCreationDTO commentCreationDTO) {
+    public void createComment(Long userId, CommentCreationDTO commentCreationDTO) {
+        var profileId = profileService.checkByUserId(userId);
         try {
             var isAReply = commentCreationDTO.isAReply();
             if (isAReply) {
@@ -39,37 +43,40 @@ public class CommentService {
                 }
                 var commentToSave = Comment.builder()
                         .post(entityManager.getReference(Post.class, commentCreationDTO.getPostId()))
-                        .profile(entityManager.getReference(Profile.class, commentCreationDTO.getProfileId()))
+                        .profile(entityManager.getReference(Profile.class, profileId))
                         .isAReply(true)
-                        .originalComment(checkOriginalComment.get())
+                        .originalComment(checkOriginalComment.get().getOriginalComment() == null ? checkOriginalComment.get() : checkOriginalComment.get().getOriginalComment())
                         .content(commentCreationDTO.getContent())
                         .build();
                 commentRepository.save(commentToSave);
-
             } else {
                 var commentToSave = Comment.builder()
                         .post(entityManager.getReference(Post.class, commentCreationDTO.getPostId()))
-                        .profile(entityManager.getReference(Profile.class, commentCreationDTO.getProfileId()))
+                        .profile(entityManager.getReference(Profile.class, profileId))
                         .content(commentCreationDTO.getContent())
                         .build();
                 commentRepository.save(commentToSave);
             }
-            log.info("post with id {} commented by profile id {}, with content {}", commentCreationDTO.getPostId(), commentCreationDTO.getProfileId(), commentCreationDTO.getContent());
+            log.info("post with id {} commented by profile id {}, with content {}", commentCreationDTO.getPostId(), profileId, commentCreationDTO.getContent());
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
     @Transactional
-    public void deleteComment(CommentCreationDTO commentCreationDTO) {
+    public void deleteComment(Long userId, CommentCreationDTO commentCreationDTO) {
+        var profileId = profileService.checkByUserId(userId);
         try {
             var checkById = commentRepository.findById(commentCreationDTO.getId());
             if (checkById.isEmpty()) {
                 throw new EntityNotFoundException("There is no comment with id " + commentCreationDTO.getId());
             }
             var comment = checkById.get();
+            if (!profileId.equals(comment.getProfile().getId())) {
+                throw new ForbiddenAccessException("Can't delete comment you do not own");
+            }
             commentRepository.delete(comment);
-            log.info("Comment with id {} for post by id {} have been deleted by profile {}", commentCreationDTO.getId(), comment.getPost().getId(), comment.getProfile().getId());
+            log.info("Comment with id {} for post by id {} have been deleted by profile {}", commentCreationDTO.getId(), comment.getPost().getId(), profileId);
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }

@@ -45,6 +45,7 @@ create table post
     original_post_id uuid,
     profile_id       uuid not null,
     text_content     varchar(255),
+    likes_amount     int default 0,
     primary key (id)
 );
 

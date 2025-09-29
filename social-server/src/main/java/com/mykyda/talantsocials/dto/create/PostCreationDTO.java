@@ -17,8 +17,6 @@ public class PostCreationDTO{
         @JsonProperty("reposted")
         boolean reposted;
 
-        UUID profileId;
-
         UUID originalPostId;
 
         String textContent;

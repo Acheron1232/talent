@@ -57,6 +57,10 @@ public class Post {
     @JsonIgnore
     private List<Like> likes;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer likesAmount = 0;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     @JsonIgnore
     private List<Comment> comments;

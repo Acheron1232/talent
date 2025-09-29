@@ -30,35 +30,45 @@ public class LikeService {
 
     private final EntityManager entityManager;
 
+    private final PostService postService;
+
+    private final ProfileService profileService;
+
     @Transactional
-    public void createLike(LikeCreationDTO likeDTO) {
+    public void createLike(Long userId, LikeCreationDTO likeDTO) {
+        var profileId = profileService.checkByUserId(userId);
+        var postId = postService.checkById(likeDTO.postId());
         try {
-            var id = new LikeId(likeDTO.postId(), likeDTO.profileId());
+            var id = new LikeId(postId, profileId);
             var checkById = likeRepository.findById(id);
             if (checkById.isPresent()) {
-                throw new EntityConflictException("Post " + likeDTO.postId() + "already liked by " + likeDTO.profileId());
+                throw new EntityConflictException("Post " + postId + "already liked by " + profileId);
             }
             var likeToSave = Like.builder()
                     .id(id)
-                    .post(entityManager.getReference(Post.class, likeDTO.postId()))
-                    .profile(entityManager.getReference(Profile.class, likeDTO.profileId()))
+                    .post(entityManager.getReference(Post.class, postId))
+                    .profile(entityManager.getReference(Profile.class, profileId))
                     .build();
             likeRepository.save(likeToSave);
-            log.info("post with id {} liked by profile id {}", likeDTO.postId(), likeDTO.profileId());
+            log.info("post with id {} liked by profile id {}", postId, profileId);
+            postService.like(postId);
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
     @Transactional
-    public void deleteLike(LikeCreationDTO likeDTO) {
+    public void deleteLike(Long userId, LikeCreationDTO likeDTO) {
+        var postId = postService.checkById(likeDTO.postId());
+        var profileId = profileService.checkByUserId(userId);
         try {
-            var checkById = likeRepository.findById(new LikeId(likeDTO.postId(), likeDTO.profileId()));
+            var checkById = likeRepository.findById(new LikeId(postId, profileId));
             if (checkById.isEmpty()) {
-                throw new EntityNotFoundException("Post " + likeDTO.postId() + "is not liked by " + likeDTO.profileId());
+                throw new EntityNotFoundException("Post " + postId + "is not liked by " + profileId);
             }
             likeRepository.delete(checkById.get());
-            log.info("like for post by id {} has been unliked by profile {}", likeDTO.postId(), likeDTO.profileId());
+            log.info("like for post by id {} has been unliked by profile {}", postId, profileId);
+            postService.unlike(postId);
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }

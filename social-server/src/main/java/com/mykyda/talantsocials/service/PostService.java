@@ -7,6 +7,7 @@ import com.mykyda.talantsocials.dto.PostDTO;
 import com.mykyda.talantsocials.dto.create.PostCreationDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
+import com.mykyda.talantsocials.exception.ForbiddenAccessException;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,8 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final EntityManager entityManager;
+
+    private final ProfileService profileService;
 
     @Transactional(readOnly = true)
     public List<PostDTO> findByProfileIdPaged(UUID profileId, PageRequest pageRequest) {
@@ -56,7 +59,8 @@ public class PostService {
     }
 
     @Transactional
-    public void post(PostCreationDTO postDTO) {
+    public void post(Long userId, PostCreationDTO postDTO) {
+        var profileId = profileService.checkByUserId(userId);
         try {
             var reposted = postDTO.isReposted();
             if (reposted) {
@@ -67,7 +71,7 @@ public class PostService {
                 var postToSave = Post.builder()
                         .reposted(postDTO.isReposted())
                         .originalPost(entityManager.getReference(Post.class, postDTO.getOriginalPostId()))
-                        .profile(entityManager.getReference(Profile.class, postDTO.getProfileId()))
+                        .profile(entityManager.getReference(Profile.class, profileId))
                         .textContent(postDTO.getTextContent())
                         .createdAt(Timestamp.from(Instant.now()))
                         .build();
@@ -75,11 +79,11 @@ public class PostService {
                 log.info("post saved: {}", postToSave.getId());
             } else {
                 var postToSave = Post.builder()
-                    .reposted(postDTO.isReposted())
-                    .profile(entityManager.getReference(Profile.class, postDTO.getProfileId()))
-                    .textContent(postDTO.getTextContent())
-                    .createdAt(Timestamp.from(Instant.now()))
-                    .build();
+                        .reposted(postDTO.isReposted())
+                        .profile(entityManager.getReference(Profile.class, profileId))
+                        .textContent(postDTO.getTextContent())
+                        .createdAt(Timestamp.from(Instant.now()))
+                        .build();
                 postRepository.save(postToSave);
                 log.info("post saved: {}", postToSave.getId());
             }
@@ -89,11 +93,15 @@ public class PostService {
     }
 
     @Transactional
-    public void delete(UUID postId) {
+    public void delete(Long userId, UUID postId) {
+        var profileId = profileService.checkByUserId(userId);
         try {
             var checkById = postRepository.findById(postId);
             if (checkById.isEmpty()) {
                 throw new EntityNotFoundException("post not found with id " + postId);
+            }
+            if (!checkById.get().getProfile().getId().equals(profileId)) {
+                throw new ForbiddenAccessException("can`t delete post you do not own");
             }
             postRepository.delete(checkById.get());
             log.info("post deleted: {}", postId);
@@ -104,5 +112,36 @@ public class PostService {
 
     public List<PostDTO> explore() {
         return null;
+    }
+
+    @Transactional
+    public void like(UUID postId) {
+        try {
+            postRepository.incrementLikes(postId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void unlike(UUID postId) {
+        try {
+            postRepository.decrementLikes(postId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public UUID checkById(UUID uuid) {
+        try {
+            var checkById = postRepository.findById(uuid);
+            if (checkById.isEmpty()) {
+                throw new EntityNotFoundException("Post with id " + uuid + " not found");
+            }
+            return checkById.get().getId();
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 }
