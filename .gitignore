@@ -46,3 +46,6 @@ auth-server/src/main/resources/static/img.png
 auth-server/.env
 ### Mac OS ###
 .DS_Store
+
+
+/home/mykyta/IdeaProjects/talent123/social-server/src/main/java/com/mykyda/talantsocials/service/ApisService.java

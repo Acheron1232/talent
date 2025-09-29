@@ -24,6 +24,18 @@ services:
     volumes:
       - mail_postgres:/var/lib/postgresql/data
 
+  socials-postgres-db:
+    image: postgres:17-alpine
+    container_name: socials-postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5438:5432"
+    volumes:
+      - socials_postgres:/var/lib/postgresql/data
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -64,3 +76,4 @@ services:
 volumes:
   user_postgres:
   mail_postgres:
+  socials_postgres:
