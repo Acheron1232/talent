@@ -49,6 +49,24 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/resource-server" />
+        <option name="gradleJvm" value="openjdk-24" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/resource-server" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/social-server" />
+        <option name="gradleJvm" value="openjdk-24" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/social-server" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/user-server" />
         <option name="gradleJvm" value="openjdk-24" />
         <option name="modules">
