@@ -2,12 +2,12 @@ package org.acheron.authserver.service;
 
 import com.google.protobuf.StringValue;
 import org.acheron.authserver.*;
-import com.google.protobuf.Empty;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
 import org.acheron.authserver.dto.UserCreateDto;
+import org.acheron.authserver.dto.UserCreationDto;
 import org.acheron.user.*;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserGrpcClient {
 
 
-    public void saveUser(UserCreateDto user, String accessToken) {
+    public Long saveUser(UserCreationDto user, String accessToken) {
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress("localhost", 9091)
                 .usePlaintext()
@@ -32,21 +32,17 @@ public class UserGrpcClient {
 
         try {
             UserRequest request = UserRequest.newBuilder()
-                    .setUsername(user.getUsername())
-                    .setEmail(user.getEmail())
-                    .setDisplayName("asd")
-                    .setImage("asd")
+                    .setUsername(user.username())
+                    .setEmail(user.email())
                     .setIsEmailVerified(user.isEmailVerified())
-                    .setRole(user.getRole())
-                    .setAuthMethod(user.getAuthMethod())
-                    .setPassword(StringValue.newBuilder().setValue(user.getPassword()!=null? user.getPassword() : "")
+                    .setRole(user.role())
+                    .setAuthMethod(user.authMethod())
+                    .setPassword(StringValue.newBuilder().setValue(user.password()!=null? user.password() : "")
                             .build())
                     .build();
 
-            Empty response = stub.saveUser(request);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            Id response = stub.saveUser(request);
+            return response.getId();
         } finally {
             channel.shutdown();
         }

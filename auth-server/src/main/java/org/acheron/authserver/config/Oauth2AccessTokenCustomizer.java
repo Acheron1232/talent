@@ -1,8 +1,8 @@
 package org.acheron.authserver.config;
 
 import lombok.RequiredArgsConstructor;
-import org.acheron.authserver.dto.UserDto;
 import org.acheron.authserver.service.UserService;
+import org.acheron.user.UserDto;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
@@ -32,9 +32,9 @@ public class Oauth2AccessTokenCustomizer implements OAuth2TokenCustomizer<JwtEnc
                 } else {
                     return;
                 }
-                claims.put("id", user.id());
-                claims.put("roles", user.role());
-                claims.put("name", user.username());
+                claims.put("id", user.getId());
+                claims.put("roles", user.getRole());
+                claims.put("name", user.getUsername());
             });
         }
     }

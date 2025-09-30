@@ -1,7 +1,6 @@
 package org.acheron.authserver.service;
 
 import lombok.RequiredArgsConstructor;
-import org.acheron.authserver.dto.UserDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;

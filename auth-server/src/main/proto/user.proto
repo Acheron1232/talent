@@ -10,7 +10,7 @@ import "google/protobuf/wrappers.proto";
 
 service UserServiceGrpc{
 
-  rpc saveUser(UserRequest) returns (google.protobuf.Empty);
+  rpc saveUser(UserRequest) returns (Id);
 
   rpc findUserByEmail(Email) returns (UserDto);
 
@@ -51,4 +51,8 @@ message Email {
 }
 message Bool {
   bool isExisting = 1;
+}
+
+message Id{
+  int64 id = 1;
 }

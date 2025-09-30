@@ -4,9 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.acheron.authserver.dto.UserCreateOauthDto;
+import org.acheron.authserver.dto.ProfileCreationDTO;
+import org.acheron.authserver.dto.UserCreateDto;
+import org.acheron.authserver.dto.UserCreationDto;
 import org.acheron.authserver.entity.User;
-import org.acheron.authserver.service.AuthHandler;
 import org.acheron.authserver.service.TokenGrpcClient;
 import org.acheron.authserver.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -37,15 +38,19 @@ public class AuthController {
     @ResponseBody
     public void registrationApi(@RequestParam Map<String, String> params) {
         userService.saveOauthUser(
-                new UserCreateOauthDto(
-                        params.get("username"),
-                        params.get("email"),
-                        params.get("password"),
-                        "asd",
-                        null,
-                        false,
-                        User.Role.USER.toString(),
-                        User.AuthMethod.DEFAULT.toString()));
+                new UserCreateDto(new ProfileCreationDTO(
+                        params.get("displayName"),
+                        params.get("tag"),
+                        params.get("profilePictureUrl")
+                ),
+                        new UserCreationDto(
+                                params.get("username"),
+                                params.get("email"),
+                                params.get("password"),
+                                false,
+                                User.Role.USER.toString(),
+                                User.AuthMethod.DEFAULT.toString())
+                ));
     }
 
     @GetMapping("/spa/logout")
@@ -61,8 +66,8 @@ public class AuthController {
     @PostMapping("/reset_password")
     public String resetPassword(@RequestParam String email) {
 
-            tokenGrpcClient.resetPassword(email);
-            return "login";
+        tokenGrpcClient.resetPassword(email);
+        return "login";
 
 
     }

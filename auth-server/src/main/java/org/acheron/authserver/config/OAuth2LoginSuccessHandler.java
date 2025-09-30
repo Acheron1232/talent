@@ -8,7 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.acheron.authserver.dto.UserCreateOauthDto;
+import org.acheron.authserver.dto.ProfileCreationDTO;
+import org.acheron.authserver.dto.UserCreateDto;
+import org.acheron.authserver.dto.UserCreationDto;
+import org.acheron.authserver.entity.User;
 import org.acheron.authserver.service.UserService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -52,14 +55,17 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         Map<String, Object> attributes = new HashMap<>(principal.getAttributes());
 
         String email;
+        String avatar;
         try {
             if ("github".equals(provider)) {
                 email = ((String) attributes.getOrDefault("email", ""));
                 if (email == null) {
                     email = getPrimaryEmailForGitHub(authentication);
+                    avatar = attributes.getOrDefault("avatar_url", null).toString();
                 }
             } else {
                 email = attributes.getOrDefault("email", "").toString();
+                avatar = attributes.getOrDefault("picture", null).toString();
                 if (email.isEmpty()) {
                     throw new IllegalStateException("Email not found in Google attributes");
                 }
@@ -72,15 +78,9 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 
         if (!userService.existsByEmail(email)) {
             String username = (String) attributes.get("name");
-            UserCreateOauthDto newUser = new UserCreateOauthDto();
-            newUser.setEmail(email);
-            newUser.setUsername(username);
-            newUser.setDisplayName((String) attributes.getOrDefault("name", username));
-            newUser.setImage((String) attributes.getOrDefault("avatar_url", attributes.getOrDefault("picture", "")));
-            newUser.setEmailVerified(true);
-            newUser.setRole("USER");
-            newUser.setAuthMethod("github".equals(provider) ? "GITHUB" : "GOOGLE");
-            userService.saveOauthUser(newUser);
+            UserCreationDto newUser = new UserCreationDto(username,email,null,true, User.Role.USER.toString(),"github".equals(provider) ? "GITHUB" : "GOOGLE");
+            UserCreateDto dto = new UserCreateDto(new ProfileCreationDTO(username,username,null), newUser); //TODO
+            userService.saveOauthUser(dto);
         }
 
         log.info("User logged in via {}: {}", provider, email);

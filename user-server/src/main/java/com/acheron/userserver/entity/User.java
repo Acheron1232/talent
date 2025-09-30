@@ -24,13 +24,9 @@ public class User   {
     private Long id;
     private String email;
     private String username;
-    private String displayName;
-    private String bio;
-    private String image;
     private Boolean isEmailVerified;
     @Enumerated(EnumType.STRING)
     private AuthMethod authMethod;
-
     @Enumerated(EnumType.STRING)
     private Role role;
     private String password;

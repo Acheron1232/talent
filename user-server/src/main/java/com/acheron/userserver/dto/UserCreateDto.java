@@ -11,8 +11,6 @@ public class UserCreateDto {
     private String username;
     private String password;
     private String email;
-    private String displayName;
-    private String image;
     private boolean isEmailVerified;
     private String role;
     private String authMethod;

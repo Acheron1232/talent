@@ -1,9 +1,9 @@
 package org.acheron.authserver.service;
 
 import org.acheron.authserver.dto.UserCreateDto;
-import org.acheron.authserver.dto.UserCreateOauthDto;
-import org.acheron.authserver.dto.UserDto;
+import org.acheron.authserver.dto.UserCreationDto;
 import org.acheron.authserver.entity.User;
+import org.acheron.user.UserDto;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +12,9 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
+import java.rmi.RemoteException;
 import java.util.Optional;
 
 @Service
@@ -29,17 +31,28 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public void saveOauthUser(UserCreateOauthDto user) {
+    public void saveOauthUser(UserCreateDto user) {
         OAuth2AuthorizeRequest request1 = OAuth2AuthorizeRequest
                 .withClientRegistrationId("auth-server-service")
                 .principal("auth-server")
                 .build();
         OAuth2AuthorizedClient authorize = manager.authorize(request1);
-        if ((user.getPassword()!=null)){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if ((user.user().password()!=null)){
+            String encodedPassword =  passwordEncoder.encode(user.user().password());
         }
-        userGrpcClient.saveUser(new UserCreateDto(user.getUsername(), user.getEmail(), user.getPassword(), true,
-                User.Role.USER.name(), user.getAuthMethod()), authorize.getAccessToken().getTokenValue());
+        // save user-service
+
+        Long id = userGrpcClient.saveUser(user.user(), authorize.getAccessToken().getTokenValue());
+        //save social-server
+        RestClient.create().post().uri("http://localhost:8080/socials/profile").body(user.profile()).header("Authentication","Bearer "+authorize.getAccessToken().getTokenValue()).exchange((req,res)->{
+            if(res.getStatusCode().value()>=200 &&res.getStatusCode().value()<300){
+
+            }else {
+                throw new RemoteException("Pizda");
+            }
+            return null;
+        });
+
     }
 
 
@@ -58,7 +71,7 @@ public class UserService implements UserDetailsService {
                 .principal("auth-server")
                 .build();
         OAuth2AuthorizedClient authorize = manager.authorize(request1);
-        return UserDto.toAnotherUserDto(userGrpcClient.findUserByUsername(username, authorize.getAccessToken().getTokenValue()));
+        return userGrpcClient.findUserByUsername(username, authorize.getAccessToken().getTokenValue());
     }
 
     public Optional<User> findByEmail(String email) {

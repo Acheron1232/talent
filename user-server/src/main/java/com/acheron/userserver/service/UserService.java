@@ -26,11 +26,12 @@ public class UserService   {
 
 
     @Transactional
-    public void save(UserCreateDto user) {
+    public Long save(UserCreateDto user) {
         if (user.getPassword() != null) {
             user.setPassword(user.getPassword());
         }
-        userRepository.save(new User(null, user.getEmail(), user.getUsername(), user.getDisplayName(), null,user.getImage(), user.isEmailVerified(), User.AuthMethod.valueOf(user.getAuthMethod()), User.Role.valueOf(user.getRole()), user.getPassword()));
+        User save = userRepository.save(new User(null, user.getEmail(), user.getUsername(), user.isEmailVerified(), User.AuthMethod.valueOf(user.getAuthMethod()), User.Role.valueOf(user.getRole()), user.getPassword()));
+        return save.getId();
     }
 
     @Transactional
