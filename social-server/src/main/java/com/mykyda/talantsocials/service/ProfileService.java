@@ -5,8 +5,8 @@ import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.repository.ProfileRepository;
 import com.mykyda.talantsocials.dto.JobSkillDTO;
 import com.mykyda.talantsocials.dto.LanguageSkillDTO;
-import com.mykyda.talantsocials.dto.create.ProfileCreationDTO;
 import com.mykyda.talantsocials.dto.ProfileDTO;
+import com.mykyda.talantsocials.dto.create.ProfileCreationDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityConflictException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
@@ -16,6 +16,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,9 +25,19 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-    //Todo:rework
-    public ProfileDTO getCurrentProfile() {
-        return null;
+    @Transactional(readOnly = true)
+    public ProfileDTO getCurrentProfile(Long userId) {
+        try {
+            var profile = profileRepository.findByUserId(userId);
+            if (profile.isPresent()) {
+                log.info("profile found with userId {}", userId);
+                return ProfileDTO.ofFull(profile.get());
+            } else {
+                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
+            }
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     @Transactional(readOnly = true)
@@ -77,13 +89,13 @@ public class ProfileService {
     }
 
     @Transactional
-    public void patchProfileById(ProfileDTO patchedDto) {
+    public void patchProfileByUserId(Long userId, ProfileDTO patchedDto) {
         try {
-            var checkById = profileRepository.findById(patchedDto.getId());
-            if (checkById.isEmpty()) {
-                throw new EntityNotFoundException("Profile with id " + patchedDto.getId() + " not found");
+            var checkByUserId = profileRepository.findByUserId(userId);
+            if (checkByUserId.isEmpty()) {
+                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
             }
-            var profile = editProfile(patchedDto, checkById.get());
+            var profile = editProfile(patchedDto, checkByUserId.get());
             profileRepository.save(profile);
             log.info("profile updated with id {}", profile.getId());
         } catch (DataAccessException e) {
@@ -130,20 +142,33 @@ public class ProfileService {
     }
 
     @Transactional
-    public void patchTagById(ProfileDTO patchedDto) {
+    public void patchTagByUserId(Long userId, ProfileDTO patchedDto) {
         try {
-            var profileOptional = profileRepository.findById(patchedDto.getId());
-            if (profileOptional.isEmpty()) {
-                throw new EntityNotFoundException("Profile with id " + patchedDto.getId() + " not found");
+            var checkByUserId = profileRepository.findByUserId(userId);
+            if (checkByUserId.isEmpty()) {
+                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
             }
             var checkByTag = profileRepository.findByTag(patchedDto.getTag());
             if (checkByTag.isPresent()) {
                 throw new EntityConflictException("Profile with tag" + patchedDto.getTag() + " already exists");
             }
-            var profile = profileOptional.get();
+            var profile = checkByUserId.get();
             profile.setTag(patchedDto.getTag());
             profileRepository.save(profile);
             log.info("tag {} set at profile with id {}", patchedDto.getTag(), profile.getId());
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public UUID checkByUserId(Long userId) {
+        try {
+            var checkByUserId = profileRepository.findByUserId(userId);
+            if (checkByUserId.isEmpty()) {
+                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
+            }
+            return checkByUserId.get().getId();
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }

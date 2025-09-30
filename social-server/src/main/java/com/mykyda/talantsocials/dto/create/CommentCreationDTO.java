@@ -16,8 +16,6 @@ public class CommentCreationDTO {
 
     UUID id;
 
-    UUID profileId;
-
     UUID postId;
 
     @JsonProperty("isAReply")
