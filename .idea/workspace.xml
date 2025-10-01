@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/Oauth2AccessTokenCustomizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/Oauth2AccessTokenCustomizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/dto/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-server/src/main/java/com/acheron/userserver/api/grpc/UserGrpcService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-server/src/main/java/com/acheron/userserver/api/grpc/UserGrpcService.java" afterDir="false" />
-    </list>
+    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +12,9 @@
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/auth-server">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/file-service">
       <ProjectState />
     </projectState>
     <projectState path="$PROJECT_DIR$/gateway">
@@ -162,6 +161,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="FileServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="file-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.acheron.fileservice.FileServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="gateway.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.acheron.gateway.GatewayApplication" />
@@ -220,6 +226,7 @@
       <workItem from="1758898471372" duration="2836000" />
       <workItem from="1758910482489" duration="1043000" />
       <workItem from="1759177381889" duration="411000" />
+      <workItem from="1759332476868" duration="18000" />
     </task>
     <servers />
   </component>
