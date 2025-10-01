@@ -1,5 +1,6 @@
 package org.acheron.authserver.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.acheron.authserver.dto.UserCreateDto;
 import org.acheron.authserver.dto.UserCreationDto;
 import org.acheron.authserver.entity.User;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestClient;
 import java.rmi.RemoteException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserService implements UserDetailsService {
 
@@ -44,10 +46,13 @@ public class UserService implements UserDetailsService {
 
         Long id = userGrpcClient.saveUser(user.user(), authorize.getAccessToken().getTokenValue());
         //save social-server
-        RestClient.create().post().uri("http://localhost:8080/socials/profile").body(user.profile()).header("Authentication","Bearer "+authorize.getAccessToken().getTokenValue()).exchange((req,res)->{
+        System.out.println(user.profile());
+        RestClient.create().post().uri("http://localhost:8080/socials/profile").body(user.profile()).header("Authorization","Bearer "+authorize.getAccessToken().getTokenValue()).exchange((req,res)->{
             if(res.getStatusCode().value()>=200 &&res.getStatusCode().value()<300){
 
             }else {
+                log.error(res.getStatusText());
+                log.error(res.getBody().toString());
                 throw new RemoteException("Pizda");
             }
             return null;

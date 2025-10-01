@@ -70,6 +70,7 @@ public class ProfileService {
             var profileToSave = Profile.builder()
                     .userId(userId)
                     .displayName(profileCreationDTO.displayName())
+                    .profilePictureUrl(profileCreationDTO.profilePictureUrl())
                     .tag(profileCreationDTO.tag())
                     .build();
 

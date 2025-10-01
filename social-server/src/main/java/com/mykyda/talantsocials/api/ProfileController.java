@@ -34,9 +34,9 @@ public class ProfileController {
 
     //kafka event !
     @PostMapping
-    public ResponseEntity<String> createProfile(@RequestBody ProfileCreationDTO profileCreationDTO,
+    public void createProfile(@RequestBody ProfileCreationDTO profileCreationDTO,
                                                 @AuthenticationPrincipal Jwt jwt) {
-        return new ResponseEntity<>(creationImitatorService.createProfile(Long.valueOf(jwt.getClaims().get("id").toString()), profileCreationDTO), HttpStatus.CREATED);
+        creationImitatorService.createProfile(Long.valueOf(jwt.getClaims().get("id").toString()), profileCreationDTO);
     }
 
     @PatchMapping("/patch-profile")
@@ -46,7 +46,7 @@ public class ProfileController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/patchTag-profile")
+    @PatchMapping("/patch-tag")
     public ResponseEntity<String> updateTag(@RequestBody ProfileDTO profileDTO,
                                             @AuthenticationPrincipal Jwt jwt) {
         profileService.patchTagByUserId(Long.valueOf(jwt.getClaims().get("id").toString()), profileDTO);

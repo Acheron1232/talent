@@ -45,7 +45,8 @@ public class CommentService {
                         .post(entityManager.getReference(Post.class, commentCreationDTO.getPostId()))
                         .profile(entityManager.getReference(Profile.class, profileId))
                         .isAReply(true)
-                        .originalComment(checkOriginalComment.get().getOriginalComment() == null ? checkOriginalComment.get() : checkOriginalComment.get().getOriginalComment())
+                        .originalComment(checkOriginalComment.get().getOriginalComment() == null ?
+                                checkOriginalComment.get() : checkOriginalComment.get().getOriginalComment())
                         .content(commentCreationDTO.getContent())
                         .build();
                 commentRepository.save(commentToSave);
@@ -57,26 +58,34 @@ public class CommentService {
                         .build();
                 commentRepository.save(commentToSave);
             }
-            log.info("post with id {} commented by profile id {}, with content {}", commentCreationDTO.getPostId(), profileId, commentCreationDTO.getContent());
+            log.info("post with id {} commented by profile id {}, with content {}",
+                    commentCreationDTO.getPostId(),
+                    profileId,
+                    commentCreationDTO.getContent());
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
+    //TODO:check post
+
     @Transactional
-    public void deleteComment(Long userId, CommentCreationDTO commentCreationDTO) {
+    public void deleteComment(Long userId, UUID commentId) {
         var profileId = profileService.checkByUserId(userId);
         try {
-            var checkById = commentRepository.findById(commentCreationDTO.getId());
+            var checkById = commentRepository.findById(commentId);
             if (checkById.isEmpty()) {
-                throw new EntityNotFoundException("There is no comment with id " + commentCreationDTO.getId());
+                throw new EntityNotFoundException("There is no comment with id " + commentId);
             }
             var comment = checkById.get();
             if (!profileId.equals(comment.getProfile().getId())) {
                 throw new ForbiddenAccessException("Can't delete comment you do not own");
             }
             commentRepository.delete(comment);
-            log.info("Comment with id {} for post by id {} have been deleted by profile {}", commentCreationDTO.getId(), comment.getPost().getId(), profileId);
+            log.info("Comment with id {} for post by id {} have been deleted by profile {}",
+                    commentId,
+                    comment.getPost().getId(),
+                    profileId);
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -85,7 +94,10 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentDTO> getCommentsForPostPaged(UUID postId, PageRequest pageRequest) {
         try {
-            var comments = commentRepository.findAllByPostIdAndIsAReplyNot(postId, true, pageRequest).stream().map(CommentDTO::of).toList();
+            var comments = commentRepository.findAllByPostIdAndIsAReplyNot(postId, true, pageRequest)
+                    .stream()
+                    .map(CommentDTO::of)
+                    .toList();
             log.info("comments for post {} acquired", postId);
             return comments;
         } catch (DataAccessException e) {
@@ -96,7 +108,10 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentDTO> getRepliesPaged(UUID commentId, PageRequest pageRequest) {
         try {
-            var comments = commentRepository.findAllByOriginalCommentId(commentId, pageRequest).stream().map(CommentDTO::of).toList();
+            var comments = commentRepository.findAllByOriginalCommentIdOrderByCreatedAt(commentId, pageRequest)
+                    .stream()
+                    .map(CommentDTO::of)
+                    .toList();
             log.info("replies for comment {} acquired", commentId);
             return comments;
         } catch (DataAccessException e) {

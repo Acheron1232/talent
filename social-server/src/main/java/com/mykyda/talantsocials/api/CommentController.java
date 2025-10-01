@@ -37,14 +37,14 @@ public class CommentController {
     @PostMapping("/create-comment")
     public ResponseEntity<String> comment(@RequestBody CommentCreationDTO commentCreationDTO,
                                           @AuthenticationPrincipal Jwt jwt) {
-        commentService.createComment(Long.valueOf(jwt.getClaims().get("id").toString()),commentCreationDTO);
+        commentService.createComment(Long.valueOf(jwt.getClaims().get("id").toString()), commentCreationDTO);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/delete-comment")
-    public ResponseEntity<String> deleteComment(@RequestBody CommentCreationDTO commentCreationDTO,
+    @DeleteMapping("/delete-comment/{commentId}")
+    public ResponseEntity<String> deleteComment(@PathVariable UUID commentId,
                                                 @AuthenticationPrincipal Jwt jwt) {
-        commentService.deleteComment(Long.valueOf(jwt.getClaims().get("id").toString()),commentCreationDTO);
+        commentService.deleteComment(Long.valueOf(jwt.getClaims().get("id").toString()), commentId);
         return ResponseEntity.noContent().build();
     }
 }
