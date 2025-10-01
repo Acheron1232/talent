@@ -64,6 +64,7 @@ export default function Home() {
                     Hello {name()}{" "}
                     <button onClick={handleLogout}>Log out</button>
                     <button onClick={fetchProtected}>Fetch protected resource</button>
+                    <button onClick={() => navigate("/socials")}>Enter Socials</button>
                 </>
                 ):(
                 <>

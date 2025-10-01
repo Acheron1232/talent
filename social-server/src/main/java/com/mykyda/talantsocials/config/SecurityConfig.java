@@ -13,6 +13,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(e -> e.requestMatchers("/profile/get-by-tag/**",
                                 "/posts/get-post/**",
                                 "/posts/get-posts/**",

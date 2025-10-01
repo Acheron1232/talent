@@ -1,9 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import { useAuth } from "react-oidc-context";
 import CallbackPage from "./components/util/CallbackPage.tsx";
 import LogoutPage from "./components/util/LogoutPage.tsx";
+import ProfilePage from "./components/socials/ProfilePage";
+import PostDetailPage from "./components/socials/PostDetailPage";
 
 function App() {
     const auth = useAuth();
@@ -20,6 +22,12 @@ function App() {
                 <Route path="/callback" element={<CallbackPage />} />
                 <Route path="/logout" element={<LogoutPage />} />
                 <Route path="/login" element={<Login />} />
+
+                {/* Socials */}
+                <Route path="/socials" element={<Navigate to="/socials/profile" replace />} />
+                <Route path="/socials/profile" element={<ProfilePage />} />
+                <Route path="/socials/profile/:tag" element={<ProfilePage />} />
+                <Route path="/socials/posts/:postId" element={<PostDetailPage />} />
             </Routes>
         </Router>
     );

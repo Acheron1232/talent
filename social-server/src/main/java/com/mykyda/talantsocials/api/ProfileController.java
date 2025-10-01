@@ -52,4 +52,6 @@ public class ProfileController {
         profileService.patchTagByUserId(Long.valueOf(jwt.getClaims().get("id").toString()), profileDTO);
         return ResponseEntity.noContent().build();
     }
+
+
 }

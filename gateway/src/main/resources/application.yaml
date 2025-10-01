@@ -15,6 +15,7 @@ spring:
                   - GET
                   - POST
                   - PUT
+                  - PATCH
                   - DELETE
                   - OPTIONS
                 allowedHeaders:
@@ -78,12 +79,6 @@ spring:
                 - Path=/files/**
               filters:
                 - RewritePath=/files/(?<segment>.*), /${segment}
-#            - id: book-service
-#              uri: http://localhost:8081
-#              predicates:
-#                - Path=/books/**
-#              filters:
-#                - TokenRelay
 management:
   endpoints:
 
