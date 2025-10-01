@@ -39,6 +39,7 @@ public class AuthController {
     public void registrationApi(@RequestParam Map<String, String> params) {
         userService.saveOauthUser(
                 new UserCreateDto(new ProfileCreationDTO(
+                        null,
                         params.get("displayName"),
                         params.get("tag"),
                         params.get("profilePictureUrl")

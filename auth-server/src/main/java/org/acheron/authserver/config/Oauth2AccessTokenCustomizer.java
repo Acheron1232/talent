@@ -19,7 +19,7 @@ public class Oauth2AccessTokenCustomizer implements OAuth2TokenCustomizer<JwtEnc
 
     @Override
     public void customize(JwtEncodingContext context) {
-        if(!context.getRegisteredClient().getAuthorizationGrantTypes().equals(AuthorizationGrantType.AUTHORIZATION_CODE)){
+        if(!context.getAuthorizationGrantType().getValue().equals(AuthorizationGrantType.AUTHORIZATION_CODE.getValue())){
             return;
         }
         if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {

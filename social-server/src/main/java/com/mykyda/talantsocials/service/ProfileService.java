@@ -57,18 +57,18 @@ public class ProfileService {
     }
 
     @Transactional
-    public String createProfile(Long userId, ProfileCreationDTO profileCreationDTO) {
+    public String createProfile(ProfileCreationDTO profileCreationDTO) {
         try {
-            var checkById = profileRepository.findByUserId(userId);
+            var checkById = profileRepository.findByUserId(profileCreationDTO.id());
             if (checkById.isPresent()) {
-                throw new EntityConflictException("Profile for user id " + userId + " already exists");
+                throw new EntityConflictException("Profile for user id " + profileCreationDTO.id() + " already exists");
             }
             var checkByTag = profileRepository.findByTag(profileCreationDTO.tag());
             if (checkByTag.isPresent()) {
                 throw new EntityConflictException("Profile with tag " + profileCreationDTO.tag() + " already exists");
             }
             var profileToSave = Profile.builder()
-                    .userId(userId)
+                    .userId(profileCreationDTO.id())
                     .displayName(profileCreationDTO.displayName())
                     .profilePictureUrl(profileCreationDTO.profilePictureUrl())
                     .tag(profileCreationDTO.tag())

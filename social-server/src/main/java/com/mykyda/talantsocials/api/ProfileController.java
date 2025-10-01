@@ -36,7 +36,7 @@ public class ProfileController {
     @PostMapping
     public void createProfile(@RequestBody ProfileCreationDTO profileCreationDTO,
                                                 @AuthenticationPrincipal Jwt jwt) {
-        creationImitatorService.createProfile(Long.valueOf(jwt.getClaims().get("id").toString()), profileCreationDTO);
+        creationImitatorService.createProfile(profileCreationDTO);
     }
 
     @PatchMapping("/patch-profile")

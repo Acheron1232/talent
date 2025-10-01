@@ -1,6 +1,7 @@
 package org.acheron.authserver.service;
 
 import com.google.protobuf.StringValue;
+import lombok.RequiredArgsConstructor;
 import org.acheron.authserver.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -9,10 +10,13 @@ import io.grpc.stub.MetadataUtils;
 import org.acheron.authserver.dto.UserCreateDto;
 import org.acheron.authserver.dto.UserCreationDto;
 import org.acheron.user.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserGrpcClient {
+    private final PasswordEncoder passwordEncoder;
 
 
     public Long saveUser(UserCreationDto user, String accessToken) {
@@ -37,7 +41,7 @@ public class UserGrpcClient {
                     .setIsEmailVerified(user.isEmailVerified())
                     .setRole(user.role())
                     .setAuthMethod(user.authMethod())
-                    .setPassword(StringValue.newBuilder().setValue(user.password()!=null? user.password() : "")
+                    .setPassword(StringValue.newBuilder().setValue(user.password()!=null? passwordEncoder.encode(user.password()) : "")
                             .build())
                     .build();
 

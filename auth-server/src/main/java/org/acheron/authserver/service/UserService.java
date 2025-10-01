@@ -46,13 +46,14 @@ public class UserService implements UserDetailsService {
 
         Long id = userGrpcClient.saveUser(user.user(), authorize.getAccessToken().getTokenValue());
         //save social-server
-        System.out.println(user.profile());
+        user.profile().setId(id);
         RestClient.create().post().uri("http://localhost:8080/socials/profile").body(user.profile()).header("Authorization","Bearer "+authorize.getAccessToken().getTokenValue()).exchange((req,res)->{
             if(res.getStatusCode().value()>=200 &&res.getStatusCode().value()<300){
 
             }else {
                 log.error(res.getStatusText());
-                log.error(res.getBody().toString());
+                String body = res.bodyTo(String.class);
+                log.error("Error body: {}", body);
                 throw new RemoteException("Pizda");
             }
             return null;

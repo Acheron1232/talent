@@ -11,7 +11,7 @@ public class CreationImitatorService {
     private final ProfileService profileService;
 
 
-    public String createProfile(Long userId, ProfileCreationDTO profileCreationDTO) {
-        return profileService.createProfile(userId, profileCreationDTO);
+    public String createProfile(ProfileCreationDTO profileCreationDTO) {
+        return profileService.createProfile(profileCreationDTO);
     }
 }

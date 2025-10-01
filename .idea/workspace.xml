@@ -5,26 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3811faed-87f6-4c72-8438-827a8297a32e.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3811faed-87f6-4c72-8438-827a8297a32e.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3811faed-87f6-4c72-8438-827a8297a32e/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3811faed-87f6-4c72-8438-827a8297a32e/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/OAuth2LoginSuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/OAuth2LoginSuccessHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/Oauth2AccessTokenCustomizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/Oauth2AccessTokenCustomizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/dto/ProfileCreationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/dto/ProfileCreationDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/service/UserGrpcClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/service/UserGrpcClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/CommentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/LikeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/LikeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/PostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/CommentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/create/ProfileCreationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/create/ProfileCreationDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CreationImitatorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CreationImitatorService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-001.sql" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-001.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +81,7 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Acheron1232/talent.git",
-    "accountId": "c9c1b613-da18-4da3-bf06-ee1732e3e0eb"
+    "accountId": "65335df4-96be-4506-b46f-083f7ef27625"
   }
 }]]></component>
   <component name="ProjectColorInfo">{
@@ -111,6 +104,7 @@
     "Gradle.Build resource-server.executor": "Run",
     "Gradle.Build social-server.executor": "Run",
     "Gradle.Build user-server.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
     "JavaScript Debug.sad.html.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RequestMappingsPanelOrder0": "0",
@@ -125,7 +119,7 @@
     "Spring Boot.GatewayApplication.executor": "Run",
     "Spring Boot.MailServerApplication.executor": "Run",
     "Spring Boot.ProjectGeneratorServiceApplication.executor": "Run",
-    "Spring Boot.ResourceServerApplication.executor": "Run",
+    "Spring Boot.ResourceServerApplication.executor": "Debug",
     "Spring Boot.TalentSocialsApplication.executor": "Run",
     "Spring Boot.UserServerApplication.executor": "Run",
     "git-widget-placeholder": "main",
@@ -162,6 +156,20 @@
         <option value="QuarkusRunConfigurationType" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="AuthServerApplication" value="STOPPED" />
+              <entry key="GatewayApplication" value="STOPPED" />
+              <entry key="ResourceServerApplication" value="STOPPED" />
+              <entry key="TalentSocialsApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.TalentSocialsApplication">
@@ -235,16 +243,16 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.TalentSocialsApplication" />
         <item itemvalue="Spring Boot.ResourceServerApplication" />
+        <item itemvalue="Spring Boot.TalentSocialsApplication" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121" />
-        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-IU-251.26094.121" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
       </set>
     </attachedChunks>
   </component>
@@ -263,6 +271,7 @@
       <workItem from="1758910482489" duration="1043000" />
       <workItem from="1759177381889" duration="411000" />
       <workItem from="1759269306750" duration="1638000" />
+      <workItem from="1759337946814" duration="655000" />
     </task>
     <servers />
   </component>
@@ -291,34 +300,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/OAuth2LoginSuccessHandler.java</url>
-          <line>63</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/OAuth2LoginSuccessHandler.java</url>
-          <line>54</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ProfileController.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CreationImitatorService.java</url>
           <line>14</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/Oauth2AccessTokenCustomizer.java</url>
-          <line>20</line>
-          <option name="timeStamp" value="6" />
+          <line>21</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/auth-server/src/main/java/org/acheron/authserver/config/Oauth2AccessTokenCustomizer.java</url>
+          <url>file://$PROJECT_DIR$/resource-server/src/main/java/org/acheron/resourceserver/api/BookResource.java</url>
           <line>22</line>
-          <option name="timeStamp" value="7" />
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
