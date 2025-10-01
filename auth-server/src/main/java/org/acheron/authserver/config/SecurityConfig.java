@@ -184,7 +184,7 @@ public class SecurityConfig {
                 .scope(OidcScopes.EMAIL)
                 .tokenSettings(
                         TokenSettings.builder()
-                                .accessTokenTimeToLive(Duration.ofMinutes(30))
+                                .accessTokenTimeToLive(Duration.ofDays(30))
                                 .refreshTokenTimeToLive(Duration.ofDays(60))
                                 .reuseRefreshTokens(false)
                                 .build()

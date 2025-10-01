@@ -4,6 +4,10 @@ create table comment
     created_at          timestamp(6) not null,
     id                  uuid         not null,
     original_comment_id uuid,
+        constraint fk_comment_original
+        foreign key (original_comment_id)
+            references comment (id)
+            on delete cascade,
     post_id             uuid,
     profile_id          uuid,
     content             varchar(255) not null,
@@ -39,14 +43,18 @@ create table likes
 
 create table post
 (
-    reposted         boolean,
-    created_at       timestamp(6),
+    reposted         boolean not null ,
+    created_at       timestamp(6) not null ,
     id               uuid not null,
-    original_post_id uuid,
     profile_id       uuid not null,
     text_content     varchar(255),
     likes_amount     int default 0,
-    primary key (id)
+    primary key (id),
+    original_post_id uuid,
+    constraint fk_post_original
+        foreign key (original_post_id)
+            references post (id)
+            on delete cascade
 );
 
 create table post_preference

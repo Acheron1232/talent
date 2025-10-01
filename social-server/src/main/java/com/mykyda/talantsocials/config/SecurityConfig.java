@@ -13,11 +13,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(e -> e.requestMatchers("/profile/get-by-tag/",
-                                "/posts/get-posts/",
-                                "/posts/get-posts/",
-                                "/comments/get-comments/",
-                                "/comments/get-replies/")
+                .authorizeHttpRequests(e -> e.requestMatchers("/profile/get-by-tag/**",
+                                "/posts/get-post/**",
+                                "/posts/get-posts/**",
+                                "/comments/get-comments/**",
+                                "/comments/get-replies/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(e -> e.jwt(Customizer.withDefaults()))

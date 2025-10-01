@@ -55,7 +55,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         Map<String, Object> attributes = new HashMap<>(principal.getAttributes());
 
         String email;
-        String avatar;
+        String avatar = null;
         try {
             if ("github".equals(provider)) {
                 email = ((String) attributes.getOrDefault("email", ""));
@@ -79,7 +79,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         if (!userService.existsByEmail(email)) {
             String username = (String) attributes.get("name");
             UserCreationDto newUser = new UserCreationDto(username,email,null,true, User.Role.USER.toString(),"github".equals(provider) ? "GITHUB" : "GOOGLE");
-            UserCreateDto dto = new UserCreateDto(new ProfileCreationDTO(username,username,null), newUser); //TODO
+            UserCreateDto dto = new UserCreateDto(new ProfileCreationDTO(username,username,avatar), newUser); //TODO
             userService.saveOauthUser(dto);
         }
 

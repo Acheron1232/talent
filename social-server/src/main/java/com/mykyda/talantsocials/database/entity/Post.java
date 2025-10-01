@@ -37,7 +37,7 @@ public class Post {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Profile profile;
 
-    @Column
+    @Column(nullable = false)
     @Builder.Default
     private Boolean reposted = false;
 
@@ -49,7 +49,7 @@ public class Post {
     @Column
     private String textContent;
 
-    @Column
+    @Column(nullable = false)
     @Builder.Default
     private Timestamp createdAt = Timestamp.from(Instant.now());
 
