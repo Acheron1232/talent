@@ -30,8 +30,9 @@ public class Comment {
     private Profile profile;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @JoinColumn(name = "content_entity_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private ContentEntity contentEntity;
 
     @Column(nullable = false)
     private String content;

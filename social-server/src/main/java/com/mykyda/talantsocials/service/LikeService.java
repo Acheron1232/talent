@@ -1,12 +1,12 @@
 package com.mykyda.talantsocials.service;
 
+import com.mykyda.talantsocials.database.entity.ContentEntity;
 import com.mykyda.talantsocials.database.entity.Like;
-import com.mykyda.talantsocials.database.entity.Post;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.id.LikeId;
 import com.mykyda.talantsocials.database.repository.LikeRepository;
-import com.mykyda.talantsocials.dto.create.LikeCreationDTO;
 import com.mykyda.talantsocials.dto.LikeDTO;
+import com.mykyda.talantsocials.dto.create.LikeCreationDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityConflictException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
@@ -37,7 +37,7 @@ public class LikeService {
     @Transactional
     public void createLike(Long userId, LikeCreationDTO likeDTO) {
         var profileId = profileService.checkByUserId(userId);
-        var postId = postService.checkById(likeDTO.postId());
+        var postId = postService.checkById(likeDTO.contentEntityId());
         try {
             var id = new LikeId(postId, profileId);
             var checkById = likeRepository.findById(id);
@@ -46,7 +46,7 @@ public class LikeService {
             }
             var likeToSave = Like.builder()
                     .id(id)
-                    .post(entityManager.getReference(Post.class, postId))
+                    .contentEntity(entityManager.getReference(ContentEntity.class, postId))
                     .profile(entityManager.getReference(Profile.class, profileId))
                     .build();
             likeRepository.save(likeToSave);
@@ -59,7 +59,7 @@ public class LikeService {
 
     @Transactional
     public void deleteLike(Long userId, LikeCreationDTO likeDTO) {
-        var postId = postService.checkById(likeDTO.postId());
+        var postId = postService.checkById(likeDTO.contentEntityId());
         var profileId = profileService.checkByUserId(userId);
         try {
             var checkById = likeRepository.findById(new LikeId(postId, profileId));
@@ -77,7 +77,7 @@ public class LikeService {
     @Transactional(readOnly = true)
     public List<LikeDTO> getLikesForPostPaged(UUID postId, PageRequest pageRequest) {
         try {
-            var likes = likeRepository.findAllByPostId(postId, pageRequest).stream().map(LikeDTO::of).toList();
+            var likes = likeRepository.findAllByContentEntityId(postId, pageRequest).stream().map(LikeDTO::of).toList();
             log.info("likes for post {} acquired", postId);
             return likes;
         } catch (DataAccessException e) {

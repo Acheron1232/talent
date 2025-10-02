@@ -35,7 +35,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostDTO> findByProfileIdPaged(UUID profileId, PageRequest pageRequest) {
         try {
-            var posts = postRepository.findAllByProfileId(profileId, pageRequest).stream().map(PostDTO::of).toList();
+            var posts = postRepository.findAllByProfileIdOrderByCreatedAt(profileId, pageRequest).stream().map(PostDTO::of).toList();
             log.info("posts found: {} for profile id {}", posts, profileId);
             return posts;
         } catch (DataAccessException e) {
@@ -76,7 +76,6 @@ public class PostService {
                         .createdAt(Timestamp.from(Instant.now()))
                         .build();
                 postRepository.save(postToSave);
-                log.info("post saved: {}", postToSave.getId());
             } else {
                 var postToSave = Post.builder()
                         .reposted(postDTO.isReposted())
@@ -85,8 +84,8 @@ public class PostService {
                         .createdAt(Timestamp.from(Instant.now()))
                         .build();
                 postRepository.save(postToSave);
-                log.info("post saved: {}", postToSave.getId());
             }
+            log.info("post saved");
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }

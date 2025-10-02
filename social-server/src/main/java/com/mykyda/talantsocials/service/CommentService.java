@@ -1,7 +1,7 @@
 package com.mykyda.talantsocials.service;
 
 import com.mykyda.talantsocials.database.entity.Comment;
-import com.mykyda.talantsocials.database.entity.Post;
+import com.mykyda.talantsocials.database.entity.ContentEntity;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.repository.CommentRepository;
 import com.mykyda.talantsocials.dto.CommentDTO;
@@ -42,24 +42,23 @@ public class CommentService {
                     throw new EntityNotFoundException("Original comment not found with id " + commentCreationDTO.getOriginalCommentId());
                 }
                 var commentToSave = Comment.builder()
-                        .post(entityManager.getReference(Post.class, commentCreationDTO.getPostId()))
+                        .contentEntity(entityManager.getReference(ContentEntity.class, commentCreationDTO.getContentEntityId()))
                         .profile(entityManager.getReference(Profile.class, profileId))
                         .isAReply(true)
-                        .originalComment(checkOriginalComment.get().getOriginalComment() == null ?
-                                checkOriginalComment.get() : checkOriginalComment.get().getOriginalComment())
+                        .originalComment(entityManager.getReference(Comment.class, checkOriginalComment.get().getId()))
                         .content(commentCreationDTO.getContent())
                         .build();
                 commentRepository.save(commentToSave);
             } else {
                 var commentToSave = Comment.builder()
-                        .post(entityManager.getReference(Post.class, commentCreationDTO.getPostId()))
+                        .contentEntity(entityManager.getReference(ContentEntity.class, commentCreationDTO.getContentEntityId()))
                         .profile(entityManager.getReference(Profile.class, profileId))
                         .content(commentCreationDTO.getContent())
                         .build();
                 commentRepository.save(commentToSave);
             }
             log.info("post with id {} commented by profile id {}, with content {}",
-                    commentCreationDTO.getPostId(),
+                    commentCreationDTO.getContentEntityId(),
                     profileId,
                     commentCreationDTO.getContent());
         } catch (DataAccessException e) {
@@ -84,7 +83,7 @@ public class CommentService {
             commentRepository.delete(comment);
             log.info("Comment with id {} for post by id {} have been deleted by profile {}",
                     commentId,
-                    comment.getPost().getId(),
+                    comment.getContentEntity().getId(),
                     profileId);
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -94,7 +93,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentDTO> getCommentsForPostPaged(UUID postId, PageRequest pageRequest) {
         try {
-            var comments = commentRepository.findAllByPostIdAndIsAReplyNot(postId, true, pageRequest)
+            var comments = commentRepository.findAllByContentEntityIdAndIsAReplyNotOrderByCreatedAt(postId, true, pageRequest)
                     .stream()
                     .map(CommentDTO::of)
                     .toList();

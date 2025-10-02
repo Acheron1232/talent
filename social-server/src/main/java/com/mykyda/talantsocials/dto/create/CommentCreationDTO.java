@@ -1,6 +1,7 @@
 package com.mykyda.talantsocials.dto.create;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mykyda.talantsocials.database.enums.UserContentType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class CommentCreationDTO {
 
     UUID id;
 
-    UUID postId;
+    UUID contentEntityId;
 
     @JsonProperty("isAReply")
     boolean isAReply;
@@ -24,4 +25,6 @@ public class CommentCreationDTO {
     UUID originalCommentId;
 
     String content;
+
+    UserContentType type;
 }

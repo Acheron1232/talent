@@ -12,5 +12,5 @@ import java.util.UUID;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, LikeId> {
 
-    List<Like> findAllByPostId(UUID postId, PageRequest pageRequest);
+    List<Like> findAllByContentEntityId(UUID contentEntityId, PageRequest pageRequest);
 }

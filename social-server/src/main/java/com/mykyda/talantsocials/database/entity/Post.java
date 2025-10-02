@@ -1,7 +1,6 @@
 package com.mykyda.talantsocials.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,8 +12,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -26,16 +23,7 @@ import java.util.UUID;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
 )
-public class Post {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Profile profile;
+public class Post extends ContentEntity {
 
     @Column(nullable = false)
     @Builder.Default
@@ -46,6 +34,11 @@ public class Post {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post originalPost;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Profile profile;
+
     @Column
     private String textContent;
 
@@ -53,15 +46,7 @@ public class Post {
     @Builder.Default
     private Timestamp createdAt = Timestamp.from(Instant.now());
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    @JsonIgnore
-    private List<Like> likes;
-
     @Column(nullable = false)
     @Builder.Default
     private Integer likesAmount = 0;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    @JsonIgnore
-    private List<Comment> comments;
 }
