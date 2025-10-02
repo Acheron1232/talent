@@ -23,11 +23,11 @@ public class Like {
     @EmbeddedId
     private LikeId id;
 
+    @MapsId("contentEntityId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("postId")
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "content_entity_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Post post;
+    private ContentEntity contentEntity;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("profileId")

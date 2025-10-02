@@ -42,7 +42,7 @@ public class CommentService {
                     throw new EntityNotFoundException("Original comment not found with id " + commentCreationDTO.getOriginalCommentId());
                 }
                 var commentToSave = Comment.builder()
-                        .contentEntity(entityManager.getReference(ContentEntity.class, commentCreationDTO.getPostId()))
+                        .contentEntity(entityManager.getReference(ContentEntity.class, commentCreationDTO.getContentEntityId()))
                         .profile(entityManager.getReference(Profile.class, profileId))
                         .isAReply(true)
                         .originalComment(entityManager.getReference(Comment.class, checkOriginalComment.get().getId()))
@@ -51,14 +51,14 @@ public class CommentService {
                 commentRepository.save(commentToSave);
             } else {
                 var commentToSave = Comment.builder()
-                        .contentEntity(entityManager.getReference(ContentEntity.class, commentCreationDTO.getPostId()))
+                        .contentEntity(entityManager.getReference(ContentEntity.class, commentCreationDTO.getContentEntityId()))
                         .profile(entityManager.getReference(Profile.class, profileId))
                         .content(commentCreationDTO.getContent())
                         .build();
                 commentRepository.save(commentToSave);
             }
             log.info("post with id {} commented by profile id {}, with content {}",
-                    commentCreationDTO.getPostId(),
+                    commentCreationDTO.getContentEntityId(),
                     profileId,
                     commentCreationDTO.getContent());
         } catch (DataAccessException e) {

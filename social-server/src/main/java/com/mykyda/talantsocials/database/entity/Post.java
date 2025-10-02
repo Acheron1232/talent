@@ -1,16 +1,17 @@
 package com.mykyda.talantsocials.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
 
 @Data
 @Entity
@@ -44,10 +45,6 @@ public class Post extends ContentEntity {
     @Column(nullable = false)
     @Builder.Default
     private Timestamp createdAt = Timestamp.from(Instant.now());
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    @JsonIgnore
-    private List<Like> likes;
 
     @Column(nullable = false)
     @Builder.Default

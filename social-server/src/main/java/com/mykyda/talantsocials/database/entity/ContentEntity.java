@@ -27,4 +27,7 @@ public abstract class ContentEntity {
     @JsonIgnore
     private List<Comment> comments;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contentEntity")
+    @JsonIgnore
+    private List<Like> likes;
 }
