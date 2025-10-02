@@ -4,11 +4,13 @@ spring:
     password: postgres
     username: postgres
   jpa:
-    show-sql: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
 
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
-    enabled: true
+    enabled: false
 
   security:
     oauth2:

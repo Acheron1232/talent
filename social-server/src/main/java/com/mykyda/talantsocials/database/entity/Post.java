@@ -4,17 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -26,16 +22,7 @@ import java.util.UUID;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
 )
-public class Post {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Profile profile;
+public class Post extends ContentEntity {
 
     @Column(nullable = false)
     @Builder.Default
@@ -45,6 +32,11 @@ public class Post {
     @JoinColumn(name = "original_post_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post originalPost;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Profile profile;
 
     @Column
     private String textContent;
@@ -60,8 +52,4 @@ public class Post {
     @Column(nullable = false)
     @Builder.Default
     private Integer likesAmount = 0;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    @JsonIgnore
-    private List<Comment> comments;
 }

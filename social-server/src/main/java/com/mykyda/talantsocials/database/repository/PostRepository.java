@@ -14,7 +14,7 @@ import java.util.UUID;
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
-    List<Post> findAllByProfileId(UUID profileId, PageRequest pageRequest);
+    List<Post> findAllByProfileIdOrderByCreatedAt(UUID profileId, PageRequest pageRequest);
 
     @Modifying
     @Query("UPDATE Post p SET p.likesAmount = p.likesAmount + 1 WHERE p.id = :postId")

@@ -17,6 +17,8 @@ public class CommentDTO {
 
     private UUID id;
 
+    private UUID contentEntityId;
+
     private ProfileDTO profile;
 
     private String content;
@@ -30,6 +32,7 @@ public class CommentDTO {
     public static CommentDTO of(Comment comment) {
         return CommentDTO.builder()
                 .id(comment.getId())
+                .contentEntityId(comment.getContentEntity().getId())
                 .profile(ProfileDTO.ofShort(comment.getProfile()))
                 .content(comment.getContent())
                 .isAReply(comment.getIsAReply())
