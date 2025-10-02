@@ -90,5 +90,25 @@ export function useSocialsApi() {
     // Comments
     getComments: (postId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${postId}/?page=${page}&size=${size}`),
     createComment: (payload: CommentCreationDTO) => request<void>(`/comments/create-comment`, { method: "POST", body: JSON.stringify(payload) }),
+
+    // Shorts
+    getShorts: () => request<ShortDTO[]>(`/shorts`),
   };
+}
+
+// Shorts DTOs
+export interface ShortElementDTO { id: UUID; type: string; url: string; orderIndex: number; createdAt?: string }
+export interface ShortTagDTO { id: UUID; name: string }
+export interface ShortProfileDTO extends ProfileDTO { userId?: number; status?: string }
+export interface ShortDTO {
+  id: UUID;
+  profile: ShortProfileDTO;
+  type: string;
+  elements: ShortElementDTO[];
+  tags: ShortTagDTO[];
+  likes: number;
+  views: number;
+  description?: string;
+  isPublic?: boolean;
+  createdAt?: string;
 }

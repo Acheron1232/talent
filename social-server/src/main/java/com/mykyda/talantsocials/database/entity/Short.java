@@ -23,7 +23,7 @@ public class Short extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @OneToMany(mappedBy = "shorT")
+    @OneToMany(mappedBy = "shorT", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShortElement> elements;
 
     @ManyToMany
@@ -38,6 +38,7 @@ public class Short extends BaseEntity {
 
     private Long views = 0L;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "is_public")

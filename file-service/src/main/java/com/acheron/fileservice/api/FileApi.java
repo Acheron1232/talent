@@ -27,7 +27,7 @@ public class FileApi {
     ){}
 
     public enum EventType{
-        SHORTS("shorts"), POST("posts"), AVATAR("avatars");
+        SHORTS_VIDEO("shorts_video"),SHORTS_IMAGES("shorts_images"), POST("posts"), AVATAR("avatars");
 
         private final String value;
         EventType(String value) {

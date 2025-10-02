@@ -25,6 +25,8 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
+
+
     @Transactional(readOnly = true)
     public ProfileDTO getCurrentProfile(Long userId) {
         try {

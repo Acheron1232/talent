@@ -6,6 +6,7 @@ import CallbackPage from "./components/util/CallbackPage.tsx";
 import LogoutPage from "./components/util/LogoutPage.tsx";
 import ProfilePage from "./components/socials/ProfilePage";
 import PostDetailPage from "./components/socials/PostDetailPage";
+import ShortsPage from "./components/socials/ShortsPage";
 
 function App() {
     const auth = useAuth();
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/socials/profile" element={<ProfilePage />} />
                 <Route path="/socials/profile/:tag" element={<ProfilePage />} />
                 <Route path="/socials/posts/:postId" element={<PostDetailPage />} />
+                <Route path="/socials/shorts" element={<ShortsPage />} />
             </Routes>
         </Router>
     );
