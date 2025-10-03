@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,7 +27,7 @@ public class ShortService {
 
     @Transactional
     public void save(ShortCreationDto shortCreationDto, Long id) {
-        Profile profile = profileRepository.findByUserId(id).get();
+        Profile profile = profileRepository.findById(id).get();
         Short shorT = shortMapper.toEntity(shortCreationDto);
         shorT.setProfile(profile);
         List<ShortElement> elements = shortMapper.toShortElementList(shortCreationDto.elements());

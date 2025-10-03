@@ -12,5 +12,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class LikeId implements Serializable {
     private UUID contentEntityId;
-    private UUID profileId;
+    private Long profileId;
 }

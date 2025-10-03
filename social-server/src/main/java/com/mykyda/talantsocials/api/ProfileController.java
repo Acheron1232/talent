@@ -5,7 +5,6 @@ import com.mykyda.talantsocials.dto.create.ProfileCreationDTO;
 import com.mykyda.talantsocials.service.CreationImitatorService;
 import com.mykyda.talantsocials.service.ProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -34,22 +33,22 @@ public class ProfileController {
 
     //kafka event !
     @PostMapping
-    public void createProfile(@RequestBody ProfileCreationDTO profileCreationDTO,
-                                                @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<String> createProfile(@RequestBody ProfileCreationDTO profileCreationDTO) {
         creationImitatorService.createProfile(profileCreationDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/patch-profile")
     public ResponseEntity<String> updateProfile(@RequestBody ProfileDTO profileDTO,
                                                 @AuthenticationPrincipal Jwt jwt) {
-        profileService.patchProfileByUserId(Long.valueOf(jwt.getClaims().get("id").toString()), profileDTO);
+        profileService.patchProfile(Long.valueOf(jwt.getClaims().get("id").toString()), profileDTO);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/patch-tag")
     public ResponseEntity<String> updateTag(@RequestBody ProfileDTO profileDTO,
                                             @AuthenticationPrincipal Jwt jwt) {
-        profileService.patchTagByUserId(Long.valueOf(jwt.getClaims().get("id").toString()), profileDTO);
+        profileService.patchTag(Long.valueOf(jwt.getClaims().get("id").toString()), profileDTO);
         return ResponseEntity.noContent().build();
     }
 

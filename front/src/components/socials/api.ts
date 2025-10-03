@@ -90,11 +90,11 @@ export function useSocialsApi() {
     createPost: (payload: PostCreationDTO) => request<void>(`/posts/create-post`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Likes
-    like: (postId: UUID) => request<void>(`/likes/like`, { method: "POST", body: JSON.stringify({ postId }) }),
-    unlike: (postId: UUID) => request<void>(`/likes/unlike`, { method: "DELETE", body: JSON.stringify({ postId }) }),
+    like: (contentEntityId: UUID) => request<void>(`/likes/like`, { method: "POST", body: JSON.stringify({ contentEntityId }) }),
+    unlike: (contentEntityId: UUID) => request<void>(`/likes/unlike`, { method: "DELETE", body: JSON.stringify({ contentEntityId }) }),
 
     // Comments
-    getComments: (postId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${postId}/?page=${page}&size=${size}`),
+    getComments: (contentEntityId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${contentEntityId}/?page=${page}&size=${size}`),
     createComment: (payload: CommentCreationDTO) => request<void>(`/comments/create-comment`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Shorts

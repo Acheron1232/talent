@@ -1,6 +1,6 @@
 CREATE TABLE short (
                        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                       profile_id UUID NOT NULL references profile(id),
+                       profile_id bigint NOT NULL references profile(id),
                        description TEXT,
                        type VARCHAR(20) NOT NULL,
                        likes BIGINT DEFAULT 0,

@@ -1,8 +1,6 @@
 package com.mykyda.talantsocials.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.mykyda.talantsocials.database.enums.ProfileStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -26,11 +23,8 @@ import java.util.UUID;
 public class Profile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
     @Column(unique = true, nullable = false)
-    private Long userId;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String tag;

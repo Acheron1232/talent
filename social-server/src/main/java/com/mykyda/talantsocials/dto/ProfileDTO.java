@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 @Builder
 public class ProfileDTO {
 
-    private UUID id;
+    private Long id;
 
     private String tag;
 

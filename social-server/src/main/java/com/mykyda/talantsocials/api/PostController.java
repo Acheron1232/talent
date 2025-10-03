@@ -31,7 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/get-posts/{profileId}")
-    public List<PostDTO> getPostsPageByProfileId(@PathVariable("profileId") UUID profileId,
+    public List<PostDTO> getPostsPageByProfileId(@PathVariable("profileId") Long profileId,
                                                  @RequestParam("page") Integer page,
                                                  @RequestParam("size") Integer size) {
         return postService.findByProfileIdPaged(profileId, PageRequest.of(page, size));

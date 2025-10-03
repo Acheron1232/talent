@@ -33,7 +33,7 @@ public class PostService {
     private final ProfileService profileService;
 
     @Transactional(readOnly = true)
-    public List<PostDTO> findByProfileIdPaged(UUID profileId, PageRequest pageRequest) {
+    public List<PostDTO> findByProfileIdPaged(Long profileId, PageRequest pageRequest) {
         try {
             var posts = postRepository.findAllByProfileIdOrderByCreatedAt(profileId, pageRequest).stream().map(PostDTO::of).toList();
             log.info("posts found: {} for profile id {}", posts, profileId);
@@ -60,7 +60,7 @@ public class PostService {
 
     @Transactional
     public void post(Long userId, PostCreationDTO postDTO) {
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         try {
             var reposted = postDTO.isReposted();
             if (reposted) {
@@ -93,7 +93,7 @@ public class PostService {
 
     @Transactional
     public void delete(Long userId, UUID postId) {
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         try {
             var checkById = postRepository.findById(postId);
             if (checkById.isEmpty()) {

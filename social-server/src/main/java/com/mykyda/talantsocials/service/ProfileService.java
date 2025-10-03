@@ -16,8 +16,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,16 +24,15 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
 
 
-
     @Transactional(readOnly = true)
-    public ProfileDTO getCurrentProfile(Long userId) {
+    public ProfileDTO getCurrentProfile(Long id) {
         try {
-            var profile = profileRepository.findByUserId(userId);
+            var profile = profileRepository.findById(id);
             if (profile.isPresent()) {
-                log.info("profile found with userId {}", userId);
+                log.info("profile found with id {}", id);
                 return ProfileDTO.ofFull(profile.get());
             } else {
-                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
+                throw new EntityNotFoundException("Profile with id " + id + " not found");
             }
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -59,18 +56,12 @@ public class ProfileService {
     }
 
     @Transactional
-    public String createProfile(ProfileCreationDTO profileCreationDTO) {
+    public void createProfile(ProfileCreationDTO profileCreationDTO) {
         try {
-            var checkById = profileRepository.findByUserId(profileCreationDTO.id());
-            if (checkById.isPresent()) {
-                throw new EntityConflictException("Profile for user id " + profileCreationDTO.id() + " already exists");
-            }
-            var checkByTag = profileRepository.findByTag(profileCreationDTO.tag());
-            if (checkByTag.isPresent()) {
-                throw new EntityConflictException("Profile with tag " + profileCreationDTO.tag() + " already exists");
-            }
+            checkById(profileCreationDTO.id());
+            checkByTag(profileCreationDTO.tag());
             var profileToSave = Profile.builder()
-                    .userId(profileCreationDTO.id())
+                    .id(profileCreationDTO.id())
                     .displayName(profileCreationDTO.displayName())
                     .profilePictureUrl(profileCreationDTO.profilePictureUrl())
                     .tag(profileCreationDTO.tag())
@@ -84,21 +75,17 @@ public class ProfileService {
 
             profileToSave.setPostPreference(pref);
             var profile = profileRepository.save(profileToSave);
-            log.info("profile saved with id {} for user id {}", profile.getId(), profile.getUserId());
-            return profile.getTag();
+            log.info("profile saved with id {}", profile.getId());
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
     @Transactional
-    public void patchProfileByUserId(Long userId, ProfileDTO patchedDto) {
+    public void patchProfile(Long id, ProfileDTO patchedDto) {
         try {
-            var checkByUserId = profileRepository.findByUserId(userId);
-            if (checkByUserId.isEmpty()) {
-                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
-            }
-            var profile = editProfile(patchedDto, checkByUserId.get());
+            var checkById = getById(id);
+            var profile = editProfile(patchedDto, checkById);
             profileRepository.save(profile);
             log.info("profile updated with id {}", profile.getId());
         } catch (DataAccessException e) {
@@ -145,17 +132,10 @@ public class ProfileService {
     }
 
     @Transactional
-    public void patchTagByUserId(Long userId, ProfileDTO patchedDto) {
+    public void patchTag(Long id, ProfileDTO patchedDto) {
         try {
-            var checkByUserId = profileRepository.findByUserId(userId);
-            if (checkByUserId.isEmpty()) {
-                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
-            }
-            var checkByTag = profileRepository.findByTag(patchedDto.getTag());
-            if (checkByTag.isPresent()) {
-                throw new EntityConflictException("Profile with tag" + patchedDto.getTag() + " already exists");
-            }
-            var profile = checkByUserId.get();
+            var profile = getById(id);
+            checkByTag(patchedDto.getTag());
             profile.setTag(patchedDto.getTag());
             profileRepository.save(profile);
             log.info("tag {} set at profile with id {}", patchedDto.getTag(), profile.getId());
@@ -165,13 +145,37 @@ public class ProfileService {
     }
 
     @Transactional
-    public UUID checkByUserId(Long userId) {
+    public void checkById(Long id) {
         try {
-            var checkByUserId = profileRepository.findByUserId(userId);
-            if (checkByUserId.isEmpty()) {
-                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
+            var checkByUserId = profileRepository.findById(id);
+            if (checkByUserId.isPresent()) {
+                throw new EntityConflictException("Profile with id " + id + " already exists");
             }
-            return checkByUserId.get().getId();
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public Profile getById(Long id) {
+        try {
+            var checkByUserId = profileRepository.findById(id);
+            if (checkByUserId.isEmpty()) {
+                throw new EntityNotFoundException("Profile with id " + id + " not found");
+            }
+            return checkByUserId.get();
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void checkByTag(String tag) {
+        try {
+            var checkByTag = profileRepository.findByTag(tag);
+            if (checkByTag.isPresent()) {
+                throw new EntityConflictException("Profile with tag " + tag + " already exists");
+            }
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }

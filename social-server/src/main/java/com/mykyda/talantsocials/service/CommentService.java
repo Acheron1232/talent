@@ -33,7 +33,7 @@ public class CommentService {
 
     @Transactional
     public void createComment(Long userId, CommentCreationDTO commentCreationDTO) {
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         try {
             var isAReply = commentCreationDTO.isAReply();
             if (isAReply) {
@@ -70,7 +70,7 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long userId, UUID commentId) {
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         try {
             var checkById = commentRepository.findById(commentId);
             if (checkById.isEmpty()) {

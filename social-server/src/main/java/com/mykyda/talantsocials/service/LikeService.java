@@ -36,7 +36,7 @@ public class LikeService {
 
     @Transactional
     public void createLike(Long userId, LikeCreationDTO likeDTO) {
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         var postId = postService.checkById(likeDTO.contentEntityId());
         try {
             var id = new LikeId(postId, profileId);
@@ -60,7 +60,7 @@ public class LikeService {
     @Transactional
     public void deleteLike(Long userId, LikeCreationDTO likeDTO) {
         var postId = postService.checkById(likeDTO.contentEntityId());
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         try {
             var checkById = likeRepository.findById(new LikeId(postId, profileId));
             if (checkById.isEmpty()) {
