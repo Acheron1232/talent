@@ -13,7 +13,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +43,14 @@ public class ShortService {
         shortRepository.save(shorT);
     }
 
-    public List<Short>  findAll(Integer size,Long id) {
+    public List<Short> findAll(Integer size, Long id) {
         return shortRepository.findRandom(size);
+    }
+
+    public List<Short> findAllExcluding(Integer size, Long id, List<UUID> exclude) {
+        if (exclude == null || exclude.isEmpty()) {
+            return findAll(size, id);
+        }
+        return shortRepository.findRandomExcluding(size, exclude);
     }
 }

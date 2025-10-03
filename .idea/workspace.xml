@@ -5,23 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/mapper/ShortMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/create/ShortCreationDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/file-service/src/main/java/com/acheron/fileservice/api/FileApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/file-service/src/main/java/com/acheron/fileservice/api/FileApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/file-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/file-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/socials/ShortsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/ShortsPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/components/socials/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ShortApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ShortController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Short.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Short.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ShortController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ShortController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ShortRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ShortRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/TagRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/TagRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ShortService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ShortService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +80,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Acheron1232/talent.git&quot;,
-    &quot;accountId&quot;: &quot;65335df4-96be-4506-b46f-083f7ef27625&quot;
+    &quot;accountId&quot;: &quot;c9c1b613-da18-4da3-bf06-ee1732e3e0eb&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -102,56 +93,56 @@
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Gradle.Build auth-server.executor": "Run",
-    "Gradle.Build file-service.executor": "Run",
-    "Gradle.Build gateway.executor": "Run",
-    "Gradle.Build ide-service.executor": "Run",
-    "Gradle.Build mail-server.executor": "Run",
-    "Gradle.Build project-generator-service.executor": "Run",
-    "Gradle.Build resource-server.executor": "Run",
-    "Gradle.Build social-server.executor": "Run",
-    "Gradle.Build user-server.executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "JavaScript Debug.sad.html.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.AuthServerApplication.executor": "Run",
-    "Spring Boot.FileServiceApplication.executor": "Run",
-    "Spring Boot.GatewayApplication.executor": "Run",
-    "Spring Boot.MailServerApplication.executor": "Run",
-    "Spring Boot.ProjectGeneratorServiceApplication.executor": "Run",
-    "Spring Boot.ResourceServerApplication.executor": "Run",
-    "Spring Boot.TalentSocialsApplication.executor": "Run",
-    "Spring Boot.UserServerApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/acheron/IdeaProjects/talent",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/home/acheron/IdeaProjects/talent/front/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Gradle.Build auth-server.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build file-service.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build gateway.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build ide-service.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build mail-server.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build project-generator-service.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build resource-server.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build social-server.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build user-server.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.sad.html.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AuthServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.FileServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.MailServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ProjectGeneratorServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ResourceServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.TalentSocialsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UserServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/acheron/IdeaProjects/talent&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/mykyta/IdeaProjects/talent123/front/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -168,21 +159,6 @@
         <option value="QuarkusRunConfigurationType" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
-    </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <map>
-              <entry key="AuthServerApplication" value="STOPPED" />
-              <entry key="GatewayApplication" value="STOPPED" />
-              <entry key="ResourceServerApplication" value="STOPPED" />
-              <entry key="TalentSocialsApplication" value="STOPPED" />
-              <entry key="UserServerApplication" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.FileServiceApplication">
@@ -278,8 +254,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
-        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121" />
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-IU-251.26094.121" />
       </set>
     </attachedChunks>
   </component>
@@ -304,6 +280,8 @@
       <workItem from="1759356130504" duration="660000" />
       <workItem from="1759357386858" duration="491000" />
       <workItem from="1759431083572" duration="12715000" />
+      <workItem from="1759445165991" duration="3626000" />
+      <workItem from="1759500775365" duration="83000" />
     </task>
     <servers />
   </component>
@@ -327,6 +305,10 @@
     <option featureType="dependencySupport" implementationName="java:org.thymeleaf:thymeleaf" />
     <option featureType="dependencySupport" implementationName="java:org.springframework:spring-messaging" />
     <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Task 3: likes are universal now" />
+    <option name="LAST_COMMIT_MESSAGE" value="Task 3: likes are universal now" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -353,7 +335,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ShortService.java</url>
-          <line>30</line>
+          <line>32</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>

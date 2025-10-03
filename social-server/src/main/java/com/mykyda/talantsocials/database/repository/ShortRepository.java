@@ -12,4 +12,7 @@ public interface ShortRepository extends JpaRepository<Short, UUID> {
 
     @Query(value = "SELECT * FROM \"short\" ORDER BY RANDOM() LIMIT :size", nativeQuery = true)
     List<Short> findRandom(@Param("size") int size);
+
+    @Query(value = "SELECT * FROM \"short\" WHERE id NOT IN (:exclude) ORDER BY RANDOM() LIMIT :size", nativeQuery = true)
+    List<Short> findRandomExcluding(@Param("size") int size, @Param("exclude") List<UUID> exclude);
 }

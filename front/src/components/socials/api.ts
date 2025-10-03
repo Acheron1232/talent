@@ -71,6 +71,12 @@ export function useSocialsApi() {
     return (await res.json()) as T;
   }
 
+  function buildExcludeQS(excludeIds?: UUID[]): string {
+    if (!excludeIds || excludeIds.length === 0) return "";
+    const params = excludeIds.map((id) => `&exclude=${encodeURIComponent(id)}`).join("");
+    return params;
+  }
+
   return {
     // Profiles
     getCurrentProfile: () => request<ProfileDTO>(`/profile`),
@@ -92,7 +98,7 @@ export function useSocialsApi() {
     createComment: (payload: CommentCreationDTO) => request<void>(`/comments/create-comment`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Shorts
-    getShorts: () => request<ShortDTO[]>(`/shorts`),
+    getShorts: (size = 5, excludeIds?: UUID[]) => request<ShortDTO[]>(`/shorts?shorts_size=${size}${buildExcludeQS(excludeIds)}&ts=${Date.now()}`),
   };
 }
 
