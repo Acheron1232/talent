@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useSocialsApi } from "./api";
 import type { ShortDTO } from "./api";
+import CommentsThread from "./CommentsThread";
 // Simple TikTok-like vertical feed
 export default function ShortsPage() {
   const auth = useAuth();
@@ -215,6 +216,26 @@ export default function ShortsPage() {
                   {s.tags.map((t) => `#${t.name}`).join(" ")}
                 </div>
               )}
+              {/* Actions */}
+              <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center" }}>
+                <button
+                  style={{ padding: "6px 10px", background: "rgba(0,0,0,0.5)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 6 }}
+                  onClick={async () => {
+                    try {
+                      await api.like(s.id);
+                      setShorts(prev => prev.map(item => item.id === s.id ? { ...item, likesAmount: (item.likesAmount ?? 0) + 1 } : item));
+                    } catch {
+                      try {
+                        await api.unlike(s.id);
+                        setShorts(prev => prev.map(item => item.id === s.id ? { ...item, likesAmount: Math.max(0, (item.likesAmount ?? 0) - 1) } : item));
+                      } catch (e) { console.error(e); }
+                    }
+                  }}
+                >Like ({s.likesAmount ?? 0})</button>
+                <div>
+                  <CommentsThread contentEntityId={s.id} type="SHORT" />
+                </div>
+              </div>
             </div>
 
             {/* Sound toggle button */}

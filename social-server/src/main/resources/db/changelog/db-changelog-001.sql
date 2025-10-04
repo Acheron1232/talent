@@ -1,10 +1,10 @@
 create table comment
 (
-    isAReply            boolean      not null,
+    isareply            boolean      not null,
     created_at          timestamp(6) not null,
     profile_id          bigint,
     content_entity_id   uuid         not null,
-    id                  uuid         not null,
+    id                  uuid         not null DEFAULT gen_random_uuid(),
     original_comment_id uuid,
     content             varchar(255) not null,
     primary key (id)
@@ -12,14 +12,18 @@ create table comment
 
 create table content_entity
 (
-    id uuid not null,
+    id   uuid not null DEFAULT gen_random_uuid(),
+    likes_amount bigint not null  default 0,
+    content_type varchar(255) check (content_type in
+                             ('POST', 'SHORT')),
     primary key (id)
+
 );
 
 create table job_skill
 (
     profile_id bigint       not null,
-    id         uuid         not null,
+    id         uuid         not null DEFAULT gen_random_uuid(),
     experience varchar(255) check (experience in
                                    ('NONE', 'ONE_PLUS', 'TWO_PLUS', 'THREE_PLUS', 'FOUR_PLUS', 'FIVE_PLUS')),
     job_title  varchar(255) not null,
@@ -45,11 +49,10 @@ create table likes
 
 create table post
 (
-    likes_amount     integer      not null,
     reposted         boolean      not null,
     created_at       timestamp(6) not null,
     profile_id       bigint,
-    id               uuid         not null,
+    id               uuid         not null DEFAULT gen_random_uuid(),
     original_post_id uuid,
     text_content     varchar(255),
     primary key (id)
@@ -58,8 +61,8 @@ create table post
 create table post_preference
 (
     profile_id bigint unique,
-    id         uuid not null,
-    "exclude" text,
+    id         uuid not null DEFAULT gen_random_uuid(),
+    "exclude"  text,
     liked      text,
     primary key (id)
 );

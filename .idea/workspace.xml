@@ -4,24 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="Task 3: shorts page front-end fix">
+    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="Task 3: likes and comments implemented to shorts.&#10;&#10;save entity for liking both posts and shorts.&#10;same with comment.&#10;now each comment can be commented and this reply can be answered too. Fixed order of comments.">
+      <change afterPath="$PROJECT_DIR$/front/src/components/socials/CommentsThread.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ContentEntityRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ContentEntityService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/socials/PostDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/PostDetailPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/socials/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/socials/ShortsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/ShortsPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/components/socials/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/CommentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/LikeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/LikeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/id/LikeId.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/id/LikeId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/ContentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/ContentEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Short.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Short.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/mapper/ShortMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/mapper/ShortMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/CommentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ProfileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/ProfileDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/ProfileDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ShortRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ShortRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/PostDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/PostDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CreationImitatorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CreationImitatorService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/LikeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/LikeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ShortService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ShortService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/resources/application.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-001.sql" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-001.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-002.sql" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-002.sql" afterDir="false" />
     </list>
@@ -73,9 +81,9 @@
       <list>
         <option value="SimpleSourceFile" />
         <option value="HTML File" />
-        <option value="Class" />
         <option value="Record" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -104,57 +112,61 @@
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Gradle.Build auth-server.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build file-service.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build gateway.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build ide-service.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build mail-server.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build project-generator-service.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build resource-server.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build social-server.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build user-server.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;JavaScript Debug.sad.html.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AuthServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.FileServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.MailServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ProjectGeneratorServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ResourceServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TalentSocialsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.UserServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/mykyta/IdeaProjects/talent123/social-server/src/main/resources/db/changelog&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/mykyta/IdeaProjects/talent123/front/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Gradle.Build auth-server.executor": "Run",
+    "Gradle.Build file-service.executor": "Run",
+    "Gradle.Build gateway.executor": "Run",
+    "Gradle.Build ide-service.executor": "Run",
+    "Gradle.Build mail-server.executor": "Run",
+    "Gradle.Build project-generator-service.executor": "Run",
+    "Gradle.Build resource-server.executor": "Run",
+    "Gradle.Build social-server.executor": "Run",
+    "Gradle.Build user-server.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "JavaScript Debug.sad.html.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.AuthServerApplication.executor": "Run",
+    "Spring Boot.FileServiceApplication.executor": "Run",
+    "Spring Boot.GatewayApplication.executor": "Run",
+    "Spring Boot.MailServerApplication.executor": "Run",
+    "Spring Boot.ProjectGeneratorServiceApplication.executor": "Run",
+    "Spring Boot.ResourceServerApplication.executor": "Run",
+    "Spring Boot.TalentSocialsApplication.executor": "Run",
+    "Spring Boot.UserServerApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/mykyta/IdeaProjects/talent123/social-server/src/main/resources/db/changelog",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "/home/mykyta/IdeaProjects/talent123/front/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.mykyda.talantsocials.service" />
+      <recent name="com.mykyda.talantsocials.database.repository" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/social-server/src/main/resources/db/changelog" />
       <recent name="$PROJECT_DIR$" />
@@ -295,7 +307,9 @@
       <workItem from="1759445165991" duration="3626000" />
       <workItem from="1759500775365" duration="83000" />
       <workItem from="1759514086681" duration="5510000" />
-      <workItem from="1759519826240" duration="240000" />
+      <workItem from="1759519826240" duration="1092000" />
+      <workItem from="1759578767062" duration="7264000" />
+      <workItem from="1759586338260" duration="4427000" />
     </task>
     <task id="LOCAL-00001" summary="Task 3: shorts page front-end fix">
       <option name="closed" value="true" />
@@ -305,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759514129194</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Task 3: profile id now same as user id. liquibase fix.">
+      <option name="closed" value="true" />
+      <created>1759520306109</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759520306109</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -332,7 +354,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Task 3: likes are universal now" />
     <MESSAGE value="Task 3: shorts page front-end fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Task 3: shorts page front-end fix" />
+    <MESSAGE value="Task 3: profile id now same as user id. liquibase fix." />
+    <MESSAGE value="Task 3: likes and comments implemented to shorts.&#10;&#10;save entity for liking both posts and shorts.&#10;same with comment.&#10;now each comment can be commented and this reply can be answered too. Fixed order of comments." />
+    <option name="LAST_COMMIT_MESSAGE" value="Task 3: likes and comments implemented to shorts.&#10;&#10;save entity for liking both posts and shorts.&#10;same with comment.&#10;now each comment can be commented and this reply can be answered too. Fixed order of comments." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -351,11 +375,6 @@
           <url>file://$PROJECT_DIR$/user-server/src/main/java/com/acheron/userserver/api/grpc/UserGrpcService.java</url>
           <line>25</line>
           <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ShortService.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -159,11 +159,11 @@ public class ProfileService {
     @Transactional
     public Profile getById(Long id) {
         try {
-            var checkByUserId = profileRepository.findById(id);
-            if (checkByUserId.isEmpty()) {
+            var checkById = profileRepository.findById(id);
+            if (checkById.isEmpty()) {
                 throw new EntityNotFoundException("Profile with id " + id + " not found");
             }
-            return checkByUserId.get();
+            return checkById.get();
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }

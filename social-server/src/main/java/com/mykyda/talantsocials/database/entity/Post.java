@@ -1,28 +1,20 @@
 package com.mykyda.talantsocials.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Builder
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "post")
-@NoArgsConstructor
-@AllArgsConstructor
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
 public class Post extends ContentEntity {
 
     @Column(nullable = false)
@@ -45,8 +37,4 @@ public class Post extends ContentEntity {
     @Column(nullable = false)
     @Builder.Default
     private Timestamp createdAt = Timestamp.from(Instant.now());
-
-    @Column(nullable = false)
-    @Builder.Default
-    private Integer likesAmount = 0;
 }

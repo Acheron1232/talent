@@ -4,6 +4,7 @@ import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.entity.Short;
 import com.mykyda.talantsocials.database.entity.ShortElement;
 import com.mykyda.talantsocials.database.entity.Tag;
+import com.mykyda.talantsocials.database.enums.UserContentType;
 import com.mykyda.talantsocials.database.mapper.ShortMapper;
 import com.mykyda.talantsocials.database.repository.ProfileRepository;
 import com.mykyda.talantsocials.database.repository.ShortRepository;
@@ -11,6 +12,7 @@ import com.mykyda.talantsocials.database.repository.TagRepository;
 import com.mykyda.talantsocials.dto.create.ShortCreationDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,11 +41,12 @@ public class ShortService {
                         .orElseGet(() -> tagRepository.save(tag)))
                 .collect(Collectors.toList());
         shorT.setTags(tags);
+        shorT.setContentType(UserContentType.SHORT);
         shortRepository.save(shorT);
     }
 
     public List<Short> findAll(Integer size, Long id) {
-        return shortRepository.findRandom(size);
+        return shortRepository.findRandom(Pageable.ofSize(size));
     }
 
     public List<Short> findAllExcluding(Integer size, Long id, List<UUID> exclude) {

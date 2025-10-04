@@ -2,6 +2,7 @@ package com.mykyda.talantsocials.service;
 
 import com.mykyda.talantsocials.database.entity.Post;
 import com.mykyda.talantsocials.database.entity.Profile;
+import com.mykyda.talantsocials.database.enums.UserContentType;
 import com.mykyda.talantsocials.database.repository.PostRepository;
 import com.mykyda.talantsocials.dto.PostDTO;
 import com.mykyda.talantsocials.dto.create.PostCreationDTO;
@@ -35,7 +36,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostDTO> findByProfileIdPaged(Long profileId, PageRequest pageRequest) {
         try {
-            var posts = postRepository.findAllByProfileIdOrderByCreatedAt(profileId, pageRequest).stream().map(PostDTO::of).toList();
+            var posts = postRepository.findAllByProfileIdOrderByCreatedAtDesc(profileId, pageRequest).stream().map(PostDTO::of).toList();
             log.info("posts found: {} for profile id {}", posts, profileId);
             return posts;
         } catch (DataAccessException e) {
@@ -59,7 +60,7 @@ public class PostService {
     }
 
     @Transactional
-    public void post(Long userId, PostCreationDTO postDTO) {
+    public void create(Long userId, PostCreationDTO postDTO) {
         var profileId = profileService.getById(userId).getId();
         try {
             var reposted = postDTO.isReposted();
@@ -69,6 +70,7 @@ public class PostService {
                     throw new EntityNotFoundException("original post not found with id " + postDTO.getOriginalPostId());
                 }
                 var postToSave = Post.builder()
+                        .contentType(UserContentType.POST)
                         .reposted(postDTO.isReposted())
                         .originalPost(entityManager.getReference(Post.class, postDTO.getOriginalPostId()))
                         .profile(entityManager.getReference(Profile.class, profileId))
@@ -78,6 +80,7 @@ public class PostService {
                 postRepository.save(postToSave);
             } else {
                 var postToSave = Post.builder()
+                        .contentType(UserContentType.POST)
                         .reposted(postDTO.isReposted())
                         .profile(entityManager.getReference(Profile.class, profileId))
                         .textContent(postDTO.getTextContent())
@@ -111,36 +114,5 @@ public class PostService {
 
     public List<PostDTO> explore() {
         return null;
-    }
-
-    @Transactional
-    public void like(UUID postId) {
-        try {
-            postRepository.incrementLikes(postId);
-        } catch (DataAccessException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
-    @Transactional
-    public void unlike(UUID postId) {
-        try {
-            postRepository.decrementLikes(postId);
-        } catch (DataAccessException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
-    @Transactional
-    public UUID checkById(UUID uuid) {
-        try {
-            var checkById = postRepository.findById(uuid);
-            if (checkById.isEmpty()) {
-                throw new EntityNotFoundException("Post with id " + uuid + " not found");
-            }
-            return checkById.get().getId();
-        } catch (DataAccessException e) {
-            throw new DatabaseException(e.getMessage());
-        }
     }
 }

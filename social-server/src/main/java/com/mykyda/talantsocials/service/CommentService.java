@@ -91,13 +91,13 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentDTO> getCommentsForPostPaged(UUID postId, PageRequest pageRequest) {
+    public List<CommentDTO> getCommentsPaged(UUID contentEntityId, PageRequest pageRequest) {
         try {
-            var comments = commentRepository.findAllByContentEntityIdAndIsAReplyNotOrderByCreatedAt(postId, true, pageRequest)
+            var comments = commentRepository.findAllByContentEntityIdAndIsAReplyNotOrderByCreatedAtDesc(contentEntityId, true, pageRequest)
                     .stream()
                     .map(CommentDTO::of)
                     .toList();
-            log.info("comments for post {} acquired", postId);
+            log.info("comments for contentEntity {} acquired", contentEntityId);
             return comments;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -107,7 +107,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentDTO> getRepliesPaged(UUID commentId, PageRequest pageRequest) {
         try {
-            var comments = commentRepository.findAllByOriginalCommentIdOrderByCreatedAt(commentId, pageRequest)
+            var comments = commentRepository.findAllByOriginalCommentIdOrderByCreatedAtDesc(commentId, pageRequest)
                     .stream()
                     .map(CommentDTO::of)
                     .toList();

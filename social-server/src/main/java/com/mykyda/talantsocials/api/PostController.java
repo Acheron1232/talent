@@ -40,7 +40,7 @@ public class PostController {
     @PostMapping("/create-post")
     public ResponseEntity<String> createPost(@RequestBody PostCreationDTO postDTO,
                                              @AuthenticationPrincipal Jwt jwt) {
-        postService.post(Long.valueOf(jwt.getClaims().get("id").toString()), postDTO);
+        postService.create(Long.valueOf(jwt.getClaims().get("id").toString()), postDTO);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,10 +1,8 @@
 package com.mykyda.talantsocials.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,9 +11,12 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@SuperBuilder
 @AllArgsConstructor
-@NoArgsConstructor
-public class Short extends BaseEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "short")
+public class Short extends ContentEntity {
+
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
@@ -34,8 +35,6 @@ public class Short extends BaseEntity {
     )
     private List<Tag> tags = new ArrayList<>();
 
-    private Long likes = 0L;
-
     private Long views = 0L;
 
     @Column(columnDefinition = "TEXT")
@@ -43,10 +42,6 @@ public class Short extends BaseEntity {
 
     @Column(name = "is_public")
     private Boolean isPublic;
-
-    //TODO
-//    @OneToMany(mappedBy = "short")
-//    private List<Comment> comments;
 
     @Column(updatable = false,name = "created_at")
     private Instant createdAt = Instant.now();

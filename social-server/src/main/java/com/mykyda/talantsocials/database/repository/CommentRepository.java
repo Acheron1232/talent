@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, UUID> {
-    List<Comment> findAllByContentEntityIdAndIsAReplyNotOrderByCreatedAt(UUID postId, Boolean bool, Pageable pageRequest);
+    List<Comment> findAllByContentEntityIdAndIsAReplyNotOrderByCreatedAtDesc(UUID postId, Boolean bool, Pageable pageRequest);
 
-    List<Comment> findAllByOriginalCommentIdOrderByCreatedAt(UUID originalCommentId, Pageable pageRequest);
+    List<Comment> findAllByOriginalCommentIdOrderByCreatedAtDesc(UUID originalCommentId, Pageable pageRequest);
 }

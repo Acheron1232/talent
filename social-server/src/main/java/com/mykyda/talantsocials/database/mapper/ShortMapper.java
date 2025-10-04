@@ -17,7 +17,7 @@ public interface ShortMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "profile", ignore = true)
-    @Mapping(target = "likes", constant = "0L")
+    @Mapping(target = "likesAmount", constant = "0L")
     @Mapping(target = "views", constant = "0L")
     @Mapping(target = "createdAt", expression = "java(java.time.Instant.now())")
     Short toEntity(ShortCreationDto dto);

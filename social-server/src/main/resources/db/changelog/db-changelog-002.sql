@@ -3,7 +3,6 @@ CREATE TABLE short (
                        profile_id bigint NOT NULL references profile(id),
                        description TEXT,
                        type VARCHAR(20) NOT NULL,
-                       likes BIGINT DEFAULT 0,
                        views BIGINT DEFAULT 0,
                        is_public BOOLEAN DEFAULT True,
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

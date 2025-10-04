@@ -24,7 +24,7 @@ public class LikeController {
     public List<LikeDTO> getLikesPageByPostId(@PathVariable("postId") UUID postId,
                                               @RequestParam("page") Integer page,
                                               @RequestParam("size") Integer size) {
-        return likeService.getLikesForPostPaged(postId, PageRequest.of(page, size));
+        return likeService.getLikesPaged(postId, PageRequest.of(page, size));
     }
 
     @PostMapping("/like")

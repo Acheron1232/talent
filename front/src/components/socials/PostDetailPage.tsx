@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import { useSocialsApi } from "./api";
-import type { CommentDTO, PostDTO } from "./api";
+import type { PostDTO } from "./api";
 import { useAuth } from "react-oidc-context";
+import CommentsThread from "./CommentsThread";
 
 export default function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>();
@@ -10,8 +11,6 @@ export default function PostDetailPage() {
   const auth = useAuth();
 
   const [post, setPost] = useState<PostDTO | null>(null);
-  const [comments, setComments] = useState<CommentDTO[]>([]);
-  const [commentInput, setCommentInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,9 +24,6 @@ export default function PostDetailPage() {
         const p = await api.getPostById(postId);
         if (!mounted) return;
         setPost(p);
-        const cs = await api.getComments(postId, 0, 20);
-        if (!mounted) return;
-        setComments(cs);
       } catch (e: any) {
         setError(e.message || String(e));
       } finally {
@@ -99,22 +95,7 @@ export default function PostDetailPage() {
 
       <div style={{ marginTop: 16 }}>
         <h3>Comments</h3>
-        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-          <input
-            placeholder="Write a comment..."
-            value={commentInput}
-            onChange={(e) => setCommentInput(e.target.value)}
-            style={{ flex: 1 }}
-          />
-          <button onClick={onCommentSubmit}>Send</button>
-        </div>
-        {comments.length === 0 && <div>No comments yet.</div>}
-        {comments.map((c) => (
-          <div key={c.id} style={{ borderTop: "1px solid #eee", padding: "8px 0" }}>
-            <div style={{ fontSize: 13, color: "#666" }}>{new Date(c.createdAt || "").toLocaleString()}</div>
-            <div style={{ whiteSpace: "pre-wrap" }}>{c.content}</div>
-          </div>
-        ))}
+        {post && <CommentsThread contentEntityId={post.id} type="POST" />}
       </div>
     </div>
   );

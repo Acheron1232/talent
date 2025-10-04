@@ -3,6 +3,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import { useSocialsApi } from "./api";
 import type { PostDTO, PostCreationDTO, ProfileDTO } from "./api";
 import { useAuth } from "react-oidc-context";
+import CommentsThread from "./CommentsThread";
 
 export default function ProfilePage() {
   const { tag } = useParams<{ tag?: string }>();
@@ -120,27 +121,29 @@ export default function ProfilePage() {
       )}
 
       {/* Create / Repost */}
-      <div style={{ marginTop: 16 }}>
-        <h3>{repostOf ? "Repost" : "Create a post"}</h3>
-        <textarea
-          placeholder={repostOf ? "Add your thoughts (optional)" : "What's happening?"}
-          value={newPostText}
-          onChange={(e) => setNewPostText(e.target.value)}
-          rows={3}
-          style={{ width: "100%" }}
-        />
-        <div style={{ marginTop: 8 }}>
-          <button onClick={async () => {
-            const payload: PostCreationDTO = repostOf
-              ? { reposted: true, originalPostId: repostOf, textContent: newPostText || undefined }
-              : { reposted: false, textContent: newPostText || undefined };
-            await createPost(payload);
-          }}>{repostOf ? "Repost" : "Post"}</button>
-          {repostOf && (
-            <button style={{ marginLeft: 8 }} onClick={() => setRepostOf(null)}>Cancel repost</button>
-          )}
+      {(isOwnProfile || repostOf) && (
+        <div style={{ marginTop: 16 }}>
+          <h3>{repostOf ? "Repost" : "Create a post"}</h3>
+          <textarea
+            placeholder={repostOf ? "Add your thoughts (optional)" : "What's happening?"}
+            value={newPostText}
+            onChange={(e) => setNewPostText(e.target.value)}
+            rows={3}
+            style={{ width: "100%" }}
+          />
+          <div style={{ marginTop: 8 }}>
+            <button onClick={async () => {
+              const payload: PostCreationDTO = repostOf
+                ? { reposted: true, originalPostId: repostOf, textContent: newPostText || undefined }
+                : { reposted: false, textContent: newPostText || undefined };
+              await createPost(payload);
+            }}>{repostOf ? "Repost" : "Post"}</button>
+            {repostOf && (
+              <button style={{ marginLeft: 8 }} onClick={() => setRepostOf(null)}>Cancel repost</button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Posts list */}
       <div style={{ marginTop: 24 }}>
@@ -168,6 +171,9 @@ export default function ProfilePage() {
               <button onClick={() => onLikeToggle(p)}>Like ({p.likesAmount ?? 0})</button>
               <button onClick={() => navigate(`/socials/posts/${p.id}`)}>Open</button>
               <button onClick={() => setRepostOf(p.id)}>Repost</button>
+            </div>
+            <div>
+              <CommentsThread contentEntityId={p.id} type="POST" />
             </div>
           </div>
         ))}

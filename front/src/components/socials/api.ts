@@ -36,16 +36,20 @@ export interface LikeCreationDTO { postId: UUID }
 
 export interface CommentDTO {
   id: UUID;
-  postId: UUID;
+  contentEntityId: UUID;
+  profile?: ProfileDTO;
   content: string;
+  isAReply?: boolean;
+  originalCommentId?: UUID | null;
   createdAt?: string;
 }
 
 export interface CommentCreationDTO {
-  postId: UUID;
+  contentEntityId: UUID;
   isAReply: boolean;
   originalCommentId?: UUID | null;
   content: string;
+  type: "POST" | "SHORT";
 }
 
 export function useSocialsApi() {
@@ -85,8 +89,8 @@ export function useSocialsApi() {
     patchTag: (tag: string) => request<void>(`/profile/patch-tag`, { method: "PATCH", body: JSON.stringify({ tag }) }),
 
     // Posts
-    getPostsByProfileId: (profileId: UUID, page = 0, size = 10) => request<PostDTO[]>(`/posts/get-posts/${profileId}?page=${page}&size=${size}`),
-    getPostById: (postId: UUID) => request<PostDTO>(`/posts/get-post/${postId}`),
+    getPostsByProfileId: (profileId: UUID, page = 0, size = 10) => request<PostDTO[]>(`/posts/get-posts/${profileId}?page=${page}&size=${size}&ts=${Date.now()}`),
+    getPostById: (postId: UUID) => request<PostDTO>(`/posts/get-post/${postId}?ts=${Date.now()}`),
     createPost: (payload: PostCreationDTO) => request<void>(`/posts/create-post`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Likes
@@ -94,7 +98,8 @@ export function useSocialsApi() {
     unlike: (contentEntityId: UUID) => request<void>(`/likes/unlike`, { method: "DELETE", body: JSON.stringify({ contentEntityId }) }),
 
     // Comments
-    getComments: (contentEntityId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${contentEntityId}/?page=${page}&size=${size}`),
+    getComments: (contentEntityId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${contentEntityId}?page=${page}&size=${size}`),
+    getReplies: (commentId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-replies/${commentId}?page=${page}&size=${size}`),
     createComment: (payload: CommentCreationDTO) => request<void>(`/comments/create-comment`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Shorts
@@ -112,7 +117,7 @@ export interface ShortDTO {
   type: string;
   elements: ShortElementDTO[];
   tags: ShortTagDTO[];
-  likes: number;
+  likesAmount: number;
   views: number;
   description?: string;
   isPublic?: boolean;

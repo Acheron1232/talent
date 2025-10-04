@@ -27,7 +27,7 @@ public class PostDTO {
 
     private Timestamp createdAt;
 
-    private Integer likesAmount;
+    private Long likesAmount;
 
     public static PostDTO of(Post post) {
         return PostDTO.builder()
