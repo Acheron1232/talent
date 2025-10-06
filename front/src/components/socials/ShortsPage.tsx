@@ -134,17 +134,24 @@ export default function ShortsPage() {
   if (error) return <div style={{ padding: 16 }}>Error: {error}</div>;
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        overflowY: "auto",
-        overflowX: "hidden",
-        scrollSnapType: "y mandatory",
-        background: "#000",
-        color: "#fff",
-      }}
-    >
+    <>
+      <style>{`
+        /* Hide vertical scrollbar (slider) on Shorts page */
+        .sr-no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .sr-no-scrollbar::-webkit-scrollbar { display: none; }
+      `}</style>
+      <div
+        className="sr-no-scrollbar"
+        style={{
+          width: "100vw",
+          height: "100vh",
+          overflowY: "auto",
+          overflowX: "hidden",
+          scrollSnapType: "y mandatory",
+          background: "#000",
+          color: "#fff",
+        }}
+      >
       {shorts.map((s, idx) => {
         const itemKey = `${s.id}-${idx}`;
         const videoUrl = s.elements?.find((e) => e.type === "VIDEO")?.url || "";
@@ -264,5 +271,6 @@ export default function ShortsPage() {
         </div>
       )}
     </div>
+    </>
   );
 }

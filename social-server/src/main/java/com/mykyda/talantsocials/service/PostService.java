@@ -36,7 +36,10 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostDTO> findByProfileIdPaged(Long profileId, PageRequest pageRequest) {
         try {
-            var posts = postRepository.findAllByProfileIdOrderByCreatedAtDesc(profileId, pageRequest).stream().map(PostDTO::of).toList();
+            var posts = postRepository.findAllByProfileIdOrderByCreatedAtDesc(profileId, pageRequest)
+                    .stream()
+                    .map(PostDTO::of)
+                    .toList();
             log.info("posts found: {} for profile id {}", posts, profileId);
             return posts;
         } catch (DataAccessException e) {

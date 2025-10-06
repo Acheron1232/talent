@@ -120,6 +120,11 @@ export default function ProfilePage() {
         </div>
       )}
 
+      {/* Quick nav */}
+      <div style={{ marginTop: 12 }}>
+        <button onClick={() => navigate("/socials/shorts")}>Open Shorts</button>
+      </div>
+
       {/* Create / Repost */}
       {(isOwnProfile || repostOf) && (
         <div style={{ marginTop: 16 }}>
@@ -132,12 +137,17 @@ export default function ProfilePage() {
             style={{ width: "100%" }}
           />
           <div style={{ marginTop: 8 }}>
-            <button onClick={async () => {
-              const payload: PostCreationDTO = repostOf
-                ? { reposted: true, originalPostId: repostOf, textContent: newPostText || undefined }
-                : { reposted: false, textContent: newPostText || undefined };
-              await createPost(payload);
-            }}>{repostOf ? "Repost" : "Post"}</button>
+            <button
+              disabled={!repostOf && newPostText.trim().length === 0}
+              onClick={async () => {
+                const text = newPostText.trim();
+                if (!repostOf && text.length === 0) return; // prevent empty posts
+                const payload: PostCreationDTO = repostOf
+                  ? { reposted: true, originalPostId: repostOf, textContent: text || undefined }
+                  : { reposted: false, textContent: text };
+                await createPost(payload);
+              }}
+            >{repostOf ? "Repost" : "Post"}</button>
             {repostOf && (
               <button style={{ marginLeft: 8 }} onClick={() => setRepostOf(null)}>Cancel repost</button>
             )}
@@ -162,7 +172,10 @@ export default function ProfilePage() {
             </div>
             <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{p.textContent}</div>
             {p.reposted && p.originalPost && (
-              <div style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "#fafafa" }}>
+              <div
+                onClick={() => navigate(`/socials/posts/${p.originalPost?.id}`)}
+                style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "transparent", cursor: "pointer" }}
+              >
                 <div style={{ fontSize: 13, color: "#666" }}>Original by @{p.originalPost.profile?.tag}</div>
                 <div style={{ whiteSpace: "pre-wrap" }}>{p.originalPost.textContent}</div>
               </div>

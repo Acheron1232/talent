@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import { useSocialsApi } from "./api";
 import type { PostDTO } from "./api";
 import { useAuth } from "react-oidc-context";
@@ -9,6 +9,7 @@ export default function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>();
   const api = useSocialsApi();
   const auth = useAuth();
+  const navigate = useNavigate();
 
   const [post, setPost] = useState<PostDTO | null>(null);
   const [loading, setLoading] = useState(true);
@@ -83,7 +84,10 @@ export default function PostDetailPage() {
         </div>
         <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{post.textContent}</div>
         {post.reposted && post.originalPost && (
-          <div style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "#fafafa" }}>
+          <div
+            onClick={() => navigate(`/socials/posts/${post.originalPost?.id}`)}
+            style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "transparent", cursor: "pointer" }}
+          >
             <div style={{ fontSize: 13, color: "#666" }}>Original by @{post.originalPost.profile?.tag}</div>
             <div style={{ whiteSpace: "pre-wrap" }}>{post.originalPost.textContent}</div>
           </div>

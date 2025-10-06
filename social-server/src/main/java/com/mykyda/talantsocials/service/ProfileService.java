@@ -23,6 +23,9 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
+    //todo:rework
+    private final String DEFAULT_PROFILE_PICTURE_URL = "url";
+
 
     @Transactional(readOnly = true)
     public ProfileDTO getCurrentProfile(Long id) {
@@ -59,12 +62,12 @@ public class ProfileService {
     public void createProfile(ProfileCreationDTO profileCreationDTO) {
         try {
             checkById(profileCreationDTO.id());
-            checkByTag(profileCreationDTO.tag());
+            checkByTag(profileCreationDTO.tag().trim().replaceAll(" ",""));
             var profileToSave = Profile.builder()
                     .id(profileCreationDTO.id())
                     .displayName(profileCreationDTO.displayName())
-                    .profilePictureUrl(profileCreationDTO.profilePictureUrl())
-                    .tag(profileCreationDTO.tag())
+                    .profilePictureUrl(profileCreationDTO.profilePictureUrl() == null ? DEFAULT_PROFILE_PICTURE_URL : profileCreationDTO.profilePictureUrl())
+                    .tag(profileCreationDTO.tag().trim().replaceAll(" ",""))
                     .build();
 
             PostPreference pref = PostPreference.builder()
