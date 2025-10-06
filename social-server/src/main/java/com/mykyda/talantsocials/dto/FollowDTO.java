@@ -1,7 +1,6 @@
 package com.mykyda.talantsocials.dto;
 
 import com.mykyda.talantsocials.database.entity.Follow;
-import com.mykyda.talantsocials.database.entity.Like;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
