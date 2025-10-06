@@ -97,7 +97,7 @@ public class CommentService {
                     .stream()
                     .map(CommentDTO::of)
                     .toList();
-            log.info("comments for contentEntity {} acquired", contentEntityId);
+            log.debug("comments for contentEntity {} acquired", contentEntityId);
             return comments;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -111,7 +111,7 @@ public class CommentService {
                     .stream()
                     .map(CommentDTO::of)
                     .toList();
-            log.info("replies for comment {} acquired", commentId);
+            log.debug("replies for comment {} acquired", commentId);
             return comments;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());

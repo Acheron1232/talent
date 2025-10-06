@@ -43,7 +43,8 @@ public class Short extends ContentEntity {
     @Column(name = "is_public")
     private Boolean isPublic;
 
-    @Column(updatable = false,name = "created_at")
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Builder.Default
     private Instant createdAt = Instant.now();
 
     public enum Type {

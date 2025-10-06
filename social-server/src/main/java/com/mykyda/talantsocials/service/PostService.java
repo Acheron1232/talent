@@ -17,8 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +38,7 @@ public class PostService {
                     .stream()
                     .map(PostDTO::of)
                     .toList();
-            log.info("posts found: {} for profile id {}", posts, profileId);
+            log.debug("posts found: {} for profile id {}", posts, profileId);
             return posts;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -53,6 +51,7 @@ public class PostService {
             var postOptional = postRepository.findById(postId);
             if (postOptional.isPresent()) {
                 var post = postOptional.get();
+                log.debug("post found with id {}", post.getId());
                 return PostDTO.of(post);
             } else {
                 throw new EntityNotFoundException("post not found");
@@ -78,7 +77,6 @@ public class PostService {
                         .originalPost(entityManager.getReference(Post.class, postDTO.getOriginalPostId()))
                         .profile(entityManager.getReference(Profile.class, profileId))
                         .textContent(postDTO.getTextContent())
-                        .createdAt(Timestamp.from(Instant.now()))
                         .build();
                 postRepository.save(postToSave);
             } else {
@@ -87,7 +85,6 @@ public class PostService {
                         .reposted(postDTO.isReposted())
                         .profile(entityManager.getReference(Profile.class, profileId))
                         .textContent(postDTO.getTextContent())
-                        .createdAt(Timestamp.from(Instant.now()))
                         .build();
                 postRepository.save(postToSave);
             }

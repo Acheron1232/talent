@@ -2,10 +2,7 @@ package com.mykyda.talantsocials.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -26,8 +23,8 @@ public class ShortElement extends BaseEntity {
     @JsonIgnore
     private Short shorT;
 
-    @Column(updatable = false,name = "created_at")
-    private Instant createdAt =  Instant.now();
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private Instant createdAt = Instant.now();
 
     public enum Type {
         VIDEO,IMAGE,MUSIC

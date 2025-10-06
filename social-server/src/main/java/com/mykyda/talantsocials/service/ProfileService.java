@@ -32,7 +32,7 @@ public class ProfileService {
         try {
             var profile = profileRepository.findById(id);
             if (profile.isPresent()) {
-                log.info("profile found with id {}", id);
+                log.debug("profile found with id {}", id);
                 return ProfileDTO.ofFull(profile.get());
             } else {
                 throw new EntityNotFoundException("Profile with id " + id + " not found");
@@ -48,7 +48,7 @@ public class ProfileService {
         try {
             var profile = profileRepository.findByTag(profileTag);
             if (profile.isPresent()) {
-                log.info("profile found with tag {}", profileTag);
+                log.debug("profile found with tag {}", profileTag);
                 return ProfileDTO.ofFull(profile.get());
             } else {
                 throw new EntityNotFoundException("Profile with tag " + profileTag + " not found");

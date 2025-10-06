@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -27,7 +27,7 @@ public class CommentDTO {
 
     private UUID originalCommentId;
 
-    private Timestamp createdAt;
+    private Instant createdAt;
 
     public static CommentDTO of(Comment comment) {
         return CommentDTO.builder()

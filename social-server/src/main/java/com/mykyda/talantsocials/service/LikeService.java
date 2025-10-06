@@ -18,8 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +48,6 @@ public class LikeService {
                     .id(id)
                     .contentEntity(entityManager.getReference(ContentEntity.class, contentId))
                     .profile(entityManager.getReference(Profile.class, profileId))
-                    .createdAt(Timestamp.from(Instant.now()))
                     .build();
             likeRepository.save(likeToSave);
             log.info("content with id {} liked by profile id {}", contentId, profileId);
@@ -81,7 +78,7 @@ public class LikeService {
     public List<LikeDTO> getLikesPaged(UUID postId, PageRequest pageRequest) {
         try {
             var likes = likeRepository.findAllByContentEntityId(postId, pageRequest).stream().map(LikeDTO::of).toList();
-            log.info("likes for content {} acquired", postId);
+            log.debug("likes for content {} acquired", postId);
             return likes;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());

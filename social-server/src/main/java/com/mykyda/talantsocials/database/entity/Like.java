@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 
 @Data
@@ -35,7 +34,7 @@ public class Like {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @Column
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     @Builder.Default
-    private Timestamp createdAt = Timestamp.from(Instant.now());
+    private Instant createdAt = Instant.now();
 }

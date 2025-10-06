@@ -1,10 +1,10 @@
 create table comment
 (
     isareply            boolean      not null,
-    created_at          timestamp(6) not null,
+    created_at          timestamp(6) WITH TIME ZONE DEFAULT NOW(),
     profile_id          bigint,
     content_entity_id   uuid         not null,
-    id                  uuid         not null DEFAULT gen_random_uuid(),
+    id                  uuid         not null       DEFAULT gen_random_uuid(),
     original_comment_id uuid,
     content             varchar(255) not null,
     primary key (id)
@@ -41,7 +41,7 @@ create table language_skill
 
 create table likes
 (
-    created_at        timestamp(6),
+    created_at        timestamp(6) WITH TIME ZONE DEFAULT NOW(),
     profile_id        bigint not null,
     content_entity_id uuid   not null,
     primary key (profile_id, content_entity_id)
@@ -49,10 +49,10 @@ create table likes
 
 create table post
 (
-    reposted         boolean      not null,
-    created_at       timestamp(6) not null,
+    reposted         boolean not null,
+    created_at       timestamp(6) WITH TIME ZONE DEFAULT NOW(),
     profile_id       bigint,
-    id               uuid         not null DEFAULT gen_random_uuid(),
+    id               uuid    not null            DEFAULT gen_random_uuid(),
     original_post_id uuid,
     text_content     varchar(255),
     primary key (id)

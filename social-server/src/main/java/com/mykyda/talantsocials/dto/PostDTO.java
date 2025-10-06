@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -25,7 +25,7 @@ public class PostDTO {
 
     private String textContent;
 
-    private Timestamp createdAt;
+    private Instant createdAt;
 
     private Long likesAmount;
 

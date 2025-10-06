@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -18,7 +18,7 @@ public class FollowDTO {
 
     private ProfileDTO followed;
 
-    private Timestamp createdAt;
+    private Instant createdAt;
 
     public static FollowDTO of(Follow follow) {
         return FollowDTO.builder()

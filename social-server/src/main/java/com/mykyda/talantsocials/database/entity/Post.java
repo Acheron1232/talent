@@ -6,7 +6,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 
 @Getter
@@ -34,7 +33,7 @@ public class Post extends ContentEntity {
     @Column
     private String textContent;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     @Builder.Default
-    private Timestamp createdAt = Timestamp.from(Instant.now());
+    private Instant createdAt = Instant.now();
 }

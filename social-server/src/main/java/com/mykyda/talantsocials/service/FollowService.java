@@ -15,8 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 
 @Slf4j
@@ -47,7 +45,6 @@ public class FollowService {
                     .id(id)
                     .follower(entityManager.getReference(Profile.class, follower.getId()))
                     .followed(entityManager.getReference(Profile.class, followed.getId()))
-                    .createdAt(Timestamp.from(Instant.now()))
                     .build();
             followRepository.save(followToSave);
             log.info("followed {} by {}", followedId, followerId);
@@ -80,7 +77,7 @@ public class FollowService {
     public List<FollowDTO> getFollows(Long followerId, PageRequest pageRequest) {
         try {
             var follows = followRepository.findAllByFollowerId(followerId, pageRequest).stream().map(FollowDTO::of).toList();
-            log.info("follows for profile {} acquired", followerId);
+            log.debug("follows for profile {} acquired", followerId);
             return follows;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -91,7 +88,7 @@ public class FollowService {
     public List<FollowDTO> getFollowedBy(Long followedId, PageRequest pageRequest) {
         try {
             var followedBy = followRepository.findAllByFollowedId(followedId, pageRequest).stream().map(FollowDTO::of).toList();
-            log.info("followed by for profile {} acquired", followedId);
+            log.debug("followed by for profile {} acquired", followedId);
             return followedBy;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
