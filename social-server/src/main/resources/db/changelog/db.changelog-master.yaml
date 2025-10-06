@@ -3,3 +3,6 @@ databaseChangeLog:
       file: db/changelog/db-changelog-001.sql
   - include:
       file: db/changelog/db-changelog-002.sql
+  - include:
+      file: db/changelog/db-changelog-003.sql
+

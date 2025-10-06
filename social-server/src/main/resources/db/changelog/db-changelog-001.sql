@@ -12,10 +12,10 @@ create table comment
 
 create table content_entity
 (
-    id   uuid not null DEFAULT gen_random_uuid(),
-    likes_amount bigint not null  default 0,
+    id           uuid   not null DEFAULT gen_random_uuid(),
+    likes_amount bigint not null default 0,
     content_type varchar(255) check (content_type in
-                             ('POST', 'SHORT')),
+                                     ('POST', 'SHORT')),
     primary key (id)
 
 );
@@ -78,5 +78,7 @@ create table profile
     status              varchar(255) check (status in ('NEWBIE', 'EMPLOYEE', 'EMPLOYER', 'COMPANY', 'HIRED')),
     tag                 varchar(255) not null unique,
     bio_markdown        text,
+    followers_amount    bigint       not null default 0,
+    following_amount    bigint       not null default 0,
     primary key (id)
 );

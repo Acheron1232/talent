@@ -4,14 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="Task 3: likes and comments implemented to shorts.&#10;&#10;save entity for liking both posts and shorts.&#10;same with comment.&#10;now each comment can be commented and this reply can be answered too. Fixed order of comments.">
+    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="Task 3: some validation.&#10;&#10;tag now trimmed to not contain whitespaces. profile picture url validation with default url (needs rework in future)">
+      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/FollowController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Follow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/id/FollowId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/FollowDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/FollowService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-003.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/components/socials/PostDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/PostDetailPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/src/components/socials/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/components/socials/ShortsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/ShortsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ShortRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ShortRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/socials/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Subscription.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/id/SubscriptionId.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/ProfileRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/SubscriptionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/FollowRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/ProfileDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/ProfileDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/LikeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/LikeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-001.sql" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-001.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db.changelog-master.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db.changelog-master.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,6 +94,9 @@
     &quot;accountId&quot;: &quot;c9c1b613-da18-4da3-bf06-ee1732e3e0eb&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 2
@@ -144,6 +159,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.mykyda.talantsocials.dto" />
       <recent name="com.mykyda.talantsocials.service" />
       <recent name="com.mykyda.talantsocials.database.repository" />
     </key>
@@ -165,7 +181,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ResourceServerApplication">
+  <component name="RunManager" selected="Spring Boot.TalentSocialsApplication">
     <configuration name="AuthServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="auth-server.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.acheron.authserver.AuthServerApplication" />
@@ -295,7 +311,9 @@
       <workItem from="1759684118727" duration="602000" />
       <workItem from="1759686448741" duration="3589000" />
       <workItem from="1759690961047" duration="398000" />
-      <workItem from="1759745470584" duration="125000" />
+      <workItem from="1759745470584" duration="3505000" />
+      <workItem from="1759756824335" duration="415000" />
+      <workItem from="1759768551067" duration="1430000" />
     </task>
     <task id="LOCAL-00001" summary="Task 3: shorts page front-end fix">
       <option name="closed" value="true" />
@@ -321,7 +339,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759592872439</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Task 3: some validation.&#10;&#10;tag now trimmed to not contain whitespaces. profile picture url validation with default url (needs rework in future)">
+      <option name="closed" value="true" />
+      <created>1759745670996</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1759745670996</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -350,7 +376,8 @@
     <MESSAGE value="Task 3: shorts page front-end fix" />
     <MESSAGE value="Task 3: profile id now same as user id. liquibase fix." />
     <MESSAGE value="Task 3: likes and comments implemented to shorts.&#10;&#10;save entity for liking both posts and shorts.&#10;same with comment.&#10;now each comment can be commented and this reply can be answered too. Fixed order of comments." />
-    <option name="LAST_COMMIT_MESSAGE" value="Task 3: likes and comments implemented to shorts.&#10;&#10;save entity for liking both posts and shorts.&#10;same with comment.&#10;now each comment can be commented and this reply can be answered too. Fixed order of comments." />
+    <MESSAGE value="Task 3: some validation.&#10;&#10;tag now trimmed to not contain whitespaces. profile picture url validation with default url (needs rework in future)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Task 3: some validation.&#10;&#10;tag now trimmed to not contain whitespaces. profile picture url validation with default url (needs rework in future)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

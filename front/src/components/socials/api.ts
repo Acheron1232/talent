@@ -14,6 +14,8 @@ export interface ProfileDTO {
   status?: string;
   employeeRating?: number;
   bioMarkdown?: string;
+  followersAmount?: number;
+  followingAmount?: number;
 }
 
 export interface PostDTO {
@@ -50,6 +52,12 @@ export interface CommentCreationDTO {
   originalCommentId?: UUID | null;
   content: string;
   type: "POST" | "SHORT";
+}
+
+export interface FollowDTO {
+  follower: ShortProfileDTO;
+  followed: ShortProfileDTO;
+  createdAt: string;
 }
 
 export function useSocialsApi() {
@@ -96,6 +104,14 @@ export function useSocialsApi() {
     // Likes
     like: (contentEntityId: UUID) => request<void>(`/likes/like`, { method: "POST", body: JSON.stringify({ contentEntityId }) }),
     unlike: (contentEntityId: UUID) => request<void>(`/likes/unlike`, { method: "DELETE", body: JSON.stringify({ contentEntityId }) }),
+
+    // Follows
+    follow: (followedId: UUID) => request<void>(`/follows/follow`, { method: "POST", body: JSON.stringify(followedId) }),
+    unfollow: (unfollowedId: UUID) => request<void>(`/follows/unfollow`, { method: "DELETE", body: JSON.stringify(unfollowedId) }),
+    getFollowing: (profileId: UUID, page = 0, size = 20) => request<FollowDTO[]>(`/follows/get-follows/${profileId}?page=${page}&size=${size}`),
+    getFollowers: (profileId: UUID, page = 0, size = 20) => request<FollowDTO[]>(`/follows/get-followed-by/${profileId}?page=${page}&size=${size}`),
+    // Follow state
+    checkFollow: (profileId: UUID) => request<{ following: boolean }>(`/follows/check-follow/${profileId}`, { method: "GET" }),
 
     // Comments
     getComments: (contentEntityId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${contentEntityId}?page=${page}&size=${size}`),

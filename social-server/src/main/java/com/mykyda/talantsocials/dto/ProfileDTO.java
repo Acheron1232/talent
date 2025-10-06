@@ -34,6 +34,10 @@ public class ProfileDTO {
 
     private String bioMarkdown;
 
+    private Long followersAmount;
+
+    private Long followingAmount;
+
     private List<LanguageSkillDTO> languageSkills;
 
     private List<JobSkillDTO> jobsSkills;
@@ -57,6 +61,8 @@ public class ProfileDTO {
                 .status(profile.getStatus())
                 .employeeRating(profile.getEmployeeRating())
                 .bioMarkdown(profile.getBioMarkdown())
+                .followersAmount(profile.getFollowersAmount())
+                .followingAmount(profile.getFollowingAmount())
                 .languageSkills(profile.getLanguageSkills().stream().map(LanguageSkillDTO::of).collect(Collectors.toList()))
                 .jobsSkills(profile.getJobsSkills().stream().map(JobSkillDTO::of).collect(Collectors.toList()))
                 .build();

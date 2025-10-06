@@ -19,6 +19,9 @@ export default function ProfilePage() {
   const [newPostText, setNewPostText] = useState("");
   const [repostOf, setRepostOf] = useState<string | null>(null);
 
+  const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+
   const isOwnProfile = useMemo(() => !tag, [tag]);
 
   useEffect(() => {
@@ -27,13 +30,39 @@ export default function ProfilePage() {
       try {
         setLoading(true);
         setError(null);
-        const p = tag ? await api.getProfileByTag(tag) : await api.getCurrentProfile();
-        if (!mounted) return;
-        setProfile(p);
-        if (p.id) {
-          const postsResp = await api.getPostsByProfileId(p.id, 0, 20);
+        // If viewing someone by tag, fetch both viewed profile and current user
+        if (tag) {
+          const [viewed, current] = await Promise.all([
+            api.getProfileByTag(tag),
+            api.getCurrentProfile(),
+          ]);
           if (!mounted) return;
-          setPosts(postsResp);
+          setProfile(viewed);
+          setCurrentProfileId(current.id || null);
+          if (viewed.id) {
+            const postsResp = await api.getPostsByProfileId(viewed.id, 0, 20);
+            if (!mounted) return;
+            setPosts(postsResp);
+            // Determine if current follows viewed via endpoint
+            try {
+              const { following } = await api.checkFollow(viewed.id);
+              if (!mounted) return;
+              setIsFollowing(!!following);
+            } catch (e) {
+              console.warn("Failed to check follow state", e);
+            }
+          }
+        } else {
+          // Own profile view
+          const p = await api.getCurrentProfile();
+          if (!mounted) return;
+          setProfile(p);
+          setCurrentProfileId(p.id || null);
+          if (p.id) {
+            const postsResp = await api.getPostsByProfileId(p.id, 0, 20);
+            if (!mounted) return;
+            setPosts(postsResp);
+          }
         }
       } catch (e: any) {
         setError(e.message || String(e));
@@ -89,14 +118,40 @@ export default function ProfilePage() {
 
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: 16 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        {profile.profilePictureUrl && (
-          <img src={profile.profilePictureUrl} alt="avatar" width={56} height={56} style={{ borderRadius: "50%", objectFit: "cover" }} />
-        )}
-        <div>
-          <div style={{ fontSize: 20, fontWeight: 700 }}>{profile.displayName || profile.tag}</div>
-          <div style={{ color: "#666" }}>@{profile.tag}</div>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {profile.profilePictureUrl && (
+            <img src={profile.profilePictureUrl} alt="avatar" width={56} height={56} style={{ borderRadius: "50%", objectFit: "cover" }} />
+          )}
+          <div>
+            <div style={{ fontSize: 20, fontWeight: 700 }}>{profile.displayName || profile.tag}</div>
+            <div style={{ color: "#666" }}>@{profile.tag}</div>
+            <div style={{ color: "#444", marginTop: 4, fontSize: 13 }}>
+              Followers: {profile.followersAmount ?? 0} • Following: {profile.followingAmount ?? 0}
+            </div>
+          </div>
         </div>
+        {/* Follow/Unfollow button for other users */}
+        {!isOwnProfile && profile.id && currentProfileId && String(profile.id) !== String(currentProfileId) && (
+          <button
+            onClick={async () => {
+              if (!profile.id) return;
+              try {
+                if (!isFollowing) {
+                  await api.follow(profile.id);
+                  setIsFollowing(true);
+                  setProfile(prev => prev ? { ...prev, followersAmount: (prev.followersAmount ?? 0) + 1 } : prev);
+                } else {
+                  await api.unfollow(profile.id);
+                  setIsFollowing(false);
+                  setProfile(prev => prev ? { ...prev, followersAmount: Math.max(0, (prev.followersAmount ?? 0) - 1) } : prev);
+                }
+              } catch (e: any) {
+                alert(e?.message || String(e));
+              }
+            }}
+          >{isFollowing ? "Unfollow" : "Follow"}</button>
+        )}
       </div>
 
       {/* Patch profile/tag minimal UI */}

@@ -54,6 +54,14 @@ public class Profile {
     @Column(columnDefinition = "text")
     private String bioMarkdown;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Long followersAmount = 0L;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Long followingAmount = 0L;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile", orphanRemoval = true)
     private List<LanguageSkill> languageSkills;
 
@@ -74,4 +82,12 @@ public class Profile {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
     @JsonIgnore
     private List<Comment> comments;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "follower")
+    @JsonIgnore
+    private List<Follow> follows;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "followed")
+    @JsonIgnore
+    private List<Follow> followed;
 }

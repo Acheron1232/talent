@@ -183,4 +183,40 @@ public class ProfileService {
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    @Transactional
+    public void incFollowers(Long followedId) {
+        try {
+            profileRepository.incrementFollowers(followedId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void decFollowers(Long followedId) {
+        try {
+            profileRepository.decrementFollowers(followedId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void incFollowed(Long followerId) {
+        try {
+            profileRepository.incrementFollowed(followerId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void decFollowed(Long followerId) {
+        try {
+            profileRepository.decrementFollowed(followerId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }
