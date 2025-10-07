@@ -1,6 +1,7 @@
 package com.mykyda.talantsocials.service;
 
 import com.mykyda.talantsocials.database.entity.Post;
+import com.mykyda.talantsocials.database.entity.PostElement;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.enums.UserContentType;
 import com.mykyda.talantsocials.database.repository.PostRepository;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,26 +69,36 @@ public class PostService {
     public void create(Long userId, PostCreationDTO postDTO) {
         var profileId = profileService.getById(userId).getId();
         try {
-            var reposted = postDTO.isReposted();
+            var reposted = postDTO.reposted();
             if (reposted) {
-                var checkOriginalPost = postRepository.findById(postDTO.getOriginalPostId());
+                var checkOriginalPost = postRepository.findById(postDTO.originalPostId());
                 if (checkOriginalPost.isEmpty()) {
-                    throw new EntityNotFoundException("original post not found with id " + postDTO.getOriginalPostId());
+                    throw new EntityNotFoundException("original post not found with id " + postDTO.originalPostId());
                 }
                 var postToSave = Post.builder()
                         .contentType(UserContentType.POST)
-                        .reposted(postDTO.isReposted())
-                        .originalPost(entityManager.getReference(Post.class, postDTO.getOriginalPostId()))
+                        .reposted(true)
+                        .originalPost(checkOriginalPost.get())
                         .profile(entityManager.getReference(Profile.class, profileId))
-                        .description(postDTO.getDescription())
+                        .description(postDTO.description())
                         .build();
+                if (postDTO.elements() != null) {
+                    var elements = new ArrayList<PostElement>();
+                    postDTO.elements().forEach(e -> elements.add(PostElement.builder()
+                            .url(e.url())
+                            .type(PostElement.Type.valueOf(e.type()))
+                            .orderIndex(e.orderIndex())
+                            .post(postToSave)
+                            .build()));
+                    postToSave.setElements(elements);
+                }
                 postRepository.save(postToSave);
             } else {
                 var postToSave = Post.builder()
                         .contentType(UserContentType.POST)
-                        .reposted(postDTO.isReposted())
+                        .reposted(false)
                         .profile(entityManager.getReference(Profile.class, profileId))
-                        .description(postDTO.getDescription())
+                        .description(postDTO.description())
                         .build();
                 postRepository.save(postToSave);
             }
@@ -124,6 +136,6 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public List<PostDTO> exploreGeneral(Long userId, PageRequest pageRequest) {
-         return postRepository.findRandom(userId, pageRequest).stream().map(PostDTO::of).toList();
+        return postRepository.findRandom(userId, pageRequest).stream().map(PostDTO::of).toList();
     }
 }
