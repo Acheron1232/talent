@@ -1,6 +1,6 @@
 package com.mykyda.talantsocials.api;
 
-import com.mykyda.talantsocials.dto.LikeDTO;
+import com.mykyda.talantsocials.dto.response.LikeDTO;
 import com.mykyda.talantsocials.dto.create.LikeCreationDTO;
 import com.mykyda.talantsocials.service.LikeService;
 import lombok.RequiredArgsConstructor;

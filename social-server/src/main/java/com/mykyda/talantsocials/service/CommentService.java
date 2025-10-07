@@ -4,7 +4,7 @@ import com.mykyda.talantsocials.database.entity.Comment;
 import com.mykyda.talantsocials.database.entity.ContentEntity;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.repository.CommentRepository;
-import com.mykyda.talantsocials.dto.CommentDTO;
+import com.mykyda.talantsocials.dto.response.CommentDTO;
 import com.mykyda.talantsocials.dto.create.CommentCreationDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;

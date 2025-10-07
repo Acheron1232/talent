@@ -1,6 +1,6 @@
 package com.mykyda.talantsocials.api;
 
-import com.mykyda.talantsocials.dto.CommentDTO;
+import com.mykyda.talantsocials.dto.response.CommentDTO;
 import com.mykyda.talantsocials.dto.create.CommentCreationDTO;
 import com.mykyda.talantsocials.service.CommentService;
 import lombok.RequiredArgsConstructor;

@@ -4,8 +4,8 @@ import com.mykyda.talantsocials.database.entity.Post;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.enums.UserContentType;
 import com.mykyda.talantsocials.database.repository.PostRepository;
-import com.mykyda.talantsocials.dto.PostDTO;
 import com.mykyda.talantsocials.dto.create.PostCreationDTO;
+import com.mykyda.talantsocials.dto.response.PostDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
 import com.mykyda.talantsocials.exception.ForbiddenAccessException;
@@ -30,6 +30,8 @@ public class PostService {
     private final EntityManager entityManager;
 
     private final ProfileService profileService;
+
+    private final FollowService followService;
 
     @Transactional(readOnly = true)
     public List<PostDTO> findByProfileIdPaged(Long profileId, PageRequest pageRequest) {
@@ -112,7 +114,16 @@ public class PostService {
         }
     }
 
-    public List<PostDTO> explore() {
-        return null;
+    //Todo: filter by last profile entrance date
+    @Transactional(readOnly = true)
+    public List<PostDTO> exploreFriends(Long userId, PageRequest pageRequest) {
+        var follows = followService.getAllFollows(userId);
+        var followsIds = follows.stream().map(f -> f.getFollowed().getId()).toList();
+        return postRepository.findFollowsPosts(followsIds, pageRequest).stream().map(PostDTO::of).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostDTO> exploreGeneral(Long userId, PageRequest pageRequest) {
+         return postRepository.findRandom(userId, pageRequest).stream().map(PostDTO::of).toList();
     }
 }

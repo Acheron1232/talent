@@ -3,10 +3,12 @@ package com.mykyda.talantsocials.service;
 import com.mykyda.talantsocials.database.entity.PostPreference;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.repository.ProfileRepository;
-import com.mykyda.talantsocials.dto.JobSkillDTO;
-import com.mykyda.talantsocials.dto.LanguageSkillDTO;
-import com.mykyda.talantsocials.dto.ProfileDTO;
 import com.mykyda.talantsocials.dto.create.ProfileCreationDTO;
+import com.mykyda.talantsocials.dto.patch.ProfilePatchDTO;
+import com.mykyda.talantsocials.dto.patch.ProfilePatchTagDTO;
+import com.mykyda.talantsocials.dto.response.JobSkillDTO;
+import com.mykyda.talantsocials.dto.response.LanguageSkillDTO;
+import com.mykyda.talantsocials.dto.response.ProfileDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityConflictException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
@@ -16,16 +18,14 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Consumer;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
-
-    //todo:rework
-    private final String DEFAULT_PROFILE_PICTURE_URL = "url";
-
 
     @Transactional(readOnly = true)
     public ProfileDTO getCurrentProfile(Long id) {
@@ -62,12 +62,12 @@ public class ProfileService {
     public void createProfile(ProfileCreationDTO profileCreationDTO) {
         try {
             checkById(profileCreationDTO.id());
-            checkByTag(profileCreationDTO.tag().trim().replaceAll(" ",""));
+            checkByTag(profileCreationDTO.tag());
             var profileToSave = Profile.builder()
                     .id(profileCreationDTO.id())
                     .displayName(profileCreationDTO.displayName())
-                    .profilePictureUrl(profileCreationDTO.profilePictureUrl() == null ? DEFAULT_PROFILE_PICTURE_URL : profileCreationDTO.profilePictureUrl())
-                    .tag(profileCreationDTO.tag().trim().replaceAll(" ",""))
+                    .profilePictureUrl(profileCreationDTO.profilePictureUrl())
+                    .tag(profileCreationDTO.tag())
                     .build();
 
             PostPreference pref = PostPreference.builder()
@@ -85,7 +85,7 @@ public class ProfileService {
     }
 
     @Transactional
-    public void patchProfile(Long id, ProfileDTO patchedDto) {
+    public void patchProfile(Long id, ProfilePatchDTO patchedDto) {
         try {
             var checkById = getById(id);
             var profile = editProfile(patchedDto, checkById);
@@ -96,52 +96,44 @@ public class ProfileService {
         }
     }
 
-    private static Profile editProfile(ProfileDTO patchedDto, Profile profile) {
-        if (patchedDto.getDisplayName() != null && !patchedDto.getDisplayName().isBlank()) {
-            profile.setDisplayName(patchedDto.getDisplayName());
-        }
-        if (patchedDto.getCurrentOccupation() != null && !patchedDto.getCurrentOccupation().isBlank()) {
-            profile.setCurrentOccupation(patchedDto.getCurrentOccupation());
-        }
-        if (patchedDto.getProfilePictureUrl() != null) {
-            profile.setProfilePictureUrl(patchedDto.getProfilePictureUrl());
-        }
-        if (patchedDto.getBannerPictureUrl() != null) {
-            profile.setBannerPictureUrl(patchedDto.getBannerPictureUrl());
-        }
-        if (patchedDto.getStatus() != null) {
-            profile.setStatus(patchedDto.getStatus());
-        }
-        if (patchedDto.getBioMarkdown() != null && !patchedDto.getBioMarkdown().isBlank()) {
-            profile.setBioMarkdown(patchedDto.getBioMarkdown());
-        }
+    private static Profile editProfile(ProfilePatchDTO patchedDto, Profile profile) {
 
-        if (patchedDto.getLanguageSkills() != null) {
+        updateIfNotNull(patchedDto.displayName(), profile::setDisplayName);
+        updateIfNotNull(patchedDto.currentOccupation(), profile::setCurrentOccupation);
+        updateIfNotNull(patchedDto.bioMarkdown(), profile::setBioMarkdown);
+
+        if (patchedDto.languageSkills() != null) {
             profile.getLanguageSkills().clear();
             profile.getLanguageSkills().addAll(
-                    patchedDto.getLanguageSkills().stream()
+                    patchedDto.languageSkills().stream()
                             .map(e -> LanguageSkillDTO.toEntity(e, profile))
                             .toList());
         }
 
-        if (patchedDto.getJobsSkills() != null) {
+        if (patchedDto.jobsSkills() != null) {
             profile.getJobsSkills().clear();
             profile.getJobsSkills().addAll(
-                    patchedDto.getJobsSkills().stream()
+                    patchedDto.jobsSkills().stream()
                             .map(e -> JobSkillDTO.toEntity(e, profile))
                             .toList());
         }
         return profile;
     }
 
+    private static <T> void updateIfNotNull(T value, Consumer<T> setter) {
+        if (value != null) {
+            setter.accept(value);
+        }
+    }
+
     @Transactional
-    public void patchTag(Long id, ProfileDTO patchedDto) {
+    public void patchTag(Long id, ProfilePatchTagDTO patchedDto) {
         try {
             var profile = getById(id);
-            checkByTag(patchedDto.getTag());
-            profile.setTag(patchedDto.getTag());
+            checkByTag(patchedDto.tag());
+            profile.setTag(patchedDto.tag());
             profileRepository.save(profile);
-            log.info("tag {} set at profile with id {}", patchedDto.getTag(), profile.getId());
+            log.info("tag {} set at profile with id {}", patchedDto.tag(), profile.getId());
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }

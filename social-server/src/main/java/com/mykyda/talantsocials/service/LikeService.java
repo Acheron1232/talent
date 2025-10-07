@@ -5,7 +5,7 @@ import com.mykyda.talantsocials.database.entity.Like;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.id.LikeId;
 import com.mykyda.talantsocials.database.repository.LikeRepository;
-import com.mykyda.talantsocials.dto.LikeDTO;
+import com.mykyda.talantsocials.dto.response.LikeDTO;
 import com.mykyda.talantsocials.dto.create.LikeCreationDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityConflictException;

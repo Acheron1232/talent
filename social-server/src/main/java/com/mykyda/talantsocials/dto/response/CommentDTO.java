@@ -1,4 +1,4 @@
-package com.mykyda.talantsocials.dto;
+package com.mykyda.talantsocials.dto.response;
 
 import com.mykyda.talantsocials.database.entity.Comment;
 import lombok.AllArgsConstructor;

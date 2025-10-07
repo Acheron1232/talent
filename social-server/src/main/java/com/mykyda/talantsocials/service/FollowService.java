@@ -4,7 +4,7 @@ import com.mykyda.talantsocials.database.entity.Follow;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.id.FollowId;
 import com.mykyda.talantsocials.database.repository.FollowRepository;
-import com.mykyda.talantsocials.dto.FollowDTO;
+import com.mykyda.talantsocials.dto.response.FollowDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityConflictException;
 import jakarta.persistence.EntityManager;
@@ -77,6 +77,17 @@ public class FollowService {
     public List<FollowDTO> getFollows(Long followerId, PageRequest pageRequest) {
         try {
             var follows = followRepository.findAllByFollowerId(followerId, pageRequest).stream().map(FollowDTO::of).toList();
+            log.debug("paged follows for profile {} acquired", followerId);
+            return follows;
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Follow> getAllFollows(Long followerId) {
+        try {
+            var follows = followRepository.findAllByFollowerId(followerId);
             log.debug("follows for profile {} acquired", followerId);
             return follows;
         } catch (DataAccessException e) {

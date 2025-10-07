@@ -1,6 +1,6 @@
 package com.mykyda.talantsocials.api;
 
-import com.mykyda.talantsocials.dto.FollowDTO;
+import com.mykyda.talantsocials.dto.response.FollowDTO;
 import com.mykyda.talantsocials.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

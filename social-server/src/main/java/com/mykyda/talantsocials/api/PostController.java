@@ -1,7 +1,7 @@
 package com.mykyda.talantsocials.api;
 
-import com.mykyda.talantsocials.dto.PostDTO;
 import com.mykyda.talantsocials.dto.create.PostCreationDTO;
+import com.mykyda.talantsocials.dto.response.PostDTO;
 import com.mykyda.talantsocials.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +20,18 @@ public class PostController {
 
     private final PostService postService;
 
+    @GetMapping("/explore-posts-follows")
+    private List<PostDTO> getExploreFollows(@AuthenticationPrincipal Jwt jwt,
+                                            @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                            @RequestParam(value = "size", defaultValue = "20") Integer size) {
+        return postService.exploreFriends(Long.valueOf(jwt.getClaims().get("id").toString()), PageRequest.of(page, size));
+    }
+
     @GetMapping("/explore-posts")
-    private List<PostDTO> getExplorePage() {
-        return postService.explore();
+    private List<PostDTO> getExplore(@AuthenticationPrincipal Jwt jwt,
+                                     @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                     @RequestParam(value = "size", defaultValue = "20") Integer size) {
+        return postService.exploreGeneral(Long.valueOf(jwt.getClaims().get("id").toString()), PageRequest.of(page, size));
     }
 
     @GetMapping("/get-post/{postId}")
