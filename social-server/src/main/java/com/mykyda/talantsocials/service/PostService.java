@@ -78,7 +78,7 @@ public class PostService {
                         .reposted(postDTO.isReposted())
                         .originalPost(entityManager.getReference(Post.class, postDTO.getOriginalPostId()))
                         .profile(entityManager.getReference(Profile.class, profileId))
-                        .textContent(postDTO.getTextContent())
+                        .description(postDTO.getDescription())
                         .build();
                 postRepository.save(postToSave);
             } else {
@@ -86,7 +86,7 @@ public class PostService {
                         .contentType(UserContentType.POST)
                         .reposted(postDTO.isReposted())
                         .profile(entityManager.getReference(Profile.class, profileId))
-                        .textContent(postDTO.getTextContent())
+                        .description(postDTO.getDescription())
                         .build();
                 postRepository.save(postToSave);
             }

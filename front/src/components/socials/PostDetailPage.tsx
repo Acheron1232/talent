@@ -82,14 +82,14 @@ export default function PostDetailPage() {
           </div>
           <div style={{ color: "#666" }}>{new Date(post.createdAt || "").toLocaleString()}</div>
         </div>
-        <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{post.textContent}</div>
+        <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{post.description}</div>
         {post.reposted && post.originalPost && (
           <div
             onClick={() => navigate(`/socials/posts/${post.originalPost?.id}`)}
             style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "transparent", cursor: "pointer" }}
           >
             <div style={{ fontSize: 13, color: "#666" }}>Original by @{post.originalPost.profile?.tag}</div>
-            <div style={{ whiteSpace: "pre-wrap" }}>{post.originalPost.textContent}</div>
+            <div style={{ whiteSpace: "pre-wrap" }}>{post.originalPost.description}</div>
           </div>
         )}
         <div style={{ marginTop: 8 }}>

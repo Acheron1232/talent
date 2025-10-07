@@ -31,7 +31,7 @@ public class Post extends ContentEntity {
     private Profile profile;
 
     @Column
-    private String textContent;
+    private String description;
 
     @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     @Builder.Default

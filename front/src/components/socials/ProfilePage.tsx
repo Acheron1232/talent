@@ -198,8 +198,8 @@ export default function ProfilePage() {
                 const text = newPostText.trim();
                 if (!repostOf && text.length === 0) return; // prevent empty posts
                 const payload: PostCreationDTO = repostOf
-                  ? { reposted: true, originalPostId: repostOf, textContent: text || undefined }
-                  : { reposted: false, textContent: text };
+                  ? { reposted: true, originalPostId: repostOf, description: text || undefined }
+                  : { reposted: false, description: text };
                 await createPost(payload);
               }}
             >{repostOf ? "Repost" : "Post"}</button>
@@ -225,14 +225,14 @@ export default function ProfilePage() {
               </div>
               <div style={{ color: "#666" }}>{new Date(p.createdAt || "").toLocaleString()}</div>
             </div>
-            <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{p.textContent}</div>
+            <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{p.description}</div>
             {p.reposted && p.originalPost && (
               <div
                 onClick={() => navigate(`/socials/posts/${p.originalPost?.id}`)}
                 style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "transparent", cursor: "pointer" }}
               >
                 <div style={{ fontSize: 13, color: "#666" }}>Original by @{p.originalPost.profile?.tag}</div>
-                <div style={{ whiteSpace: "pre-wrap" }}>{p.originalPost.textContent}</div>
+                <div style={{ whiteSpace: "pre-wrap" }}>{p.originalPost.description}</div>
               </div>
             )}
             <div style={{ marginTop: 8, display: "flex", gap: 8 }}>

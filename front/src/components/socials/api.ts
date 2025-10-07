@@ -23,7 +23,7 @@ export interface PostDTO {
   reposted: boolean;
   profile: { tag?: string; displayName?: string; profilePictureUrl?: string };
   originalPost?: PostDTO | null;
-  textContent?: string;
+  description?: string;
   createdAt?: string;
   likesAmount?: number;
 }
@@ -31,7 +31,7 @@ export interface PostDTO {
 export interface PostCreationDTO {
   reposted: boolean;
   originalPostId?: UUID | null;
-  textContent?: string;
+  description?: string;
 }
 
 export interface LikeCreationDTO { postId: UUID }

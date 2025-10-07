@@ -23,7 +23,7 @@ public class PostDTO {
 
     private PostDTO originalPost;
 
-    private String textContent;
+    private String description;
 
     private Instant createdAt;
 
@@ -34,7 +34,7 @@ public class PostDTO {
                 .id(post.getId())
                 .reposted(Boolean.TRUE.equals(post.getReposted()))
                 .profile(ProfileDTO.ofShort(post.getProfile()))
-                .textContent(post.getTextContent())
+                .description(post.getDescription())
                 .originalPost(post.getReposted() ? PostDTO.original(post.getOriginalPost()) : null)
                 .createdAt(post.getCreatedAt())
                 .likesAmount(post.getLikesAmount())
@@ -45,7 +45,7 @@ public class PostDTO {
         return PostDTO.builder()
                 .id(post.getId())
                 .profile(ProfileDTO.ofShort(post.getProfile()))
-                .textContent(post.getTextContent())
+                .description(post.getDescription())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

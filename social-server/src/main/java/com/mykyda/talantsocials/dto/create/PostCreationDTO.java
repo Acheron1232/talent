@@ -19,5 +19,5 @@ public class PostCreationDTO{
 
         UUID originalPostId;
 
-        String textContent;
+        String description;
 }

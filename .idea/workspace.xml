@@ -4,31 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="Task 3: java.sql.Timestamp class usage had been replaced with java.time.Instant class. logs reorganized.&#10;&#10;all usage of timestamp had been replaced with Instant class. changelogs for liquibase were redacted with adding timezones and default values to timestamps.">
-      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/patch/ProfilePatchDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/patch/ProfilePatchTagDTO.java" afterDir="false" />
+    <list default="true" id="f6d29d50-2cb4-4d8e-bcc4-4b104408d9ff" name="Changes" comment="Task 3: posts explore endpoints. Some validation.&#10;&#10;now there is 2 endpoints for users fyp.&#10;1 - post of profiles which user follows.&#10;2 - random posts where user is not an author.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/CommentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/FollowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/FollowController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/LikeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/LikeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/api/ProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/FollowRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/FollowRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/CommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/CommentDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/FollowDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/FollowDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/JobSkillDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/JobSkillDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/LanguageSkillDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/LanguageSkillDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/LikeDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/LikeDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/PostDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/PostDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/ProfileDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/ProfileDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/create/ProfileCreationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/create/ProfileCreationDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/CreationImitatorService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/FollowService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/FollowService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/LikeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/LikeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/socials/PostDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/PostDetailPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/socials/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/src/components/socials/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/components/socials/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/database/entity/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/create/PostCreationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/create/PostCreationDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/PostDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/dto/response/PostDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/java/com/mykyda/talantsocials/service/ProfileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-001.sql" beforeDir="false" afterPath="$PROJECT_DIR$/social-server/src/main/resources/db/changelog/db-changelog-001.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +126,7 @@
     "Spring Boot.MailServerApplication.executor": "Run",
     "Spring Boot.ProjectGeneratorServiceApplication.executor": "Run",
     "Spring Boot.ResourceServerApplication.executor": "Run",
-    "Spring Boot.TalentSocialsApplication.executor": "Debug",
+    "Spring Boot.TalentSocialsApplication.executor": "Run",
     "Spring Boot.UserServerApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
@@ -351,7 +336,7 @@
       <workItem from="1759768551067" duration="4585000" />
       <workItem from="1759773524750" duration="247000" />
       <workItem from="1759823800382" duration="5363000" />
-      <workItem from="1759829415469" duration="2095000" />
+      <workItem from="1759829415469" duration="2920000" />
     </task>
     <task id="LOCAL-00001" summary="Task 3: shorts page front-end fix">
       <option name="closed" value="true" />
@@ -409,7 +394,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759771942839</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Task 3: posts explore endpoints. Some validation.&#10;&#10;now there is 2 endpoints for users fyp.&#10;1 - post of profiles which user follows.&#10;2 - random posts where user is not an author.">
+      <option name="closed" value="true" />
+      <created>1759832219238</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1759832219238</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -442,7 +435,8 @@
     <MESSAGE value="Task 3: Follows is here.&#10;&#10;now users can follow and unfollow other user profiles." />
     <MESSAGE value="Task 3: redundant import removed in FollowDTO" />
     <MESSAGE value="Task 3: java.sql.Timestamp class usage had been replaced with java.time.Instant class. logs reorganized.&#10;&#10;all usage of timestamp had been replaced with Instant class. changelogs for liquibase were redacted with adding timezones and default values to timestamps." />
-    <option name="LAST_COMMIT_MESSAGE" value="Task 3: java.sql.Timestamp class usage had been replaced with java.time.Instant class. logs reorganized.&#10;&#10;all usage of timestamp had been replaced with Instant class. changelogs for liquibase were redacted with adding timezones and default values to timestamps." />
+    <MESSAGE value="Task 3: posts explore endpoints. Some validation.&#10;&#10;now there is 2 endpoints for users fyp.&#10;1 - post of profiles which user follows.&#10;2 - random posts where user is not an author." />
+    <option name="LAST_COMMIT_MESSAGE" value="Task 3: posts explore endpoints. Some validation.&#10;&#10;now there is 2 endpoints for users fyp.&#10;1 - post of profiles which user follows.&#10;2 - random posts where user is not an author." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -54,7 +54,7 @@ create table post
     profile_id       bigint,
     id               uuid    not null            DEFAULT gen_random_uuid(),
     original_post_id uuid,
-    text_content     varchar(255),
+    description     varchar(255),
     primary key (id)
 );
 
