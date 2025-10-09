@@ -4,15 +4,12 @@ import com.mykyda.talantsocials.database.entity.Short;
 import com.mykyda.talantsocials.dto.create.ShortCreationDto;
 import com.mykyda.talantsocials.service.ShortService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,15 +20,14 @@ public class ShortController {
     @GetMapping
     public List<Short> getShorts(
             @RequestParam(defaultValue = "5") Integer shorts_size,
+            @RequestParam(name = "exclude", required = false) List<UUID> exclude,
             @AuthenticationPrincipal Jwt jwt
     ) {
-        return shortService.findAll(shorts_size,(Long) jwt.getClaims().get("id"));
+        return shortService.findAllExcluding(shorts_size,(Long) jwt.getClaims().get("id"), exclude);
     }
 
     @PostMapping
-    public void createShort(@AuthenticationPrincipal Jwt jwt, @RequestBody ShortCreationDto  shortCreationDto) {
+    public void createShort(@AuthenticationPrincipal Jwt jwt, @RequestBody ShortCreationDto shortCreationDto) {
         shortService.save(shortCreationDto,(Long) jwt.getClaims().get("id"));
     }
-
-
 }

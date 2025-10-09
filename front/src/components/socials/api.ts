@@ -14,6 +14,8 @@ export interface ProfileDTO {
   status?: string;
   employeeRating?: number;
   bioMarkdown?: string;
+  followersAmount?: number;
+  followingAmount?: number;
 }
 
 export interface PostDTO {
@@ -21,7 +23,7 @@ export interface PostDTO {
   reposted: boolean;
   profile: { tag?: string; displayName?: string; profilePictureUrl?: string };
   originalPost?: PostDTO | null;
-  textContent?: string;
+  description?: string;
   createdAt?: string;
   likesAmount?: number;
 }
@@ -29,23 +31,33 @@ export interface PostDTO {
 export interface PostCreationDTO {
   reposted: boolean;
   originalPostId?: UUID | null;
-  textContent?: string;
+  description?: string;
 }
 
 export interface LikeCreationDTO { postId: UUID }
 
 export interface CommentDTO {
   id: UUID;
-  postId: UUID;
+  contentEntityId: UUID;
+  profile?: ProfileDTO;
   content: string;
+  isAReply?: boolean;
+  originalCommentId?: UUID | null;
   createdAt?: string;
 }
 
 export interface CommentCreationDTO {
-  postId: UUID;
+  contentEntityId: UUID;
   isAReply: boolean;
   originalCommentId?: UUID | null;
   content: string;
+  type: "POST" | "SHORT";
+}
+
+export interface FollowDTO {
+  follower: ShortProfileDTO;
+  followed: ShortProfileDTO;
+  createdAt: string;
 }
 
 export function useSocialsApi() {
@@ -71,6 +83,12 @@ export function useSocialsApi() {
     return (await res.json()) as T;
   }
 
+  function buildExcludeQS(excludeIds?: UUID[]): string {
+    if (!excludeIds || excludeIds.length === 0) return "";
+    const params = excludeIds.map((id) => `&exclude=${encodeURIComponent(id)}`).join("");
+    return params;
+  }
+
   return {
     // Profiles
     getCurrentProfile: () => request<ProfileDTO>(`/profile`),
@@ -79,20 +97,29 @@ export function useSocialsApi() {
     patchTag: (tag: string) => request<void>(`/profile/patch-tag`, { method: "PATCH", body: JSON.stringify({ tag }) }),
 
     // Posts
-    getPostsByProfileId: (profileId: UUID, page = 0, size = 10) => request<PostDTO[]>(`/posts/get-posts/${profileId}?page=${page}&size=${size}`),
-    getPostById: (postId: UUID) => request<PostDTO>(`/posts/get-post/${postId}`),
+    getPostsByProfileId: (profileId: UUID, page = 0, size = 10) => request<PostDTO[]>(`/posts/get-posts/${profileId}?page=${page}&size=${size}&ts=${Date.now()}`),
+    getPostById: (postId: UUID) => request<PostDTO>(`/posts/get-post/${postId}?ts=${Date.now()}`),
     createPost: (payload: PostCreationDTO) => request<void>(`/posts/create-post`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Likes
-    like: (postId: UUID) => request<void>(`/likes/like`, { method: "POST", body: JSON.stringify({ postId }) }),
-    unlike: (postId: UUID) => request<void>(`/likes/unlike`, { method: "DELETE", body: JSON.stringify({ postId }) }),
+    like: (contentEntityId: UUID) => request<void>(`/likes/like`, { method: "POST", body: JSON.stringify({ contentEntityId }) }),
+    unlike: (contentEntityId: UUID) => request<void>(`/likes/unlike`, { method: "DELETE", body: JSON.stringify({ contentEntityId }) }),
+
+    // Follows
+    follow: (followedId: UUID) => request<void>(`/follows/follow`, { method: "POST", body: JSON.stringify(followedId) }),
+    unfollow: (unfollowedId: UUID) => request<void>(`/follows/unfollow`, { method: "DELETE", body: JSON.stringify(unfollowedId) }),
+    getFollowing: (profileId: UUID, page = 0, size = 20) => request<FollowDTO[]>(`/follows/get-follows/${profileId}?page=${page}&size=${size}`),
+    getFollowers: (profileId: UUID, page = 0, size = 20) => request<FollowDTO[]>(`/follows/get-followed-by/${profileId}?page=${page}&size=${size}`),
+    // Follow state
+    checkFollow: (profileId: UUID) => request<{ following: boolean }>(`/follows/check-follow/${profileId}`, { method: "GET" }),
 
     // Comments
-    getComments: (postId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${postId}/?page=${page}&size=${size}`),
+    getComments: (contentEntityId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${contentEntityId}?page=${page}&size=${size}`),
+    getReplies: (commentId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-replies/${commentId}?page=${page}&size=${size}`),
     createComment: (payload: CommentCreationDTO) => request<void>(`/comments/create-comment`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Shorts
-    getShorts: () => request<ShortDTO[]>(`/shorts`),
+    getShorts: (size = 5, excludeIds?: UUID[]) => request<ShortDTO[]>(`/shorts?shorts_size=${size}${buildExcludeQS(excludeIds)}&ts=${Date.now()}`),
   };
 }
 
@@ -106,7 +133,7 @@ export interface ShortDTO {
   type: string;
   elements: ShortElementDTO[];
   tags: ShortTagDTO[];
-  likes: number;
+  likesAmount: number;
   views: number;
   description?: string;
   isPublic?: boolean;

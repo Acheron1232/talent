@@ -3,10 +3,12 @@ package com.mykyda.talantsocials.service;
 import com.mykyda.talantsocials.database.entity.PostPreference;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.repository.ProfileRepository;
-import com.mykyda.talantsocials.dto.JobSkillDTO;
-import com.mykyda.talantsocials.dto.LanguageSkillDTO;
-import com.mykyda.talantsocials.dto.ProfileDTO;
 import com.mykyda.talantsocials.dto.create.ProfileCreationDTO;
+import com.mykyda.talantsocials.dto.patch.ProfilePatchDTO;
+import com.mykyda.talantsocials.dto.patch.ProfilePatchTagDTO;
+import com.mykyda.talantsocials.dto.response.JobSkillDTO;
+import com.mykyda.talantsocials.dto.response.LanguageSkillDTO;
+import com.mykyda.talantsocials.dto.response.ProfileDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityConflictException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
@@ -16,7 +18,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import java.util.function.Consumer;
 
 @Slf4j
 @Service
@@ -25,17 +27,15 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-
-
     @Transactional(readOnly = true)
-    public ProfileDTO getCurrentProfile(Long userId) {
+    public ProfileDTO getCurrentProfile(Long id) {
         try {
-            var profile = profileRepository.findByUserId(userId);
+            var profile = profileRepository.findById(id);
             if (profile.isPresent()) {
-                log.info("profile found with userId {}", userId);
+                log.debug("profile found with id {}", id);
                 return ProfileDTO.ofFull(profile.get());
             } else {
-                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
+                throw new EntityNotFoundException("Profile with id " + id + " not found");
             }
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -48,7 +48,7 @@ public class ProfileService {
         try {
             var profile = profileRepository.findByTag(profileTag);
             if (profile.isPresent()) {
-                log.info("profile found with tag {}", profileTag);
+                log.debug("profile found with tag {}", profileTag);
                 return ProfileDTO.ofFull(profile.get());
             } else {
                 throw new EntityNotFoundException("Profile with tag " + profileTag + " not found");
@@ -59,18 +59,12 @@ public class ProfileService {
     }
 
     @Transactional
-    public String createProfile(ProfileCreationDTO profileCreationDTO) {
+    public void createProfile(ProfileCreationDTO profileCreationDTO) {
         try {
-            var checkById = profileRepository.findByUserId(profileCreationDTO.id());
-            if (checkById.isPresent()) {
-                throw new EntityConflictException("Profile for user id " + profileCreationDTO.id() + " already exists");
-            }
-            var checkByTag = profileRepository.findByTag(profileCreationDTO.tag());
-            if (checkByTag.isPresent()) {
-                throw new EntityConflictException("Profile with tag " + profileCreationDTO.tag() + " already exists");
-            }
+            checkById(profileCreationDTO.id());
+            checkByTag(profileCreationDTO.tag());
             var profileToSave = Profile.builder()
-                    .userId(profileCreationDTO.id())
+                    .id(profileCreationDTO.id())
                     .displayName(profileCreationDTO.displayName())
                     .profilePictureUrl(profileCreationDTO.profilePictureUrl())
                     .tag(profileCreationDTO.tag())
@@ -84,21 +78,17 @@ public class ProfileService {
 
             profileToSave.setPostPreference(pref);
             var profile = profileRepository.save(profileToSave);
-            log.info("profile saved with id {} for user id {}", profile.getId(), profile.getUserId());
-            return profile.getTag();
+            log.info("profile saved with id {}", profile.getId());
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
     @Transactional
-    public void patchProfileByUserId(Long userId, ProfileDTO patchedDto) {
+    public void patchProfile(Long id, ProfilePatchDTO patchedDto) {
         try {
-            var checkByUserId = profileRepository.findByUserId(userId);
-            if (checkByUserId.isEmpty()) {
-                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
-            }
-            var profile = editProfile(patchedDto, checkByUserId.get());
+            var checkById = getById(id);
+            var profile = editProfile(patchedDto, checkById);
             profileRepository.save(profile);
             log.info("profile updated with id {}", profile.getId());
         } catch (DataAccessException e) {
@@ -106,72 +96,117 @@ public class ProfileService {
         }
     }
 
-    private static Profile editProfile(ProfileDTO patchedDto, Profile profile) {
-        if (patchedDto.getDisplayName() != null && !patchedDto.getDisplayName().isBlank()) {
-            profile.setDisplayName(patchedDto.getDisplayName());
-        }
-        if (patchedDto.getCurrentOccupation() != null && !patchedDto.getCurrentOccupation().isBlank()) {
-            profile.setCurrentOccupation(patchedDto.getCurrentOccupation());
-        }
-        if (patchedDto.getProfilePictureUrl() != null) {
-            profile.setProfilePictureUrl(patchedDto.getProfilePictureUrl());
-        }
-        if (patchedDto.getBannerPictureUrl() != null) {
-            profile.setBannerPictureUrl(patchedDto.getBannerPictureUrl());
-        }
-        if (patchedDto.getStatus() != null) {
-            profile.setStatus(patchedDto.getStatus());
-        }
-        if (patchedDto.getBioMarkdown() != null && !patchedDto.getBioMarkdown().isBlank()) {
-            profile.setBioMarkdown(patchedDto.getBioMarkdown());
-        }
+    private static Profile editProfile(ProfilePatchDTO patchedDto, Profile profile) {
 
-        if (patchedDto.getLanguageSkills() != null) {
+        updateIfNotNull(patchedDto.displayName(), profile::setDisplayName);
+        updateIfNotNull(patchedDto.currentOccupation(), profile::setCurrentOccupation);
+        updateIfNotNull(patchedDto.bioMarkdown(), profile::setBioMarkdown);
+
+        if (patchedDto.languageSkills() != null) {
             profile.getLanguageSkills().clear();
             profile.getLanguageSkills().addAll(
-                    patchedDto.getLanguageSkills().stream()
+                    patchedDto.languageSkills().stream()
                             .map(e -> LanguageSkillDTO.toEntity(e, profile))
                             .toList());
         }
 
-        if (patchedDto.getJobsSkills() != null) {
+        if (patchedDto.jobsSkills() != null) {
             profile.getJobsSkills().clear();
             profile.getJobsSkills().addAll(
-                    patchedDto.getJobsSkills().stream()
+                    patchedDto.jobsSkills().stream()
                             .map(e -> JobSkillDTO.toEntity(e, profile))
                             .toList());
         }
         return profile;
     }
 
+    private static <T> void updateIfNotNull(T value, Consumer<T> setter) {
+        if (value != null) {
+            setter.accept(value);
+        }
+    }
+
     @Transactional
-    public void patchTagByUserId(Long userId, ProfileDTO patchedDto) {
+    public void patchTag(Long id, ProfilePatchTagDTO patchedDto) {
         try {
-            var checkByUserId = profileRepository.findByUserId(userId);
-            if (checkByUserId.isEmpty()) {
-                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
-            }
-            var checkByTag = profileRepository.findByTag(patchedDto.getTag());
-            if (checkByTag.isPresent()) {
-                throw new EntityConflictException("Profile with tag" + patchedDto.getTag() + " already exists");
-            }
-            var profile = checkByUserId.get();
-            profile.setTag(patchedDto.getTag());
+            var profile = getById(id);
+            checkByTag(patchedDto.tag());
+            profile.setTag(patchedDto.tag());
             profileRepository.save(profile);
-            log.info("tag {} set at profile with id {}", patchedDto.getTag(), profile.getId());
+            log.info("tag {} set at profile with id {}", patchedDto.tag(), profile.getId());
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
     @Transactional
-    public UUID checkByUserId(Long userId) {
+    public void checkById(Long id) {
         try {
-            var checkByUserId = profileRepository.findByUserId(userId);
-            if (checkByUserId.isEmpty()) {
-                throw new EntityNotFoundException("Profile with user id " + userId + " not found");
+            var checkByUserId = profileRepository.findById(id);
+            if (checkByUserId.isPresent()) {
+                throw new EntityConflictException("Profile with id " + id + " already exists");
             }
-            return checkByUserId.get().getId();
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public Profile getById(Long id) {
+        try {
+            var checkById = profileRepository.findById(id);
+            if (checkById.isEmpty()) {
+                throw new EntityNotFoundException("Profile with id " + id + " not found");
+            }
+            return checkById.get();
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void checkByTag(String tag) {
+        try {
+            var checkByTag = profileRepository.findByTag(tag);
+            if (checkByTag.isPresent()) {
+                throw new EntityConflictException("Profile with tag " + tag + " already exists");
+            }
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void incFollowers(Long followedId) {
+        try {
+            profileRepository.incrementFollowers(followedId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void decFollowers(Long followedId) {
+        try {
+            profileRepository.decrementFollowers(followedId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void incFollowed(Long followerId) {
+        try {
+            profileRepository.incrementFollowed(followerId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void decFollowed(Long followerId) {
+        try {
+            profileRepository.decrementFollowed(followerId);
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
         }

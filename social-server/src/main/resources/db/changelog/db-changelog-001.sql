@@ -1,23 +1,29 @@
 create table comment
 (
-    isAReply            boolean      not null,
-    created_at          timestamp(6) not null,
-    id                  uuid         not null,
+    isareply            boolean      not null,
+    created_at          timestamp(6) WITH TIME ZONE DEFAULT NOW(),
+    profile_id          bigint,
+    content_entity_id   uuid         not null,
+    id                  uuid         not null       DEFAULT gen_random_uuid(),
     original_comment_id uuid,
-        constraint fk_comment_original
-        foreign key (original_comment_id)
-            references comment (id)
-            on delete cascade,
-    post_id             uuid,
-    profile_id          uuid,
     content             varchar(255) not null,
     primary key (id)
 );
 
+create table content_entity
+(
+    id           uuid   not null DEFAULT gen_random_uuid(),
+    likes_amount bigint not null default 0,
+    content_type varchar(255) check (content_type in
+                                     ('POST', 'SHORT')),
+    primary key (id)
+
+);
+
 create table job_skill
 (
-    id         uuid         not null,
-    profile_id uuid         not null,
+    profile_id bigint       not null,
+    id         uuid         not null DEFAULT gen_random_uuid(),
     experience varchar(255) check (experience in
                                    ('NONE', 'ONE_PLUS', 'TWO_PLUS', 'THREE_PLUS', 'FOUR_PLUS', 'FIVE_PLUS')),
     job_title  varchar(255) not null,
@@ -26,8 +32,8 @@ create table job_skill
 
 create table language_skill
 (
+    profile_id           bigint       not null,
     id                   uuid         not null,
-    profile_id           uuid         not null,
     language_code        varchar(255) not null,
     language_proficiency varchar(255) check (language_proficiency in ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')),
     primary key (id)
@@ -35,32 +41,27 @@ create table language_skill
 
 create table likes
 (
-    created_at timestamp(6),
-    post_id    uuid not null,
-    profile_id uuid not null,
-    primary key (post_id, profile_id)
+    created_at        timestamp(6) WITH TIME ZONE DEFAULT NOW(),
+    profile_id        bigint not null,
+    content_entity_id uuid   not null,
+    primary key (profile_id, content_entity_id)
 );
 
 create table post
 (
-    reposted         boolean not null ,
-    created_at       timestamp(6) not null ,
-    id               uuid not null,
-    profile_id       uuid not null,
-    text_content     varchar(255),
-    likes_amount     int default 0,
-    primary key (id),
+    reposted         boolean not null,
+    created_at       timestamp(6) WITH TIME ZONE DEFAULT NOW(),
+    profile_id       bigint,
+    id               uuid    not null            DEFAULT gen_random_uuid(),
     original_post_id uuid,
-    constraint fk_post_original
-        foreign key (original_post_id)
-            references post (id)
-            on delete cascade
+    description     varchar(255),
+    primary key (id)
 );
 
 create table post_preference
 (
-    id         uuid not null,
-    profile_id uuid unique,
+    profile_id bigint unique,
+    id         uuid not null DEFAULT gen_random_uuid(),
     "exclude"  text,
     liked      text,
     primary key (id)
@@ -69,8 +70,7 @@ create table post_preference
 create table profile
 (
     employee_rating     float(53),
-    id                  uuid         not null,
-    user_id             bigint       not null unique,
+    id                  bigint       not null,
     banner_picture_url  varchar(255),
     current_occupation  varchar(255),
     display_name        varchar(255) not null,
@@ -78,5 +78,7 @@ create table profile
     status              varchar(255) check (status in ('NEWBIE', 'EMPLOYEE', 'EMPLOYER', 'COMPANY', 'HIRED')),
     tag                 varchar(255) not null unique,
     bio_markdown        text,
+    followers_amount    bigint       not null default 0,
+    following_amount    bigint       not null default 0,
     primary key (id)
 );

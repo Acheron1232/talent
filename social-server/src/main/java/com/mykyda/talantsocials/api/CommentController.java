@@ -1,6 +1,6 @@
 package com.mykyda.talantsocials.api;
 
-import com.mykyda.talantsocials.dto.CommentDTO;
+import com.mykyda.talantsocials.dto.response.CommentDTO;
 import com.mykyda.talantsocials.dto.create.CommentCreationDTO;
 import com.mykyda.talantsocials.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +20,17 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("/get-comments/{postId}/")
-    public List<CommentDTO> getCommentsPageByProfileId(@PathVariable("postId") UUID postId,
-                                                       @RequestParam("page") Integer page,
-                                                       @RequestParam("size") Integer size) {
-        return commentService.getCommentsForPostPaged(postId, PageRequest.of(page, size));
+    @GetMapping("/get-comments/{contentEntityId}")
+    public List<CommentDTO> getCommentsPageByProfileId(@PathVariable("contentEntityId") UUID contentEntityId,
+                                                       @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                       @RequestParam(value = "size", defaultValue = "20") Integer size) {
+        return commentService.getCommentsPaged(contentEntityId, PageRequest.of(page, size));
     }
 
     @GetMapping("/get-replies/{commentId}")
     public List<CommentDTO> getRepliesPageByOriginalCommentId(@PathVariable("commentId") UUID commentId,
-                                                              @RequestParam("page") Integer page,
-                                                              @RequestParam("size") Integer size) {
+                                                              @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                              @RequestParam(value = "size", defaultValue = "20") Integer size) {
         return commentService.getRepliesPaged(commentId, PageRequest.of(page, size));
     }
 

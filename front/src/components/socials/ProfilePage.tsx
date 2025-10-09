@@ -3,6 +3,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import { useSocialsApi } from "./api";
 import type { PostDTO, PostCreationDTO, ProfileDTO } from "./api";
 import { useAuth } from "react-oidc-context";
+import CommentsThread from "./CommentsThread";
 
 export default function ProfilePage() {
   const { tag } = useParams<{ tag?: string }>();
@@ -18,6 +19,9 @@ export default function ProfilePage() {
   const [newPostText, setNewPostText] = useState("");
   const [repostOf, setRepostOf] = useState<string | null>(null);
 
+  const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+
   const isOwnProfile = useMemo(() => !tag, [tag]);
 
   useEffect(() => {
@@ -26,13 +30,39 @@ export default function ProfilePage() {
       try {
         setLoading(true);
         setError(null);
-        const p = tag ? await api.getProfileByTag(tag) : await api.getCurrentProfile();
-        if (!mounted) return;
-        setProfile(p);
-        if (p.id) {
-          const postsResp = await api.getPostsByProfileId(p.id, 0, 20);
+        // If viewing someone by tag, fetch both viewed profile and current user
+        if (tag) {
+          const [viewed, current] = await Promise.all([
+            api.getProfileByTag(tag),
+            api.getCurrentProfile(),
+          ]);
           if (!mounted) return;
-          setPosts(postsResp);
+          setProfile(viewed);
+          setCurrentProfileId(current.id || null);
+          if (viewed.id) {
+            const postsResp = await api.getPostsByProfileId(viewed.id, 0, 20);
+            if (!mounted) return;
+            setPosts(postsResp);
+            // Determine if current follows viewed via endpoint
+            try {
+              const { following } = await api.checkFollow(viewed.id);
+              if (!mounted) return;
+              setIsFollowing(!!following);
+            } catch (e) {
+              console.warn("Failed to check follow state", e);
+            }
+          }
+        } else {
+          // Own profile view
+          const p = await api.getCurrentProfile();
+          if (!mounted) return;
+          setProfile(p);
+          setCurrentProfileId(p.id || null);
+          if (p.id) {
+            const postsResp = await api.getPostsByProfileId(p.id, 0, 20);
+            if (!mounted) return;
+            setPosts(postsResp);
+          }
         }
       } catch (e: any) {
         setError(e.message || String(e));
@@ -88,14 +118,40 @@ export default function ProfilePage() {
 
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: 16 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        {profile.profilePictureUrl && (
-          <img src={profile.profilePictureUrl} alt="avatar" width={56} height={56} style={{ borderRadius: "50%", objectFit: "cover" }} />
-        )}
-        <div>
-          <div style={{ fontSize: 20, fontWeight: 700 }}>{profile.displayName || profile.tag}</div>
-          <div style={{ color: "#666" }}>@{profile.tag}</div>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {profile.profilePictureUrl && (
+            <img src={profile.profilePictureUrl} alt="avatar" width={56} height={56} style={{ borderRadius: "50%", objectFit: "cover" }} />
+          )}
+          <div>
+            <div style={{ fontSize: 20, fontWeight: 700 }}>{profile.displayName || profile.tag}</div>
+            <div style={{ color: "#666" }}>@{profile.tag}</div>
+            <div style={{ color: "#444", marginTop: 4, fontSize: 13 }}>
+              Followers: {profile.followersAmount ?? 0} • Following: {profile.followingAmount ?? 0}
+            </div>
+          </div>
         </div>
+        {/* Follow/Unfollow button for other users */}
+        {!isOwnProfile && profile.id && currentProfileId && String(profile.id) !== String(currentProfileId) && (
+          <button
+            onClick={async () => {
+              if (!profile.id) return;
+              try {
+                if (!isFollowing) {
+                  await api.follow(profile.id);
+                  setIsFollowing(true);
+                  setProfile(prev => prev ? { ...prev, followersAmount: (prev.followersAmount ?? 0) + 1 } : prev);
+                } else {
+                  await api.unfollow(profile.id);
+                  setIsFollowing(false);
+                  setProfile(prev => prev ? { ...prev, followersAmount: Math.max(0, (prev.followersAmount ?? 0) - 1) } : prev);
+                }
+              } catch (e: any) {
+                alert(e?.message || String(e));
+              }
+            }}
+          >{isFollowing ? "Unfollow" : "Follow"}</button>
+        )}
       </div>
 
       {/* Patch profile/tag minimal UI */}
@@ -119,28 +175,40 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* Create / Repost */}
-      <div style={{ marginTop: 16 }}>
-        <h3>{repostOf ? "Repost" : "Create a post"}</h3>
-        <textarea
-          placeholder={repostOf ? "Add your thoughts (optional)" : "What's happening?"}
-          value={newPostText}
-          onChange={(e) => setNewPostText(e.target.value)}
-          rows={3}
-          style={{ width: "100%" }}
-        />
-        <div style={{ marginTop: 8 }}>
-          <button onClick={async () => {
-            const payload: PostCreationDTO = repostOf
-              ? { reposted: true, originalPostId: repostOf, textContent: newPostText || undefined }
-              : { reposted: false, textContent: newPostText || undefined };
-            await createPost(payload);
-          }}>{repostOf ? "Repost" : "Post"}</button>
-          {repostOf && (
-            <button style={{ marginLeft: 8 }} onClick={() => setRepostOf(null)}>Cancel repost</button>
-          )}
-        </div>
+      {/* Quick nav */}
+      <div style={{ marginTop: 12 }}>
+        <button onClick={() => navigate("/socials/shorts")}>Open Shorts</button>
       </div>
+
+      {/* Create / Repost */}
+      {(isOwnProfile || repostOf) && (
+        <div style={{ marginTop: 16 }}>
+          <h3>{repostOf ? "Repost" : "Create a post"}</h3>
+          <textarea
+            placeholder={repostOf ? "Add your thoughts (optional)" : "What's happening?"}
+            value={newPostText}
+            onChange={(e) => setNewPostText(e.target.value)}
+            rows={3}
+            style={{ width: "100%" }}
+          />
+          <div style={{ marginTop: 8 }}>
+            <button
+              disabled={!repostOf && newPostText.trim().length === 0}
+              onClick={async () => {
+                const text = newPostText.trim();
+                if (!repostOf && text.length === 0) return; // prevent empty posts
+                const payload: PostCreationDTO = repostOf
+                  ? { reposted: true, originalPostId: repostOf, description: text || undefined }
+                  : { reposted: false, description: text };
+                await createPost(payload);
+              }}
+            >{repostOf ? "Repost" : "Post"}</button>
+            {repostOf && (
+              <button style={{ marginLeft: 8 }} onClick={() => setRepostOf(null)}>Cancel repost</button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Posts list */}
       <div style={{ marginTop: 24 }}>
@@ -157,17 +225,23 @@ export default function ProfilePage() {
               </div>
               <div style={{ color: "#666" }}>{new Date(p.createdAt || "").toLocaleString()}</div>
             </div>
-            <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{p.textContent}</div>
+            <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{p.description}</div>
             {p.reposted && p.originalPost && (
-              <div style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "#fafafa" }}>
+              <div
+                onClick={() => navigate(`/socials/posts/${p.originalPost?.id}`)}
+                style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "transparent", cursor: "pointer" }}
+              >
                 <div style={{ fontSize: 13, color: "#666" }}>Original by @{p.originalPost.profile?.tag}</div>
-                <div style={{ whiteSpace: "pre-wrap" }}>{p.originalPost.textContent}</div>
+                <div style={{ whiteSpace: "pre-wrap" }}>{p.originalPost.description}</div>
               </div>
             )}
             <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
               <button onClick={() => onLikeToggle(p)}>Like ({p.likesAmount ?? 0})</button>
               <button onClick={() => navigate(`/socials/posts/${p.id}`)}>Open</button>
               <button onClick={() => setRepostOf(p.id)}>Repost</button>
+            </div>
+            <div>
+              <CommentsThread contentEntityId={p.id} type="POST" />
             </div>
           </div>
         ))}

@@ -1,4 +1,4 @@
-package com.mykyda.talantsocials.dto;
+package com.mykyda.talantsocials.dto.response;
 
 import com.mykyda.talantsocials.database.entity.Post;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -23,18 +23,18 @@ public class PostDTO {
 
     private PostDTO originalPost;
 
-    private String textContent;
+    private String description;
 
-    private Timestamp createdAt;
+    private Instant createdAt;
 
-    private Integer likesAmount;
+    private Long likesAmount;
 
     public static PostDTO of(Post post) {
         return PostDTO.builder()
                 .id(post.getId())
                 .reposted(Boolean.TRUE.equals(post.getReposted()))
                 .profile(ProfileDTO.ofShort(post.getProfile()))
-                .textContent(post.getTextContent())
+                .description(post.getDescription())
                 .originalPost(post.getReposted() ? PostDTO.original(post.getOriginalPost()) : null)
                 .createdAt(post.getCreatedAt())
                 .likesAmount(post.getLikesAmount())
@@ -45,7 +45,7 @@ public class PostDTO {
         return PostDTO.builder()
                 .id(post.getId())
                 .profile(ProfileDTO.ofShort(post.getProfile()))
-                .textContent(post.getTextContent())
+                .description(post.getDescription())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

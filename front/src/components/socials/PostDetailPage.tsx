@@ -1,17 +1,17 @@
 import {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import { useSocialsApi } from "./api";
-import type { CommentDTO, PostDTO } from "./api";
+import type { PostDTO } from "./api";
 import { useAuth } from "react-oidc-context";
+import CommentsThread from "./CommentsThread";
 
 export default function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>();
   const api = useSocialsApi();
   const auth = useAuth();
+  const navigate = useNavigate();
 
   const [post, setPost] = useState<PostDTO | null>(null);
-  const [comments, setComments] = useState<CommentDTO[]>([]);
-  const [commentInput, setCommentInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,9 +25,6 @@ export default function PostDetailPage() {
         const p = await api.getPostById(postId);
         if (!mounted) return;
         setPost(p);
-        const cs = await api.getComments(postId, 0, 20);
-        if (!mounted) return;
-        setComments(cs);
       } catch (e: any) {
         setError(e.message || String(e));
       } finally {
@@ -85,11 +82,14 @@ export default function PostDetailPage() {
           </div>
           <div style={{ color: "#666" }}>{new Date(post.createdAt || "").toLocaleString()}</div>
         </div>
-        <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{post.textContent}</div>
+        <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{post.description}</div>
         {post.reposted && post.originalPost && (
-          <div style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "#fafafa" }}>
+          <div
+            onClick={() => navigate(`/socials/posts/${post.originalPost?.id}`)}
+            style={{ marginTop: 8, padding: 8, borderLeft: "3px solid #ddd", background: "transparent", cursor: "pointer" }}
+          >
             <div style={{ fontSize: 13, color: "#666" }}>Original by @{post.originalPost.profile?.tag}</div>
-            <div style={{ whiteSpace: "pre-wrap" }}>{post.originalPost.textContent}</div>
+            <div style={{ whiteSpace: "pre-wrap" }}>{post.originalPost.description}</div>
           </div>
         )}
         <div style={{ marginTop: 8 }}>
@@ -99,22 +99,7 @@ export default function PostDetailPage() {
 
       <div style={{ marginTop: 16 }}>
         <h3>Comments</h3>
-        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-          <input
-            placeholder="Write a comment..."
-            value={commentInput}
-            onChange={(e) => setCommentInput(e.target.value)}
-            style={{ flex: 1 }}
-          />
-          <button onClick={onCommentSubmit}>Send</button>
-        </div>
-        {comments.length === 0 && <div>No comments yet.</div>}
-        {comments.map((c) => (
-          <div key={c.id} style={{ borderTop: "1px solid #eee", padding: "8px 0" }}>
-            <div style={{ fontSize: 13, color: "#666" }}>{new Date(c.createdAt || "").toLocaleString()}</div>
-            <div style={{ whiteSpace: "pre-wrap" }}>{c.content}</div>
-          </div>
-        ))}
+        {post && <CommentsThread contentEntityId={post.id} type="POST" />}
       </div>
     </div>
   );

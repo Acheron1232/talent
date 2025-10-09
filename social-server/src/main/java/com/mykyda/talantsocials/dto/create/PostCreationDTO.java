@@ -1,23 +1,25 @@
 package com.mykyda.talantsocials.dto.create;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class PostCreationDTO{
+public record PostCreationDTO(
 
         @JsonProperty("reposted")
-        boolean reposted;
+        boolean reposted,
 
-        UUID originalPostId;
+        List<PostElementCreationDto> elements,
 
-        String textContent;
+        UUID originalPostId,
+
+        String description) {
+
+    public record PostElementCreationDto(
+            String type,
+            String url,
+            Integer orderIndex
+    ) {
+    }
 }

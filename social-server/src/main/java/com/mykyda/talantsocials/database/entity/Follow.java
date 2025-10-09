@@ -1,6 +1,6 @@
 package com.mykyda.talantsocials.database.entity;
 
-import com.mykyda.talantsocials.database.id.LikeId;
+import com.mykyda.talantsocials.database.id.FollowId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,25 +14,25 @@ import java.time.Instant;
 @Data
 @Entity
 @Builder
-@Table(name = "likes")
+@Table(name = "follow")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like {
+public class Follow {
 
     @EmbeddedId
-    private LikeId id;
+    private FollowId id;
 
-    @MapsId("contentEntityId")
+    @MapsId("followerId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "content_entity_id", nullable = false)
+    @JoinColumn(name = "follower_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private ContentEntity contentEntity;
+    private Profile follower;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("profileId")
+    @MapsId("followedId")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
+    @JoinColumn(name = "followed_id")
+    private Profile followed;
 
     @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     @Builder.Default

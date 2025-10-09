@@ -1,4 +1,4 @@
-package com.mykyda.talantsocials.dto;
+package com.mykyda.talantsocials.dto.response;
 
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.enums.ProfileStatus;
@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 @Builder
 public class ProfileDTO {
 
-    private UUID id;
+    private Long id;
 
     private String tag;
 
@@ -34,6 +33,10 @@ public class ProfileDTO {
     private Double employeeRating;
 
     private String bioMarkdown;
+
+    private Long followersAmount;
+
+    private Long followingAmount;
 
     private List<LanguageSkillDTO> languageSkills;
 
@@ -58,6 +61,8 @@ public class ProfileDTO {
                 .status(profile.getStatus())
                 .employeeRating(profile.getEmployeeRating())
                 .bioMarkdown(profile.getBioMarkdown())
+                .followersAmount(profile.getFollowersAmount())
+                .followingAmount(profile.getFollowingAmount())
                 .languageSkills(profile.getLanguageSkills().stream().map(LanguageSkillDTO::of).collect(Collectors.toList()))
                 .jobsSkills(profile.getJobsSkills().stream().map(JobSkillDTO::of).collect(Collectors.toList()))
                 .build();

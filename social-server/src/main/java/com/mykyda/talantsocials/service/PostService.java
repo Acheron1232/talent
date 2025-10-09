@@ -1,10 +1,12 @@
 package com.mykyda.talantsocials.service;
 
 import com.mykyda.talantsocials.database.entity.Post;
+import com.mykyda.talantsocials.database.entity.PostElement;
 import com.mykyda.talantsocials.database.entity.Profile;
+import com.mykyda.talantsocials.database.enums.UserContentType;
 import com.mykyda.talantsocials.database.repository.PostRepository;
-import com.mykyda.talantsocials.dto.PostDTO;
 import com.mykyda.talantsocials.dto.create.PostCreationDTO;
+import com.mykyda.talantsocials.dto.response.PostDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
 import com.mykyda.talantsocials.exception.ForbiddenAccessException;
@@ -16,8 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,11 +33,16 @@ public class PostService {
 
     private final ProfileService profileService;
 
+    private final FollowService followService;
+
     @Transactional(readOnly = true)
-    public List<PostDTO> findByProfileIdPaged(UUID profileId, PageRequest pageRequest) {
+    public List<PostDTO> findByProfileIdPaged(Long profileId, PageRequest pageRequest) {
         try {
-            var posts = postRepository.findAllByProfileIdOrderByCreatedAt(profileId, pageRequest).stream().map(PostDTO::of).toList();
-            log.info("posts found: {} for profile id {}", posts, profileId);
+            var posts = postRepository.findAllByProfileIdOrderByCreatedAtDesc(profileId, pageRequest)
+                    .stream()
+                    .map(PostDTO::of)
+                    .toList();
+            log.debug("posts found: {} for profile id {}", posts, profileId);
             return posts;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -49,6 +55,7 @@ public class PostService {
             var postOptional = postRepository.findById(postId);
             if (postOptional.isPresent()) {
                 var post = postOptional.get();
+                log.debug("post found with id {}", post.getId());
                 return PostDTO.of(post);
             } else {
                 throw new EntityNotFoundException("post not found");
@@ -59,29 +66,39 @@ public class PostService {
     }
 
     @Transactional
-    public void post(Long userId, PostCreationDTO postDTO) {
-        var profileId = profileService.checkByUserId(userId);
+    public void create(Long userId, PostCreationDTO postDTO) {
+        var profileId = profileService.getById(userId).getId();
         try {
-            var reposted = postDTO.isReposted();
+            var reposted = postDTO.reposted();
             if (reposted) {
-                var checkOriginalPost = postRepository.findById(postDTO.getOriginalPostId());
+                var checkOriginalPost = postRepository.findById(postDTO.originalPostId());
                 if (checkOriginalPost.isEmpty()) {
-                    throw new EntityNotFoundException("original post not found with id " + postDTO.getOriginalPostId());
+                    throw new EntityNotFoundException("original post not found with id " + postDTO.originalPostId());
                 }
                 var postToSave = Post.builder()
-                        .reposted(postDTO.isReposted())
-                        .originalPost(entityManager.getReference(Post.class, postDTO.getOriginalPostId()))
+                        .contentType(UserContentType.POST)
+                        .reposted(true)
+                        .originalPost(checkOriginalPost.get())
                         .profile(entityManager.getReference(Profile.class, profileId))
-                        .textContent(postDTO.getTextContent())
-                        .createdAt(Timestamp.from(Instant.now()))
+                        .description(postDTO.description())
                         .build();
+                if (postDTO.elements() != null) {
+                    var elements = new ArrayList<PostElement>();
+                    postDTO.elements().forEach(e -> elements.add(PostElement.builder()
+                            .url(e.url())
+                            .type(PostElement.Type.valueOf(e.type()))
+                            .orderIndex(e.orderIndex())
+                            .post(postToSave)
+                            .build()));
+                    postToSave.setElements(elements);
+                }
                 postRepository.save(postToSave);
             } else {
                 var postToSave = Post.builder()
-                        .reposted(postDTO.isReposted())
+                        .contentType(UserContentType.POST)
+                        .reposted(false)
                         .profile(entityManager.getReference(Profile.class, profileId))
-                        .textContent(postDTO.getTextContent())
-                        .createdAt(Timestamp.from(Instant.now()))
+                        .description(postDTO.description())
                         .build();
                 postRepository.save(postToSave);
             }
@@ -93,7 +110,7 @@ public class PostService {
 
     @Transactional
     public void delete(Long userId, UUID postId) {
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         try {
             var checkById = postRepository.findById(postId);
             if (checkById.isEmpty()) {
@@ -109,38 +126,16 @@ public class PostService {
         }
     }
 
-    public List<PostDTO> explore() {
-        return null;
+    //Todo: filter by last profile entrance date
+    @Transactional(readOnly = true)
+    public List<PostDTO> exploreFriends(Long userId, PageRequest pageRequest) {
+        var follows = followService.getAllFollows(userId);
+        var followsIds = follows.stream().map(f -> f.getFollowed().getId()).toList();
+        return postRepository.findFollowsPosts(followsIds, pageRequest).stream().map(PostDTO::of).toList();
     }
 
-    @Transactional
-    public void like(UUID postId) {
-        try {
-            postRepository.incrementLikes(postId);
-        } catch (DataAccessException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
-    @Transactional
-    public void unlike(UUID postId) {
-        try {
-            postRepository.decrementLikes(postId);
-        } catch (DataAccessException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
-    @Transactional
-    public UUID checkById(UUID uuid) {
-        try {
-            var checkById = postRepository.findById(uuid);
-            if (checkById.isEmpty()) {
-                throw new EntityNotFoundException("Post with id " + uuid + " not found");
-            }
-            return checkById.get().getId();
-        } catch (DataAccessException e) {
-            throw new DatabaseException(e.getMessage());
-        }
+    @Transactional(readOnly = true)
+    public List<PostDTO> exploreGeneral(Long userId, PageRequest pageRequest) {
+        return postRepository.findRandom(userId, pageRequest).stream().map(PostDTO::of).toList();
     }
 }

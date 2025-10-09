@@ -11,19 +11,23 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShortElement extends BaseEntity {
+@Builder
+public class PostElement extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Type type;
+
     private String url;
+
     private Integer orderIndex;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "short_id")
+    @JoinColumn(name = "post_id")
     @JsonIgnore
-    private Short shorT;
+    private Post post;
 
     @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Builder.Default
     private Instant createdAt = Instant.now();
 
     public enum Type {

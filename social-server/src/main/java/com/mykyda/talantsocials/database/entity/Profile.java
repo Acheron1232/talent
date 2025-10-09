@@ -1,8 +1,6 @@
 package com.mykyda.talantsocials.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.mykyda.talantsocials.database.enums.ProfileStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -26,11 +23,8 @@ import java.util.UUID;
 public class Profile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
     @Column(unique = true, nullable = false)
-    private Long userId;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String tag;
@@ -60,6 +54,14 @@ public class Profile {
     @Column(columnDefinition = "text")
     private String bioMarkdown;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Long followersAmount = 0L;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Long followingAmount = 0L;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile", orphanRemoval = true)
     private List<LanguageSkill> languageSkills;
 
@@ -80,4 +82,12 @@ public class Profile {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
     @JsonIgnore
     private List<Comment> comments;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "follower")
+    @JsonIgnore
+    private List<Follow> follows;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "followed")
+    @JsonIgnore
+    private List<Follow> followed;
 }

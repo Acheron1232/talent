@@ -1,4 +1,4 @@
-package com.mykyda.talantsocials.dto;
+package com.mykyda.talantsocials.dto.response;
 
 import com.mykyda.talantsocials.database.entity.Like;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -16,7 +16,7 @@ public class LikeDTO {
 
     private ProfileDTO profile;
 
-    private Timestamp createdAt;
+    private Instant createdAt;
 
     public static LikeDTO of(Like like) {
         return LikeDTO.builder()

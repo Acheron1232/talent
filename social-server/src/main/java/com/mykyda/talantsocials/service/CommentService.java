@@ -4,7 +4,7 @@ import com.mykyda.talantsocials.database.entity.Comment;
 import com.mykyda.talantsocials.database.entity.ContentEntity;
 import com.mykyda.talantsocials.database.entity.Profile;
 import com.mykyda.talantsocials.database.repository.CommentRepository;
-import com.mykyda.talantsocials.dto.CommentDTO;
+import com.mykyda.talantsocials.dto.response.CommentDTO;
 import com.mykyda.talantsocials.dto.create.CommentCreationDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityNotFoundException;
@@ -33,7 +33,7 @@ public class CommentService {
 
     @Transactional
     public void createComment(Long userId, CommentCreationDTO commentCreationDTO) {
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         try {
             var isAReply = commentCreationDTO.isAReply();
             if (isAReply) {
@@ -70,7 +70,7 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long userId, UUID commentId) {
-        var profileId = profileService.checkByUserId(userId);
+        var profileId = profileService.getById(userId).getId();
         try {
             var checkById = commentRepository.findById(commentId);
             if (checkById.isEmpty()) {
@@ -91,13 +91,13 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentDTO> getCommentsForPostPaged(UUID postId, PageRequest pageRequest) {
+    public List<CommentDTO> getCommentsPaged(UUID contentEntityId, PageRequest pageRequest) {
         try {
-            var comments = commentRepository.findAllByContentEntityIdAndIsAReplyNotOrderByCreatedAt(postId, true, pageRequest)
+            var comments = commentRepository.findAllByContentEntityIdAndIsAReplyNotOrderByCreatedAtDesc(contentEntityId, true, pageRequest)
                     .stream()
                     .map(CommentDTO::of)
                     .toList();
-            log.info("comments for post {} acquired", postId);
+            log.debug("comments for contentEntity {} acquired", contentEntityId);
             return comments;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());
@@ -107,11 +107,11 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentDTO> getRepliesPaged(UUID commentId, PageRequest pageRequest) {
         try {
-            var comments = commentRepository.findAllByOriginalCommentIdOrderByCreatedAt(commentId, pageRequest)
+            var comments = commentRepository.findAllByOriginalCommentIdOrderByCreatedAtDesc(commentId, pageRequest)
                     .stream()
                     .map(CommentDTO::of)
                     .toList();
-            log.info("replies for comment {} acquired", commentId);
+            log.debug("replies for comment {} acquired", commentId);
             return comments;
         } catch (DataAccessException e) {
             throw new DatabaseException(e.getMessage());

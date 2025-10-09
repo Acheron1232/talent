@@ -1,0 +1,30 @@
+package com.mykyda.talantsocials.dto.response;
+
+import com.mykyda.talantsocials.database.entity.Follow;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FollowDTO {
+
+    private ProfileDTO follower;
+
+    private ProfileDTO followed;
+
+    private Instant createdAt;
+
+    public static FollowDTO of(Follow follow) {
+        return FollowDTO.builder()
+                .follower(ProfileDTO.ofShort(follow.getFollower()))
+                .followed(ProfileDTO.ofShort(follow.getFollowed()))
+                .createdAt(follow.getCreatedAt())
+                .build();
+    }
+}
