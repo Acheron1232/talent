@@ -49,4 +49,5 @@ auth-server/.env
 .DS_Store
 
 /file-service/src/main/resources/container-61d6e-firebase-adminsdk-fbsvc-304c7c9f8d.json
-/home/mykyta/IdeaProjects/talent123/social-server/src/main/java/com/mykyda/talantsocials/service/ApisService.java
+/home/mykyta/IdeaProjects/talent123/social-server/src/main/java/com/mykyda/talantsocials/service/ApisService.java.idea/dataSources.local.xml
+.idea/workspace.xml
