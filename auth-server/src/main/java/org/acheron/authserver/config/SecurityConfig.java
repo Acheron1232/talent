@@ -3,6 +3,8 @@ package org.acheron.authserver.config;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
+import org.acheron.authserver.config.util.CustomWebAuthenticationDetailsSource;
+import org.acheron.authserver.config.util.MFADaoAuthProvider;
 import org.acheron.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,7 +33,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-import org.springframework.security.oauth2.server.authorization.token.*;
+import org.springframework.security.oauth2.server.authorization.token.DelegatingOAuth2TokenGenerator;
+import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -48,6 +55,7 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final OAuth2LoginSuccessHandler auth2LoginSuccessHandler;
+    private final CustomWebAuthenticationDetailsSource authenticationDetailsSource;
 
     @Bean
     CorsConfigurationSource corsConfigurationSource(@Value("${spring.origins}") String[] origins) {
@@ -67,7 +75,6 @@ public class SecurityConfig {
 
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 OAuth2AuthorizationServerConfigurer.authorizationServer();
-
         http
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .with(authorizationServerConfigurer, authorizationServer ->
@@ -87,12 +94,13 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/spa/logout", "/login", "/registration", "/.well-known/appspecific/**"
-                                , "/favicon.ico", "/actuator/prometheus"
+                        .requestMatchers("/mfa_qr","/spa/logout", "/login", "/registration", "/.well-known/appspecific/**"
+                                , "/favicon.ico", "/actuator/prometheus","/error"
                         ).permitAll().anyRequest().authenticated());
-        http.oidcLogout((logout) -> logout
-                .backChannel(Customizer.withDefaults())
-        );
+//        http.oidcLogout((logout) -> logout
+//                .backChannel(Customizer.withDefaults())
+//        );
+        http.oidcLogout(Customizer.withDefaults());
         http
                 .exceptionHandling((exceptions) ->
                         exceptions.defaultAuthenticationEntryPointFor(
@@ -102,8 +110,8 @@ public class SecurityConfig {
                 )
                 .oauth2ResourceServer(resourceServer ->
                         resourceServer.jwt(Customizer.withDefaults()));
-        http.userDetailsService(userService);
         http.cors(Customizer.withDefaults());
+        http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll().authenticationDetailsSource(authenticationDetailsSource));
         return http.build();
     }
 
@@ -114,7 +122,7 @@ public class SecurityConfig {
                 resourceServer.jwt(Customizer.withDefaults()));
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(formLogin -> formLogin.loginPage("/login").permitAll())
+                .formLogin(formLogin -> formLogin.loginPage("/login").permitAll().authenticationDetailsSource(authenticationDetailsSource))
                 .oauth2Login(oauth2Login ->
                         oauth2Login.loginPage("/login").permitAll()
                                 .successHandler(auth2LoginSuccessHandler)
@@ -127,22 +135,33 @@ public class SecurityConfig {
                                 "/reset_password_token",
                                 "/img.png"
                                 , "/favicon.ico",
-                                "/front/**"
+                                "/front/**","/mfa_qr"
                         )
                         .permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated());
         http.cors(Customizer.withDefaults());
         return http.build();
     }
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new MFADaoAuthProvider(userService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(authenticationProvider());
+    }
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
+
         RegisteredClient webClient = RegisteredClient
                 .withId(UUID.randomUUID().toString())
                 .clientId("gateway-client")
                 .clientSecret(passwordEncoder.encode("secret"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                //                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://localhost:8080/login/oauth2/code/gateway-client")
@@ -151,24 +170,6 @@ public class SecurityConfig {
                 .scope(OidcScopes.PROFILE)
                 .scope(OidcScopes.EMAIL)
                 .tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofHours(4)).build())
-                .build();
-
-        RegisteredClient webClient2 = RegisteredClient
-                .withId(UUID.randomUUID().toString())
-                .clientId("zxc-client")
-                .clientSecret(passwordEncoder.encode("secret1"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                //                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:8090/login/oauth2/code/zxc-client")
-                .postLogoutRedirectUri("http://localhost:8090/logout")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .scope(OidcScopes.EMAIL)
-                .tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofSeconds(100))
-                        //                        .refreshTokenTimeToLive(Duration.ofSeconds(1))
-                        .build())
                 .build();
 
         RegisteredClient publicWebClient = RegisteredClient
@@ -191,26 +192,6 @@ public class SecurityConfig {
                 )
                 .clientSettings(ClientSettings.builder().requireProofKey(true).build())
                 .build();
-        RegisteredClient pizzaService = RegisteredClient
-                .withId(UUID.randomUUID().toString())
-                .clientId("pizza-service")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:3000/callback")
-                .postLogoutRedirectUri("http://localhost:3000/logout")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .scope(OidcScopes.EMAIL)
-                .tokenSettings(
-                        TokenSettings.builder()
-                                .accessTokenTimeToLive(Duration.ofMinutes(30))
-                                .refreshTokenTimeToLive(Duration.ofDays(60))
-                                .reuseRefreshTokens(false)
-                                .build()
-                )
-                .clientSettings(ClientSettings.builder().requireProofKey(true).build())
-                .build();
 
         RegisteredClient internalServiceClient = RegisteredClient
                 .withId(UUID.randomUUID().toString())
@@ -223,9 +204,8 @@ public class SecurityConfig {
                         .accessTokenTimeToLive(Duration.ofMinutes(10))
                         .build())
                 .build();
-        return new InMemoryRegisteredClientRepository(pizzaService, webClient, webClient2, publicWebClient, internalServiceClient);
+        return new InMemoryRegisteredClientRepository(webClient, publicWebClient, internalServiceClient);
     }
-
 
     @Bean
     OAuth2TokenGenerator<OAuth2Token> tokenGenerator(JWKSource<SecurityContext> jwkSource) {

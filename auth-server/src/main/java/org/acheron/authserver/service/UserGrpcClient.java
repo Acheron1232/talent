@@ -43,6 +43,8 @@ public class UserGrpcClient {
                     .setAuthMethod(user.authMethod())
                     .setPassword(StringValue.newBuilder().setValue(user.password()!=null? passwordEncoder.encode(user.password()) : "")
                             .build())
+                    .setMfaEnabled(user.isMFAEnabled())
+                    .setMfaSecret(StringValue.newBuilder().setValue(user.MFASecret()==null?"":user.MFASecret()).build())
                     .build();
 
             Id response = stub.saveUser(request);

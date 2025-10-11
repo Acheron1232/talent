@@ -6,6 +6,8 @@ public record UserCreationDto(
         String password,
         boolean isEmailVerified,
         String role,
-        String authMethod
+        String authMethod,
+        boolean isMFAEnabled,
+        String MFASecret
 ) {
 }

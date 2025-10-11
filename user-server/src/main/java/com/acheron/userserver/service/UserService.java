@@ -30,7 +30,7 @@ public class UserService   {
         if (user.getPassword() != null) {
             user.setPassword(user.getPassword());
         }
-        User save = userRepository.save(new User(null, user.getEmail(), user.getUsername(), user.isEmailVerified(), User.AuthMethod.valueOf(user.getAuthMethod()), User.Role.valueOf(user.getRole()), user.getPassword()));
+        User save = userRepository.save(new User(null, user.getEmail(), user.getUsername(), user.isEmailVerified(), User.AuthMethod.valueOf(user.getAuthMethod()), User.Role.valueOf(user.getRole()), user.getPassword(),user.isMFAEnabled(),user.getMfaSecret().isBlank()?null:user.getMfaSecret()));
         return save.getId();
     }
 

@@ -17,6 +17,8 @@ public class User implements UserDetails {
     private String username;
     private Boolean isEmailVerified;
     private AuthMethod authMethod;
+    private Boolean isMFAEnabled;
+    private String MFASecret;
     private Role role;
     private String password;
 
@@ -48,6 +50,8 @@ public class User implements UserDetails {
                 userDto.getIsEmailVerified(),
                 AuthMethod.valueOf(
                         userDto.getAuthMethod()),
+                userDto.getMfaEnabled(),
+                userDto.getMfaSecret().getValue(),
                 Role.valueOf(userDto.getRole()),
                 userDto.getPassword().getValue());
     }

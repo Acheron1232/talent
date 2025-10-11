@@ -14,4 +14,6 @@ public class UserCreateDto {
     private boolean isEmailVerified;
     private String role;
     private String authMethod;
+    private boolean isMFAEnabled;
+    private String mfaSecret;
 }

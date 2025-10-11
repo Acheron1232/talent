@@ -7,6 +7,7 @@ export default function CallbackPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("sads")
         if (!auth.isLoading) {
             navigate("/"); // 🚀 завжди йдемо на home
         }

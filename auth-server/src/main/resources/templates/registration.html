@@ -18,9 +18,15 @@
         <label>
             <input type="password" name="password" class="auth-input" placeholder="••••••" required>
         </label>
+        <label for="mfa_enabled">
+            <input type="checkbox" value="true" name="mfa_enabled" id="mfa_enabled">
+            MFA
+        </label>
+        <img src="/mfa_qr" alt="404">
         <button type="submit" class="auth-button">Register</button>
         <div class="message"></div>
     </form>
+
     <div class="auth-links">
         <a href="/oauth2/authorization/google" class="oauth-btn google-btn">
             <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google">
@@ -33,6 +39,6 @@
         <a href="/login">Back to Login</a>
     </div>
 </div>
-<script src="/front/script.js"></script>
+<!--<script src="/front/script.js"></script>-->
 </body>
 </html>

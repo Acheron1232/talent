@@ -9,5 +9,7 @@ create table users
     is_email_verified boolean,
     auth_method       text check (auth_method in ('DEFAULT', 'GOOGLE', 'GITHUB')),
     role              text        not null check (role in ('USER', 'ADMIN')),
-    password          text
+    password          text,
+    is_mfa_enabled    boolean not null ,
+    mfa_secret        text
 );

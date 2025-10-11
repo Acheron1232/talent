@@ -2,7 +2,6 @@ package org.acheron.authserver.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.acheron.authserver.dto.UserCreateDto;
-import org.acheron.authserver.dto.UserCreationDto;
 import org.acheron.authserver.entity.User;
 import org.acheron.user.UserDto;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,16 +19,14 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService{
 
     private final UserGrpcClient userGrpcClient;
     private final OAuth2AuthorizedClientManager manager;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserGrpcClient userGrpcClient, OAuth2AuthorizedClientManager manager, PasswordEncoder passwordEncoder) {
+    public UserService(UserGrpcClient userGrpcClient, OAuth2AuthorizedClientManager manager) {
         this.userGrpcClient = userGrpcClient;
         this.manager = manager;
-        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -39,13 +36,9 @@ public class UserService implements UserDetailsService {
                 .principal("auth-server")
                 .build();
         OAuth2AuthorizedClient authorize = manager.authorize(request1);
-        if ((user.user().password()!=null)){
-            String encodedPassword =  passwordEncoder.encode(user.user().password());
-        }
-        // save user-service
+
 
         Long id = userGrpcClient.saveUser(user.user(), authorize.getAccessToken().getTokenValue());
-        //save social-server
         user.profile().setId(id);
         RestClient.create().post().uri("http://localhost:8080/socials/profile").body(user.profile()).header("Authorization","Bearer "+authorize.getAccessToken().getTokenValue()).exchange((req,res)->{
             if(res.getStatusCode().value()>=200 &&res.getStatusCode().value()<300){
@@ -60,7 +53,6 @@ public class UserService implements UserDetailsService {
         });
 
     }
-
 
     public boolean existsByEmail(String email) {
         OAuth2AuthorizeRequest request1 = OAuth2AuthorizeRequest
@@ -94,4 +86,5 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
+
 }

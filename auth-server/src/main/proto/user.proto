@@ -30,6 +30,8 @@ message UserRequest {
   bool is_email_verified = 6;
   string role = 7;
   string auth_method = 8;
+  bool mfa_enabled = 9;
+  google.protobuf.StringValue mfa_secret = 11;
 }
 message UserDto {
   int64 id = 10;
@@ -41,6 +43,8 @@ message UserDto {
   bool is_email_verified = 6;
   string role = 7;
   string auth_method = 8;
+  bool mfa_enabled = 9;
+  google.protobuf.StringValue mfa_secret = 11;
 }
 
 message Username {

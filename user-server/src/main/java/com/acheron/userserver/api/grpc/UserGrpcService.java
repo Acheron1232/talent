@@ -28,11 +28,13 @@ public class UserGrpcService extends UserServiceGrpcGrpc.UserServiceGrpcImplBase
             responseObserver.onNext(UserDto.newBuilder()
                     .setId(user1.getId())
                     .setUsername(user1.getUsername())
-                    .setPassword(StringValue.newBuilder().setValue(user1.getPassword()!=null?user1.getPassword():"").build())
+                    .setPassword(StringValue.newBuilder().setValue(user1.getPassword() != null ? user1.getPassword() : "").build())
                     .setEmail(user1.getEmail())
                     .setIsEmailVerified(user1.getIsEmailVerified())
                     .setRole(user1.getRole().name())
                     .setAuthMethod(user1.getAuthMethod().name())
+                    .setMfaEnabled(user1.getIsMFAEnabled())
+                    .setMfaSecret(StringValue.newBuilder().setValue(user1.getMFASecret()==null||user1.getMFASecret().isBlank()?"": user1.getMFASecret()).build())
                     .build());
             responseObserver.onCompleted();
         } catch (Exception e) {
@@ -67,6 +69,8 @@ public class UserGrpcService extends UserServiceGrpcGrpc.UserServiceGrpcImplBase
                     .setIsEmailVerified(user1.getIsEmailVerified())
                     .setRole(user1.getRole().name())
                     .setAuthMethod(user1.getAuthMethod().name())
+                    .setMfaEnabled(user1.getIsMFAEnabled())
+                    .setMfaSecret(StringValue.newBuilder().setValue(user1.getMFASecret() == null || user1.getMFASecret().isBlank() ? "" : user1.getMFASecret()).build())
                     .build());
             responseObserver.onCompleted();
         } catch (Exception e) {
@@ -84,8 +88,10 @@ public class UserGrpcService extends UserServiceGrpcGrpc.UserServiceGrpcImplBase
                     .isEmailVerified(request.getIsEmailVerified())
                     .role(User.Role.valueOf(request.getRole()))
                     .authMethod(User.AuthMethod.valueOf(request.getAuthMethod()))
+                    .isMFAEnabled(request.getMfaEnabled())
+                    .MFASecret(request.getMfaSecret().getValue())
                     .build();
-            if(user.getPassword().isEmpty()){
+            if (user.getPassword().isEmpty()) {
                 user.setPassword(null);
             }
             Long save = userService.save(new UserCreateDto(user.getUsername(),
@@ -93,7 +99,9 @@ public class UserGrpcService extends UserServiceGrpcGrpc.UserServiceGrpcImplBase
                     user.getEmail(),
                     user.getIsEmailVerified(),
                     user.getRole().name(),
-                    user.getAuthMethod().name()));
+                    user.getAuthMethod().name(),
+                    user.getIsMFAEnabled(),
+                    user.getMFASecret()));
             responseObserver.onNext(Id.newBuilder().setId(save).build());
             responseObserver.onCompleted();
         } catch (Exception e) {
