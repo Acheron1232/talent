@@ -13,6 +13,15 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/career-server" />
+        <option name="gradleJvm" value="graalvm-ce-23" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/career-server" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/file-service" />
         <option name="gradleJvm" value="graalvm-ce-23" />
         <option name="modules">
