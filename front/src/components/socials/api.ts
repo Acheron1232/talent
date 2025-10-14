@@ -8,11 +8,9 @@ export interface ProfileDTO {
   id?: UUID;
   tag?: string;
   displayName?: string;
-  currentOccupation?: string;
   profilePictureUrl?: string;
   bannerPictureUrl?: string;
   status?: string;
-  employeeRating?: number;
   bioMarkdown?: string;
   followersAmount?: number;
   followingAmount?: number;

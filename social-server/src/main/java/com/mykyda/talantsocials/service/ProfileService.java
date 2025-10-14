@@ -6,8 +6,6 @@ import com.mykyda.talantsocials.database.repository.ProfileRepository;
 import com.mykyda.talantsocials.dto.create.ProfileCreationDTO;
 import com.mykyda.talantsocials.dto.patch.ProfilePatchDTO;
 import com.mykyda.talantsocials.dto.patch.ProfilePatchTagDTO;
-import com.mykyda.talantsocials.dto.response.JobSkillDTO;
-import com.mykyda.talantsocials.dto.response.LanguageSkillDTO;
 import com.mykyda.talantsocials.dto.response.ProfileDTO;
 import com.mykyda.talantsocials.exception.DatabaseException;
 import com.mykyda.talantsocials.exception.EntityConflictException;
@@ -99,24 +97,23 @@ public class ProfileService {
     private static Profile editProfile(ProfilePatchDTO patchedDto, Profile profile) {
 
         updateIfNotNull(patchedDto.displayName(), profile::setDisplayName);
-        updateIfNotNull(patchedDto.currentOccupation(), profile::setCurrentOccupation);
         updateIfNotNull(patchedDto.bioMarkdown(), profile::setBioMarkdown);
 
-        if (patchedDto.languageSkills() != null) {
-            profile.getLanguageSkills().clear();
-            profile.getLanguageSkills().addAll(
-                    patchedDto.languageSkills().stream()
-                            .map(e -> LanguageSkillDTO.toEntity(e, profile))
-                            .toList());
-        }
-
-        if (patchedDto.jobsSkills() != null) {
-            profile.getJobsSkills().clear();
-            profile.getJobsSkills().addAll(
-                    patchedDto.jobsSkills().stream()
-                            .map(e -> JobSkillDTO.toEntity(e, profile))
-                            .toList());
-        }
+//        if (patchedDto.languageSkills() != null) {
+//            profile.getLanguageSkills().clear();
+//            profile.getLanguageSkills().addAll(
+//                    patchedDto.languageSkills().stream()
+//                            .map(e -> LanguageSkillDTO.toEntity(e, profile))
+//                            .toList());
+//        }
+//
+//        if (patchedDto.jobsSkills() != null) {
+//            profile.getJobsSkills().clear();
+//            profile.getJobsSkills().addAll(
+//                    patchedDto.jobsSkills().stream()
+//                            .map(e -> JobSkillDTO.toEntity(e, profile))
+//                            .toList());
+//        }
         return profile;
     }
 

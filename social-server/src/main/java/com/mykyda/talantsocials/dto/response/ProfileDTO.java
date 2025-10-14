@@ -7,9 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,15 +19,11 @@ public class ProfileDTO {
 
     private String displayName;
 
-    private String currentOccupation;
-
     private String profilePictureUrl;
 
     private String bannerPictureUrl;
 
     private ProfileStatus status;
-
-    private Double employeeRating;
 
     private String bioMarkdown;
 
@@ -38,9 +31,9 @@ public class ProfileDTO {
 
     private Long followingAmount;
 
-    private List<LanguageSkillDTO> languageSkills;
-
-    private List<JobSkillDTO> jobsSkills;
+//    private List<LanguageSkillDTO> languageSkills;
+//
+//    private List<JobSkillDTO> jobsSkills;
 
     public static ProfileDTO ofShort(Profile profile) {
         return ProfileDTO.builder()
@@ -55,16 +48,14 @@ public class ProfileDTO {
                 .id(profile.getId())
                 .tag(profile.getTag())
                 .displayName(profile.getDisplayName())
-                .currentOccupation(profile.getCurrentOccupation())
                 .profilePictureUrl(profile.getProfilePictureUrl())
                 .bannerPictureUrl(profile.getBannerPictureUrl())
                 .status(profile.getStatus())
-                .employeeRating(profile.getEmployeeRating())
                 .bioMarkdown(profile.getBioMarkdown())
                 .followersAmount(profile.getFollowersAmount())
                 .followingAmount(profile.getFollowingAmount())
-                .languageSkills(profile.getLanguageSkills().stream().map(LanguageSkillDTO::of).collect(Collectors.toList()))
-                .jobsSkills(profile.getJobsSkills().stream().map(JobSkillDTO::of).collect(Collectors.toList()))
+//                .languageSkills(profile.getLanguageSkills().stream().map(LanguageSkillDTO::of).collect(Collectors.toList()))
+//                .jobsSkills(profile.getJobsSkills().stream().map(JobSkillDTO::of).collect(Collectors.toList()))
                 .build();
     }
 }

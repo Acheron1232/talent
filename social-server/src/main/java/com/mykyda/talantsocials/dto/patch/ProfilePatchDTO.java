@@ -1,31 +1,24 @@
 package com.mykyda.talantsocials.dto.patch;
 
-import com.mykyda.talantsocials.dto.response.JobSkillDTO;
-import com.mykyda.talantsocials.dto.response.LanguageSkillDTO;
-
-import java.util.List;
+//import com.mykyda.talantsocials.dto.response.JobSkillDTO;
+//import com.mykyda.talantsocials.dto.response.LanguageSkillDTO;
 
 public record ProfilePatchDTO(
 
         String displayName,
 
-        String currentOccupation,
 
-        String bioMarkdown,
+        String bioMarkdown)
 
-        List<LanguageSkillDTO> languageSkills,
+//        List<LanguageSkillDTO> languageSkills,
 
-        List<JobSkillDTO> jobsSkills) {
+//        List<JobSkillDTO> jobsSkills)
+{
 
     public ProfilePatchDTO {
         if (displayName != null) {
             if (displayName.isBlank()) {
                 displayName = null;
-            }
-        }
-        if (currentOccupation != null) {
-            if (currentOccupation.isBlank()) {
-                currentOccupation = null;
             }
         }
         if (bioMarkdown != null) {

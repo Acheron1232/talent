@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -40,4 +41,13 @@ public class Post extends ContentEntity {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostElement> elements;
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags = new ArrayList<>();
+
 }

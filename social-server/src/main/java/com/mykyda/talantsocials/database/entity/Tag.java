@@ -5,10 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Tag extends BaseEntity {
 
     @Column(unique = true, nullable = false)
     private String name;
+
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Short> shorts = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Post> posts = new ArrayList<>();
 }

@@ -20,24 +20,24 @@ create table content_entity
 
 );
 
-create table job_skill
-(
-    profile_id bigint       not null,
-    id         uuid         not null DEFAULT gen_random_uuid(),
-    experience varchar(255) check (experience in
-                                   ('NONE', 'ONE_PLUS', 'TWO_PLUS', 'THREE_PLUS', 'FOUR_PLUS', 'FIVE_PLUS')),
-    job_title  varchar(255) not null,
-    primary key (id)
-);
-
-create table language_skill
-(
-    profile_id           bigint       not null,
-    id                   uuid         not null,
-    language_code        varchar(255) not null,
-    language_proficiency varchar(255) check (language_proficiency in ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')),
-    primary key (id)
-);
+-- create table job_skill
+-- (
+--     profile_id bigint       not null,
+--     id         uuid         not null DEFAULT gen_random_uuid(),
+--     experience varchar(255) check (experience in
+--                                    ('NONE', 'ONE_PLUS', 'TWO_PLUS', 'THREE_PLUS', 'FOUR_PLUS', 'FIVE_PLUS')),
+--     job_title  varchar(255) not null,
+--     primary key (id)
+-- );
+--
+-- create table language_skill
+-- (
+--     profile_id           bigint       not null,
+--     id                   uuid         not null,
+--     language_code        varchar(255) not null,
+--     language_proficiency varchar(255) check (language_proficiency in ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')),
+--     primary key (id)
+-- );
 
 create table likes
 (
@@ -69,10 +69,8 @@ create table post_preference
 
 create table profile
 (
-    employee_rating     float(53),
     id                  bigint       not null,
     banner_picture_url  varchar(255),
-    current_occupation  varchar(255),
     display_name        varchar(255) not null,
     profile_picture_url varchar(255),
     status              varchar(255) check (status in ('NEWBIE', 'EMPLOYEE', 'EMPLOYER', 'COMPANY', 'HIRED')),

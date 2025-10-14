@@ -36,3 +36,12 @@ CREATE TABLE short_tag
     CONSTRAINT fk_short FOREIGN KEY (short_id) REFERENCES short (id),
     CONSTRAINT fk_tag FOREIGN KEY (tag_id) REFERENCES tag (id)
 );
+
+CREATE TABLE post_tag
+(
+    post_id UUID NOT NULL,
+    tag_id   UUID NOT NULL,
+    PRIMARY KEY (post_id, tag_id),
+    CONSTRAINT fk_post FOREIGN KEY (post_id) REFERENCES post (id),
+    CONSTRAINT fk_tag FOREIGN KEY (tag_id) REFERENCES tag (id)
+);

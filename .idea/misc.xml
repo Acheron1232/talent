@@ -3,7 +3,6 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/auth-server" />
-    <file type="web" url="file://$PROJECT_DIR$/career-server" />
     <file type="web" url="file://$PROJECT_DIR$/file-service" />
     <file type="web" url="file://$PROJECT_DIR$/gateway" />
     <file type="web" url="file://$PROJECT_DIR$/ide-service" />
@@ -13,7 +12,7 @@
     <file type="web" url="file://$PROJECT_DIR$/social-server" />
     <file type="web" url="file://$PROJECT_DIR$/user-server" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_23_PREVIEW" project-jdk-name="graalvm-ce-23 (2)" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="graalvm-ce-23" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

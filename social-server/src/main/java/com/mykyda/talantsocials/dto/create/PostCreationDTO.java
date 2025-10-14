@@ -14,7 +14,9 @@ public record PostCreationDTO(
 
         UUID originalPostId,
 
-        String description) {
+        String description,
+
+        List<String> tags) {
 
     public record PostElementCreationDto(
             String type,
