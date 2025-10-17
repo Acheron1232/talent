@@ -1,0 +1,27 @@
+spring:
+  origins: "http://localhost:5173,http://localhost:3000,http://192.168.1.112:5173"
+  base-url: http://localhost:8080
+#server:
+#  domain: https://localhost
+#  port: 443
+#  ssl:
+#      key-store: classpath:keystore/sabaody.p12
+#      key-store-password: sabaody
+#      key-store-type: pkcs12
+#      key-alias: sabaody
+#      key-password: sabaody
+
+logging:
+  level:
+    org.acheron.authserver: DEBUG
+    org.springframework.security.web.csrf : debug
+    org.springframework.web.socket : debug
+#    org.springframework.web: debug
+#        org.springframework.security.web: debug
+#        org.springframework.security.oauth2.client: debug
+#        org.springframework.security.oauth2.core: debug
+    org.springframework.security.web.FilterChainProxy: DEBUG
+    org.springframework.security.web.authentication: DEBUG
+    org.springframework.web.client: debug
+
+

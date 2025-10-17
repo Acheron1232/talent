@@ -1,0 +1,59 @@
+server:
+  port: 9000
+  address: 0.0.0.0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+spring:
+  profiles:
+    active: dev
+
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+  threads:
+    virtual:
+      enabled: true
+
+  config:
+    import: file:auth-server/.env[.properties]
+
+  security:
+    oauth2:
+      client:
+        registration:
+
+          auth-server-service:
+            provider: auth-server
+            client-id: ${AUTH_SERVER_CLIENT_ID}
+            client-secret: ${AUTH_SERVER_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            scope:
+              - profile
+              - email
+              - openid
+
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            scope:
+              - user
+              - user:email
+
+        provider:
+          auth-server:
+            token-uri: http://127.0.0.1:9000/oauth2/token

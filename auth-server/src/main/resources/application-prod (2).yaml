@@ -1,0 +1,31 @@
+spring:
+
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: postgres
+#    driver-class-name: org.postgresql.Driver
+
+  security:
+    domain: https://sabaody.org
+
+#  sql:
+#    init:
+#      mode: embedded
+#      data-locations: classpath:/sql/data-prod.sql
+
+server:
+
+#  domain: https://localhost
+#  ssl:
+#    key-store: classpath:keystore/sabaody.p12
+#    key-store-password: sabaody
+#    key-store-type: pkcs12
+#    key-alias: sabaody
+#    key-password: sabaody
+#  port: 443
+
+logging:
+  level:
+    org.springframework.security.web.csrf: debug
+    org.springframework.web.socket: debug
