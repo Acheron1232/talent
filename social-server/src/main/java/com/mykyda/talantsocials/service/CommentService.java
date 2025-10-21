@@ -57,7 +57,7 @@ public class CommentService {
                         .build();
                 commentRepository.save(commentToSave);
             }
-            log.info("post with id {} commented by profile id {}, with content {}",
+            log.debug("post with id {} commented by profile id {}, with content {}",
                     commentCreationDTO.getContentEntityId(),
                     profileId,
                     commentCreationDTO.getContent());
@@ -81,7 +81,7 @@ public class CommentService {
                 throw new ForbiddenAccessException("Can't delete comment you do not own");
             }
             commentRepository.delete(comment);
-            log.info("Comment with id {} for post by id {} have been deleted by profile {}",
+            log.debug("Comment with id {} for post by id {} have been deleted by profile {}",
                     commentId,
                     comment.getContentEntity().getId(),
                     profileId);

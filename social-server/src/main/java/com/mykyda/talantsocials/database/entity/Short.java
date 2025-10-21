@@ -19,6 +19,7 @@ public class Short extends ContentEntity {
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
+    @EqualsAndHashCode.Exclude
     private Profile profile;
 
     @Enumerated(EnumType.STRING)
@@ -37,7 +38,7 @@ public class Short extends ContentEntity {
 
     private Long views = 0L;
 
-    @Column(columnDefinition = "TEXT")
+//    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "is_public")

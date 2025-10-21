@@ -3,6 +3,8 @@ spring:
     url: jdbc:postgresql://localhost:5438/postgres
     password: postgres
     username: postgres
+    hikari:
+      auto-commit: false
   jpa:
     show-sql: false
 #    hibernate:
@@ -22,6 +24,3 @@ spring:
       enabled: true
 server:
   port: 8088
-logging:
-  level:
-    com.mykyda.talantsocials: trace

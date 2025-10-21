@@ -1,5 +1,6 @@
 package com.mykyda.talantsocials.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,9 +24,13 @@ public class Tag extends BaseEntity {
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @JsonIgnore
+    @JsonBackReference
+    @ToString.Exclude
     private List<Short> shorts = new ArrayList<>();
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @JsonIgnore
+    @JsonBackReference
+    @ToString.Exclude
     private List<Post> posts = new ArrayList<>();
 }

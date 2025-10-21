@@ -3,10 +3,7 @@ package com.mykyda.talantsocials.database.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mykyda.talantsocials.database.enums.ProfileStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -67,21 +64,31 @@ public class Profile {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
     @JsonIgnore
+    @ToString.Exclude
     private List<Post> posts;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
     @JsonIgnore
+    @ToString.Exclude
+    private List<Short> shorts;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
+    @JsonIgnore
+    @ToString.Exclude
     private List<Like> likes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
     @JsonIgnore
+    @ToString.Exclude
     private List<Comment> comments;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "follower")
     @JsonIgnore
+    @ToString.Exclude
     private List<Follow> follows;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "followed")
     @JsonIgnore
+    @ToString.Exclude
     private List<Follow> followed;
 }

@@ -1,13 +1,11 @@
 package com.mykyda.talantsocials.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -41,5 +39,7 @@ public class PostPreference {
     @JoinColumn(name = "profile_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
+    @JsonBackReference
+    @ToString.Exclude
     private Profile profile;
 }
