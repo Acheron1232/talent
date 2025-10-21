@@ -95,25 +95,8 @@ public class ProfileService {
     }
 
     private static Profile editProfile(ProfilePatchDTO patchedDto, Profile profile) {
-
         updateIfNotNull(patchedDto.displayName(), profile::setDisplayName);
         updateIfNotNull(patchedDto.bioMarkdown(), profile::setBioMarkdown);
-
-//        if (patchedDto.languageSkills() != null) {
-//            profile.getLanguageSkills().clear();
-//            profile.getLanguageSkills().addAll(
-//                    patchedDto.languageSkills().stream()
-//                            .map(e -> LanguageSkillDTO.toEntity(e, profile))
-//                            .toList());
-//        }
-//
-//        if (patchedDto.jobsSkills() != null) {
-//            profile.getJobsSkills().clear();
-//            profile.getJobsSkills().addAll(
-//                    patchedDto.jobsSkills().stream()
-//                            .map(e -> JobSkillDTO.toEntity(e, profile))
-//                            .toList());
-//        }
         return profile;
     }
 

@@ -1,8 +1,5 @@
 package com.mykyda.talantsocials.dto.patch;
 
-//import com.mykyda.talantsocials.dto.response.JobSkillDTO;
-//import com.mykyda.talantsocials.dto.response.LanguageSkillDTO;
-
 public record ProfilePatchDTO(
 
         String displayName,
@@ -10,9 +7,6 @@ public record ProfilePatchDTO(
 
         String bioMarkdown)
 
-//        List<LanguageSkillDTO> languageSkills,
-
-//        List<JobSkillDTO> jobsSkills)
 {
 
     public ProfilePatchDTO {

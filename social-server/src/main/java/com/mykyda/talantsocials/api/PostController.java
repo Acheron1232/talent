@@ -20,40 +20,40 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/explore-posts-follows")
+    @GetMapping("/explore-follows")
     private List<PostDTO> getExploreFollows(@AuthenticationPrincipal Jwt jwt,
                                             @RequestParam(value = "page", defaultValue = "0") Integer page,
                                             @RequestParam(value = "size", defaultValue = "20") Integer size) {
         return postService.exploreFriends(Long.valueOf(jwt.getClaims().get("id").toString()), PageRequest.of(page, size));
     }
 
-    @GetMapping("/explore-posts")
+    @GetMapping("/explore")
     private List<PostDTO> getExplore(@AuthenticationPrincipal Jwt jwt,
                                      @RequestParam(value = "page", defaultValue = "0") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size) {
         return postService.exploreGeneral(Long.valueOf(jwt.getClaims().get("id").toString()), PageRequest.of(page, size));
     }
 
-    @GetMapping("/get-post/{postId}")
+    @GetMapping("/{postId}")
     private PostDTO getPostById(@PathVariable("postId") UUID postId) {
         return postService.findById(postId);
     }
 
-    @GetMapping("/get-posts/{profileId}")
+    @GetMapping("/profile/{profileId}")
     public List<PostDTO> getPostsPageByProfileId(@PathVariable("profileId") Long profileId,
                                                  @RequestParam("page") Integer page,
                                                  @RequestParam("size") Integer size) {
         return postService.findByProfileIdPaged(profileId, PageRequest.of(page, size));
     }
 
-    @PostMapping("/create-post")
+    @PostMapping
     public ResponseEntity<String> createPost(@RequestBody PostCreationDTO postDTO,
                                              @AuthenticationPrincipal Jwt jwt) {
         postService.create(Long.valueOf(jwt.getClaims().get("id").toString()), postDTO);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/delete-post/{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<String> deletePost(@PathVariable UUID postId,
                                              @AuthenticationPrincipal Jwt jwt) {
         postService.delete(Long.valueOf(jwt.getClaims().get("id").toString()), postId);

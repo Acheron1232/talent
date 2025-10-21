@@ -20,28 +20,28 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("/get-comments/{contentEntityId}")
+    @GetMapping("/{contentEntityId}")
     public List<CommentDTO> getCommentsPageByProfileId(@PathVariable("contentEntityId") UUID contentEntityId,
                                                        @RequestParam(value = "page", defaultValue = "0") Integer page,
                                                        @RequestParam(value = "size", defaultValue = "20") Integer size) {
         return commentService.getCommentsPaged(contentEntityId, PageRequest.of(page, size));
     }
 
-    @GetMapping("/get-replies/{commentId}")
+    @GetMapping("/replies/{commentId}")
     public List<CommentDTO> getRepliesPageByOriginalCommentId(@PathVariable("commentId") UUID commentId,
                                                               @RequestParam(value = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(value = "size", defaultValue = "20") Integer size) {
         return commentService.getRepliesPaged(commentId, PageRequest.of(page, size));
     }
 
-    @PostMapping("/create-comment")
+    @PostMapping
     public ResponseEntity<String> comment(@RequestBody CommentCreationDTO commentCreationDTO,
                                           @AuthenticationPrincipal Jwt jwt) {
         commentService.createComment(Long.valueOf(jwt.getClaims().get("id").toString()), commentCreationDTO);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/delete-comment/{commentId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable UUID commentId,
                                                 @AuthenticationPrincipal Jwt jwt) {
         commentService.deleteComment(Long.valueOf(jwt.getClaims().get("id").toString()), commentId);

@@ -14,7 +14,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(e -> e.requestMatchers("/profile/get-by-tag/**",
+                .authorizeHttpRequests(e -> e.requestMatchers(
+                                "/profile/get-by-tag/**",
                                 "/posts/get-post/**",
                                 "/posts/get-posts/**",
                                 "/comments/get-comments/**",

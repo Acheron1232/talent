@@ -20,7 +20,7 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @GetMapping("/get-who-liked/{postId}")
+    @GetMapping("/{postId}")
     public List<LikeDTO> getLikesPageByPostId(@PathVariable("postId") UUID postId,
                                               @RequestParam("page") Integer page,
                                               @RequestParam("size") Integer size) {

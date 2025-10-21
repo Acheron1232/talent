@@ -20,12 +20,12 @@ public class ProfileController {
 
 //    private final ApisService apisService;
 
-    @GetMapping()
+    @GetMapping
     public ProfileDTO getCurrentProfile(@AuthenticationPrincipal Jwt jwt) {
         return profileService.getCurrentProfile(Long.valueOf(jwt.getClaims().get("id").toString()));
     }
 
-    @GetMapping("/get-by-tag/{profileTag}")
+    @GetMapping("/{profileTag}")
     public ProfileDTO getProfile(@PathVariable(required = false) String profileTag) {
         return profileService.getProfileByTag(profileTag);
     }
@@ -37,14 +37,14 @@ public class ProfileController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/patch-profile")
+    @PatchMapping
     public ResponseEntity<String> updateProfile(@RequestBody ProfilePatchDTO profileDTO,
                                                 @AuthenticationPrincipal Jwt jwt) {
         profileService.patchProfile(Long.valueOf(jwt.getClaims().get("id").toString()), profileDTO);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/patch-tag")
+    @PatchMapping("/tag")
     public ResponseEntity<String> updateTag(@RequestBody ProfilePatchTagDTO profileDTO,
                                             @AuthenticationPrincipal Jwt jwt) {
         profileService.patchTag(Long.valueOf(jwt.getClaims().get("id").toString()), profileDTO);

@@ -19,35 +19,35 @@ public class FollowController {
 
     private final FollowService followService;
 
-    @GetMapping("/get-follows/{profileId}")
-    public List<FollowDTO> getFollowsPageByPostId(@PathVariable("profileId") Long profileId,
-                                                  @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                  @RequestParam(value = "size", defaultValue = "20") Integer size) {
+    @GetMapping("/{profileId}")
+    public List<FollowDTO> getFollowsBy(@PathVariable("profileId") Long profileId,
+                                        @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                        @RequestParam(value = "size", defaultValue = "20") Integer size) {
         return followService.getFollows(profileId, PageRequest.of(page, size));
     }
 
-    @GetMapping("/get-followed-by/{profileId}")
-    public List<FollowDTO> getLikesPageByPostId(@PathVariable("profileId") Long profileId,
-                                                @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                @RequestParam(value = "size", defaultValue = "20") Integer size) {
+    @GetMapping("/by/{profileId}")
+    public List<FollowDTO> getFollowedByPage(@PathVariable("profileId") Long profileId,
+                                             @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                             @RequestParam(value = "size", defaultValue = "20") Integer size) {
         return followService.getFollowedBy(profileId, PageRequest.of(page, size));
     }
 
-    @PostMapping("/follow")
+    @PostMapping
     public ResponseEntity<String> follow(@RequestBody Long followedId,
                                          @AuthenticationPrincipal Jwt jwt) {
         followService.follow(Long.valueOf(jwt.getClaims().get("id").toString()), followedId);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/unfollow")
+    @DeleteMapping
     public ResponseEntity<String> unfollow(@RequestBody Long unfollowedId,
                                            @AuthenticationPrincipal Jwt jwt) {
         followService.unfollow(Long.valueOf(jwt.getClaims().get("id").toString()), unfollowedId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/check-follow/{profileId}")
+    @GetMapping("/check/{profileId}")
     public Map<String, Boolean> checkFollow(@PathVariable("profileId") Long profileId,
                                             @AuthenticationPrincipal Jwt jwt) {
         return Map.of("following", followService.isFollowed(Long.valueOf(jwt.getClaims().get("id").toString()), profileId));
