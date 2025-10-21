@@ -90,31 +90,31 @@ export function useSocialsApi() {
   return {
     // Profiles
     getCurrentProfile: () => request<ProfileDTO>(`/profile`),
-    getProfileByTag: (tag: string) => request<ProfileDTO>(`/profile/get-by-tag/${encodeURIComponent(tag)}`),
-    patchProfile: (dto: ProfileDTO) => request<void>(`/profile/patch-profile`, { method: "PATCH", body: JSON.stringify(dto) }),
-    patchTag: (tag: string) => request<void>(`/profile/patch-tag`, { method: "PATCH", body: JSON.stringify({ tag }) }),
+    getProfileByTag: (tag: string) => request<ProfileDTO>(`/profile/${encodeURIComponent(tag)}`),
+    patchProfile: (dto: ProfileDTO) => request<void>(`/profile`, { method: "PATCH", body: JSON.stringify(dto) }),
+    patchTag: (tag: string) => request<void>(`/profile/tag`, { method: "PATCH", body: JSON.stringify({ tag }) }),
 
     // Posts
-    getPostsByProfileId: (profileId: UUID, page = 0, size = 10) => request<PostDTO[]>(`/posts/get-posts/${profileId}?page=${page}&size=${size}&ts=${Date.now()}`),
-    getPostById: (postId: UUID) => request<PostDTO>(`/posts/get-post/${postId}?ts=${Date.now()}`),
-    createPost: (payload: PostCreationDTO) => request<void>(`/posts/create-post`, { method: "POST", body: JSON.stringify(payload) }),
+    getPostsByProfileId: (profileId: UUID, page = 0, size = 10) => request<PostDTO[]>(`/posts/profile/${profileId}?page=${page}&size=${size}&ts=${Date.now()}`),
+    getPostById: (postId: UUID) => request<PostDTO>(`/posts/${postId}?ts=${Date.now()}`),
+    createPost: (payload: PostCreationDTO) => request<void>(`/posts`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Likes
     like: (contentEntityId: UUID) => request<void>(`/likes/like`, { method: "POST", body: JSON.stringify({ contentEntityId }) }),
     unlike: (contentEntityId: UUID) => request<void>(`/likes/unlike`, { method: "DELETE", body: JSON.stringify({ contentEntityId }) }),
 
     // Follows
-    follow: (followedId: UUID) => request<void>(`/follows/follow`, { method: "POST", body: JSON.stringify(followedId) }),
-    unfollow: (unfollowedId: UUID) => request<void>(`/follows/unfollow`, { method: "DELETE", body: JSON.stringify(unfollowedId) }),
-    getFollowing: (profileId: UUID, page = 0, size = 20) => request<FollowDTO[]>(`/follows/get-follows/${profileId}?page=${page}&size=${size}`),
-    getFollowers: (profileId: UUID, page = 0, size = 20) => request<FollowDTO[]>(`/follows/get-followed-by/${profileId}?page=${page}&size=${size}`),
+    follow: (followedId: UUID) => request<void>(`/follows`, { method: "POST", body: JSON.stringify(followedId) }),
+    unfollow: (unfollowedId: UUID) => request<void>(`/follows`, { method: "DELETE", body: JSON.stringify(unfollowedId) }),
+    getFollowing: (profileId: UUID, page = 0, size = 20) => request<FollowDTO[]>(`/follows/${profileId}?page=${page}&size=${size}`),
+    getFollowers: (profileId: UUID, page = 0, size = 20) => request<FollowDTO[]>(`/follows/by/${profileId}?page=${page}&size=${size}`),
     // Follow state
-    checkFollow: (profileId: UUID) => request<{ following: boolean }>(`/follows/check-follow/${profileId}`, { method: "GET" }),
+    checkFollow: (profileId: UUID) => request<{ following: boolean }>(`/follows/check/${profileId}`, { method: "GET" }),
 
     // Comments
-    getComments: (contentEntityId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-comments/${contentEntityId}?page=${page}&size=${size}`),
-    getReplies: (commentId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/get-replies/${commentId}?page=${page}&size=${size}`),
-    createComment: (payload: CommentCreationDTO) => request<void>(`/comments/create-comment`, { method: "POST", body: JSON.stringify(payload) }),
+    getComments: (contentEntityId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/${contentEntityId}?page=${page}&size=${size}`),
+    getReplies: (commentId: UUID, page = 0, size = 10) => request<CommentDTO[]>(`/comments/replies/${commentId}?page=${page}&size=${size}`),
+    createComment: (payload: CommentCreationDTO) => request<void>(`/comments`, { method: "POST", body: JSON.stringify(payload) }),
 
     // Shorts
     getShorts: (size = 5, excludeIds?: UUID[]) => request<ShortDTO[]>(`/shorts?shorts_size=${size}${buildExcludeQS(excludeIds)}&ts=${Date.now()}`),
