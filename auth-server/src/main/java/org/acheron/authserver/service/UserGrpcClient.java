@@ -1,15 +1,14 @@
 package org.acheron.authserver.service;
 
 import com.google.protobuf.StringValue;
-import lombok.RequiredArgsConstructor;
-import org.acheron.authserver.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
-import org.acheron.authserver.dto.UserCreateDto;
+import lombok.RequiredArgsConstructor;
 import org.acheron.authserver.dto.UserCreationDto;
 import org.acheron.user.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +17,13 @@ import org.springframework.stereotype.Service;
 public class UserGrpcClient {
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${spring.grpc.url}")
+    private String GRPC_URL;
+
 
     public Long saveUser(UserCreationDto user, String accessToken) {
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", 9091)
+                .forAddress(GRPC_URL, 9091)
                 .usePlaintext()
                 .build();
 
@@ -56,7 +58,7 @@ public class UserGrpcClient {
 
     public UserDto findUserByUsername(String username, String accessToken) {
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", 9091)
+                .forAddress(GRPC_URL, 9091)
                 .usePlaintext()
                 .build();
 
@@ -80,7 +82,7 @@ public class UserGrpcClient {
 
     public UserDto findUserByEmail(String email, String accessToken) {
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", 9091)
+                .forAddress(GRPC_URL, 9091)
                 .usePlaintext()
                 .build();
 
@@ -104,7 +106,7 @@ public class UserGrpcClient {
 
     public boolean existsByEmail(String email, String accessToken) {
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", 9091)
+                .forAddress(GRPC_URL, 9091)
                 .usePlaintext()
                 .build();
 

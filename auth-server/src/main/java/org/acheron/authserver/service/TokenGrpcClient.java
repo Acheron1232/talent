@@ -10,7 +10,7 @@ import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.acheron.user.UserRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -20,7 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TokenGrpcClient {
+
     private final OAuth2AuthorizedClientManager manager;
+
+    @Value("${spring.grpc.url}")
+    private String GRPC_URL;
 
     private String getAccessToken(){
         OAuth2AuthorizeRequest request1 = OAuth2AuthorizeRequest
@@ -33,7 +37,7 @@ public class TokenGrpcClient {
 
     public void resetPassword(String email) {
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", 9091)
+                .forAddress(GRPC_URL, 9091)
                 .usePlaintext()
                 .build();
         TokenServiceGrpcGrpc.TokenServiceGrpcBlockingStub stub = TokenServiceGrpcGrpc.newBlockingStub(channel);
@@ -59,7 +63,7 @@ public class TokenGrpcClient {
 
     public String reset(String token) {
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", 9091)
+                .forAddress(GRPC_URL, 9091)
                 .usePlaintext()
                 .build();
         TokenServiceGrpcGrpc.TokenServiceGrpcBlockingStub stub = TokenServiceGrpcGrpc.newBlockingStub(channel);

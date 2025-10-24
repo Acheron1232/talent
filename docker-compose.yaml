@@ -1,16 +1,16 @@
 services:
 
-  user-postgres-db:
-    image: postgres:17-alpine
-    container_name: user-postgres
-    environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - user_postgres:/var/lib/postgresql/data
+#  user-postgres-db:
+#    image: postgres:17-alpine
+#    container_name: user-postgres
+#    environment:
+#      POSTGRES_DB: postgres
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - user_postgres:/var/lib/postgresql/data
 
   mail-postgres-db:
     image: postgres:17-alpine
@@ -74,6 +74,6 @@ services:
       KAFKA_NUM_PARTITIONS: 3
 
 volumes:
-  user_postgres:
+#  user_postgres:
   mail_postgres:
   socials_postgres:

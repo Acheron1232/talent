@@ -4,10 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.acheron.authserver.dto.UserCreateDto;
 import org.acheron.authserver.entity.User;
 import org.acheron.user.UserDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -23,6 +23,9 @@ public class UserService implements UserDetailsService{
 
     private final UserGrpcClient userGrpcClient;
     private final OAuth2AuthorizedClientManager manager;
+
+    @Value("${api.gateway-url}")
+    private String GATEWAY_URL;
 
     public UserService(UserGrpcClient userGrpcClient, OAuth2AuthorizedClientManager manager) {
         this.userGrpcClient = userGrpcClient;
@@ -40,7 +43,7 @@ public class UserService implements UserDetailsService{
 
         Long id = userGrpcClient.saveUser(user.user(), authorize.getAccessToken().getTokenValue());
         user.profile().setId(id);
-        RestClient.create().post().uri("http://localhost:8080/socials/profile").body(user.profile()).header("Authorization","Bearer "+authorize.getAccessToken().getTokenValue()).exchange((req,res)->{
+        RestClient.create().post().uri(GATEWAY_URL + "/socials/profile").body(user.profile()).header("Authorization","Bearer "+authorize.getAccessToken().getTokenValue()).exchange((req,res)->{
             if(res.getStatusCode().value()>=200 &&res.getStatusCode().value()<300){
 
             }else {

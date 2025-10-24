@@ -1,14 +1,16 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5438/postgres
-    password: postgres
-    username: postgres
+    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5438/postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     hikari:
       auto-commit: false
+
   jpa:
     show-sql: false
-#    hibernate:
-#      ddl-auto: create
+  #    hibernate:
+  #      ddl-auto: update
 
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
@@ -18,9 +20,14 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://127.0.0.1:9000
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://127.0.0.1:9000}
+
   threads:
     virtual:
       enabled: true
+#
+#  config:
+#    import: file:social-server/.env[.properties]
+
 server:
-  port: 8088
+  port: ${SERVER_PORT:8088}
