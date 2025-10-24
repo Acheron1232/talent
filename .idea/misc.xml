@@ -6,7 +6,9 @@
     <file type="web" url="file://$PROJECT_DIR$/career-server" />
     <file type="web" url="file://$PROJECT_DIR$/file-service" />
     <file type="web" url="file://$PROJECT_DIR$/gateway" />
+    <file type="web" url="file://$PROJECT_DIR$/git-service" />
     <file type="web" url="file://$PROJECT_DIR$/ide-service" />
+    <file type="web" url="file://$PROJECT_DIR$/interview-server" />
     <file type="web" url="file://$PROJECT_DIR$/mail-server" />
     <file type="web" url="file://$PROJECT_DIR$/project-generator-service" />
     <file type="web" url="file://$PROJECT_DIR$/resource-server" />
